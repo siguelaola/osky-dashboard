@@ -85,8 +85,9 @@ const CustomNode: React.FC<NodeProps> = ({
 			{editorVisible
 				? createPortal(
 						<ScreenEditor
-							save={() => setEditorVisible(false)}
 							components={data?.components}
+							name={data?.label}
+							save={() => setEditorVisible(false)}
 						/>,
 						modalRoot
 				  )
