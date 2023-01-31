@@ -77,6 +77,7 @@ const CustomNode: React.FC<NodeProps> = ({
 }) => {
 	const [editorVisible, setEditorVisible] = useState(false);
 	const [nodeName, setNodeName] = useState(data?.label ?? "New Screen");
+	const { setNodes } = useReactFlow();
 
 	const modalRoot = document.getElementById("modal-portal-root");
 	if (!modalRoot) throw new Error("Missing modal portal root");
@@ -88,7 +89,23 @@ const CustomNode: React.FC<NodeProps> = ({
 						<ScreenEditor
 							components={data?.components}
 							name={nodeName}
-							setName={(value) => setNodeName(value)}
+							setName={(value) => {
+								setNodeName(value);
+								setNodes((nodes) =>
+									nodes.map((node) => {
+										if (node.id === id) {
+											return {
+												...node,
+												data: {
+													...node.data,
+													label: value,
+												},
+											};
+										}
+										return node;
+									})
+								);
+							}}
 							save={() => setEditorVisible(false)}
 						/>,
 						modalRoot

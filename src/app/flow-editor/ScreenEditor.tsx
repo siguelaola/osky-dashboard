@@ -2,11 +2,49 @@ import {
 	ComputerDesktopIcon,
 	DevicePhoneMobileIcon,
 	PencilSquareIcon,
+	PlusCircleIcon,
 } from "@heroicons/react/24/outline";
 import clsx from "clsx";
-import { useState } from "react";
+import React, { useState } from "react";
 import Button from "./Button";
 import { FormComponent, FormComponentType } from "./types";
+
+const AddComponentChoice: React.FC<{
+	type: FormComponentType;
+	children: string;
+}> = ({ children }) => (
+	<li className="flex w-full">
+		<button className="flex w-full p-2 hover:bg-gray-100">{children}</button>
+	</li>
+);
+
+const AddComponentButton = () => {
+	const [menuOpen, setMenuOpen] = useState(false);
+	return (
+		<>
+			<button
+				className={clsx(
+					"flex border py-1 px-3 rounded-lg hover:bg-gray-50 relative items-center",
+					menuOpen ? "bg-gray-50" : "bg-white"
+				)}
+				onClick={() => setMenuOpen(!menuOpen)}
+			>
+				<PlusCircleIcon className="w-7 h-7 bottom-0 rounded-full mr-2" /> Add
+				component
+				{menuOpen ? (
+					<ul className="z-10 bg-white divide-y divide-gray-100 rounded-lg w-44 absolute top-12 shadow-lg py-2 border">
+						<AddComponentChoice type={FormComponentType.Heading}>
+							Heading
+						</AddComponentChoice>
+						<AddComponentChoice type={FormComponentType.Text}>
+							Text
+						</AddComponentChoice>
+					</ul>
+				) : null}
+			</button>
+		</>
+	);
+};
 
 export const ScreenEditor: React.FC<{
 	components: FormComponent[];
@@ -22,8 +60,8 @@ export const ScreenEditor: React.FC<{
 				className="fixed z-10 inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
 				onClick={() => save()}
 			/>
-			<div className="relative z-20 flex flex-col justify-between items-center bg-white rounded-lg p-5 shadow-lg">
-				<div className="flex w-full justify-between mb-3 items-center">
+			<div className="relative z-20 flex flex-col justify-between items-center bg-white rounded-lg p-5 shadow-lg gap-3">
+				<div className="flex w-full justify-between items-center">
 					{isEditing ? (
 						<input
 							type="text"
@@ -52,7 +90,7 @@ export const ScreenEditor: React.FC<{
 						/>
 					</div>
 				</div>
-				<div className="flex flex-col gap-5 p-3 border-2 border-gray-300 border-dashed">
+				<div className="flex flex-col gap-5 p-3 border-2 border-gray-300 border-dashed w-full">
 					{components.map((component, index) => {
 						switch (component.type) {
 							case FormComponentType.Continue:
@@ -72,7 +110,8 @@ export const ScreenEditor: React.FC<{
 						}
 					})}
 				</div>
-				<div className="flex justify-between mt-3">
+				{isEditing ? <AddComponentButton /> : null}
+				<div className="flex justify-between">
 					<Button variant="plain" onClick={save}>
 						Cancel
 					</Button>
