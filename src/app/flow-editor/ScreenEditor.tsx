@@ -7,6 +7,7 @@ import {
 import clsx from "clsx";
 import React, { useState } from "react";
 import Button from "./Button";
+import DragHandle from "./DragHandle";
 import { FormComponent, FormComponentType } from "./types";
 
 const AddComponentChoice: React.FC<{
@@ -115,7 +116,12 @@ export const ScreenEditor: React.FC<{
 									? "border-2 border-gray-100 cursor-text hover:bg-gray-100"
 									: ""
 							)}
+							draggable={isEditing}
+							onDragEnd={(e) => {
+								console.log("TODO - drag & drop", e);
+							}}
 						>
+							{isEditing ? <DragHandle /> : null}
 							{component.type === FormComponentType.Heading ? (
 								<h1 className="font-bold text-xl w-full">
 									{isEditing ? (
