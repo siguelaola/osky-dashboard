@@ -30,7 +30,7 @@ const FlowEditor = () => {
 	const [edges, setEdges, onEdgesChange] = useEdgesState(defaultEdges);
 
 	return (
-		<div style={{ height: "600px" }}>
+		<div style={{ height: "600px" }} className="pl-64">
 			<ReactFlow
 				nodes={nodes}
 				edges={edges}
@@ -42,7 +42,7 @@ const FlowEditor = () => {
 				<Background />
 				<div
 					id="modal-portal-root"
-					className="fixed w-full h-full z-10 empty:hidden flex justify-center items-center"
+					className="fixed w-full h-full z-10 empty:hidden flex justify-center items-center -ml-64"
 				/>
 			</ReactFlow>
 		</div>
