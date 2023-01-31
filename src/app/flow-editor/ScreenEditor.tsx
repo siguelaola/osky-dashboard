@@ -11,14 +11,22 @@ import { FormComponent, FormComponentType } from "./types";
 
 const AddComponentChoice: React.FC<{
 	type: FormComponentType;
+	addComponent: (value: FormComponent) => void;
 	children: string;
-}> = ({ children }) => (
+}> = ({ type, addComponent, children }) => (
 	<li className="flex w-full">
-		<button className="flex w-full p-2 hover:bg-gray-100">{children}</button>
+		<button
+			className="flex w-full p-2 hover:bg-gray-100"
+			onClick={() => addComponent({ label: "(click to edit)", type })}
+		>
+			{children}
+		</button>
 	</li>
 );
 
-const AddComponentButton = () => {
+const AddComponentButton: React.FC<{
+	addComponent: (value: FormComponent) => void;
+}> = ({ addComponent }) => {
 	const [menuOpen, setMenuOpen] = useState(false);
 	return (
 		<>
@@ -33,10 +41,16 @@ const AddComponentButton = () => {
 				component
 				{menuOpen ? (
 					<ul className="z-10 bg-white divide-y divide-gray-100 rounded-lg w-44 absolute top-12 shadow-lg py-2 border">
-						<AddComponentChoice type={FormComponentType.Heading}>
+						<AddComponentChoice
+							type={FormComponentType.Heading}
+							addComponent={addComponent}
+						>
 							Heading
 						</AddComponentChoice>
-						<AddComponentChoice type={FormComponentType.Text}>
+						<AddComponentChoice
+							type={FormComponentType.Text}
+							addComponent={addComponent}
+						>
 							Text
 						</AddComponentChoice>
 					</ul>
@@ -48,10 +62,11 @@ const AddComponentButton = () => {
 
 export const ScreenEditor: React.FC<{
 	components: FormComponent[];
+	setComponents: (value: FormComponent[]) => void;
 	name: string;
 	setName: (value: string) => void;
 	save: () => void;
-}> = ({ components, name, setName, save }) => {
+}> = ({ components, setComponents, name, setName, save }) => {
 	const [isEditing, setEditing] = useState(false);
 
 	return (
@@ -110,7 +125,13 @@ export const ScreenEditor: React.FC<{
 						}
 					})}
 				</div>
-				{isEditing ? <AddComponentButton /> : null}
+				{isEditing ? (
+					<AddComponentButton
+						addComponent={(component) =>
+							setComponents([...components, component])
+						}
+					/>
+				) : null}
 				<div className="flex justify-between">
 					<Button variant="plain" onClick={save}>
 						Cancel
