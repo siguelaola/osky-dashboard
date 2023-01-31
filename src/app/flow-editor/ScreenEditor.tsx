@@ -105,25 +105,46 @@ export const ScreenEditor: React.FC<{
 						/>
 					</div>
 				</div>
-				<div className="flex flex-col gap-5 p-3 border-2 border-gray-300 border-dashed w-full">
-					{components.map((component, index) => {
-						switch (component.type) {
-							case FormComponentType.Continue:
-								return (
-									<Button key={index} variant="primary">
-										{component.label}
-									</Button>
-								);
-							case FormComponentType.Text:
-								return <p key={index}>{component.label}</p>;
-							case FormComponentType.Heading:
-								return (
-									<h1 key={index} className="font-bold text-xl">
-										{component.label}
-									</h1>
-								);
-						}
-					})}
+				<div className="flex flex-col p-3 border-2 border-gray-300 border-dashed w-full">
+					{components.map((component, index) => (
+						<div
+							key={index}
+							className={clsx(
+								"flex w-full p-2 my-1",
+								isEditing
+									? "border-2 border-gray-100 cursor-text hover:bg-gray-100"
+									: ""
+							)}
+						>
+							{component.type === FormComponentType.Heading ? (
+								<h1 className="font-bold text-xl w-full">
+									{isEditing ? (
+										<input
+											type="text"
+											value={component.label}
+											className="w-full bg-none border-none"
+											placeholder="Click to edit"
+											onChange={(e) =>
+												setComponents(
+													components.map((c, i) =>
+														i === index
+															? { ...c, label: e.currentTarget.value }
+															: c
+													)
+												)
+											}
+										/>
+									) : (
+										component.label
+									)}
+								</h1>
+							) : component.type === FormComponentType.Text ? (
+								<p>{component.label}</p>
+							) : component.type === FormComponentType.Continue ? (
+								<Button variant="primary">{component.label}</Button>
+							) : null}
+						</div>
+					))}
 				</div>
 				{isEditing ? (
 					<AddComponentButton
