@@ -19,12 +19,14 @@ const CustomNode = ({ id, data, isConnectable, xPos, yPos }: NodeProps) => {
 				type="target"
 				position={Position.Top}
 				isConnectable={isConnectable}
+				style={{ visibility: "hidden" }}
 			/>
 			{data?.label}
 			<Handle
 				type="source"
 				position={Position.Bottom}
 				isConnectable={isConnectable}
+				style={{ visibility: "hidden" }}
 			/>
 			<div className="mx-auto h-0 hidden group-hover:block">
 				<button
