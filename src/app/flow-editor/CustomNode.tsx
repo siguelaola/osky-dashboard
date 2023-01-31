@@ -23,7 +23,8 @@ const AddNodeButton: React.FC<{ id: string; xPos: number; yPos: number }> = ({
 		<button
 			type="button"
 			className="relative w-7 h-7"
-			onClick={() => {
+			onClick={(e) => {
+				e.stopPropagation();
 				const edgeChanges: EdgeAddChange[] = [];
 
 				setNodes((nodes) => {
