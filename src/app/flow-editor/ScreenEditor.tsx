@@ -11,8 +11,9 @@ import { FormComponent, FormComponentType } from "./types";
 export const ScreenEditor: React.FC<{
 	components: FormComponent[];
 	name: string;
+	setName: (value: string) => void;
 	save: () => void;
-}> = ({ components, name, save }) => {
+}> = ({ components, name, setName, save }) => {
 	const [isEditing, setEditing] = useState(false);
 
 	return (
@@ -23,7 +24,16 @@ export const ScreenEditor: React.FC<{
 			/>
 			<div className="relative z-20 flex flex-col justify-between items-center bg-white rounded-lg p-5 shadow-lg">
 				<div className="flex w-full justify-between mb-3 items-center">
-					<h1 className="font-semibold text-xl text-gray-800">{name}</h1>
+					{isEditing ? (
+						<input
+							type="text"
+							value={name}
+							placeholder="Enter a name for this screen"
+							onChange={(e) => setName(e.currentTarget.value)}
+						/>
+					) : (
+						<h1 className="font-semibold text-xl text-gray-800">{name}</h1>
+					)}
 					<div className="flex mb-3 gap-2">
 						<DevicePhoneMobileIcon
 							className="text-gray-500 w-8 h-8 p-1 hover:text-gray-800 cursor-pointer"
