@@ -10,7 +10,7 @@ import {
 	Position,
 	useReactFlow,
 } from "reactflow";
-import Button from "./Button";
+import ScreenEditor from "./ScreenEditor";
 
 const AddNodeButton: React.FC<{ id: string; xPos: number; yPos: number }> = ({
 	id,
@@ -59,28 +59,6 @@ const AddNodeButton: React.FC<{ id: string; xPos: number; yPos: number }> = ({
 		>
 			<PlusCircleIcon className="w-7 h-7 bottom-0 bg-white hover:bg-gray-100 rounded-full absolute" />
 		</button>
-	);
-};
-
-const ScreenEditor: React.FC<{ save: () => void }> = ({ save }) => {
-	return (
-		<>
-			<div
-				className="fixed z-10 inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
-				onClick={() => save()}
-			/>
-			<div className="relative z-20 flex flex-col justify-between items-center bg-white rounded-lg p-5 shadow-lg">
-				Edit Screen
-				<div className="flex justify-between mt-3">
-					<Button variant="plain" onClick={save}>
-						Cancel
-					</Button>
-					<Button variant="primary" onClick={save}>
-						Save
-					</Button>
-				</div>
-			</div>
-		</>
 	);
 };
 
