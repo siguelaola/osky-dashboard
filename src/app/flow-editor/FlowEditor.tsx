@@ -40,6 +40,10 @@ const FlowEditor = () => {
 				nodeTypes={nodeTypes}
 			>
 				<Background />
+				<div
+					id="modal-portal-root"
+					className="fixed w-full h-full z-10 empty:hidden flex justify-center items-center"
+				/>
 			</ReactFlow>
 		</div>
 	);

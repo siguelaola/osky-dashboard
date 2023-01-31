@@ -1,5 +1,6 @@
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
+import { createPortal } from "react-dom";
 import {
 	applyEdgeChanges,
 	applyNodeChanges,
@@ -9,6 +10,7 @@ import {
 	Position,
 	useReactFlow,
 } from "reactflow";
+import Button from "./Button";
 
 const AddNodeButton: React.FC<{ id: string; xPos: number; yPos: number }> = ({
 	id,
@@ -59,6 +61,28 @@ const AddNodeButton: React.FC<{ id: string; xPos: number; yPos: number }> = ({
 	);
 };
 
+const ScreenEditor: React.FC<{ save: () => void }> = ({ save }) => {
+	return (
+		<>
+			<div
+				className="fixed z-10 inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+				onClick={() => save()}
+			/>
+			<div className="relative z-20 flex flex-col justify-between items-center bg-white rounded-lg p-5 shadow-lg">
+				Edit Screen
+				<div className="flex justify-between mt-3">
+					<Button variant="plain" onClick={save}>
+						Cancel
+					</Button>
+					<Button variant="primary" onClick={save}>
+						Save
+					</Button>
+				</div>
+			</div>
+		</>
+	);
+};
+
 const CustomNode: React.FC<NodeProps> = ({
 	id,
 	data,
@@ -66,25 +90,41 @@ const CustomNode: React.FC<NodeProps> = ({
 	xPos,
 	yPos,
 }) => {
+	const [editorVisible, setEditorVisible] = useState(false);
+
+	const modalRoot = document.getElementById("modal-portal-root");
+	if (!modalRoot) throw new Error("Missing modal portal root");
+
 	return (
-		<div className="flex flex-col bg-white border border-black p-5 rounded-md shadow-md font-semibold group w-[150px] text-center">
-			<Handle
-				type="target"
-				position={Position.Top}
-				isConnectable={isConnectable}
-				style={{ visibility: "hidden" }}
-			/>
-			{data?.label}
-			<Handle
-				type="source"
-				position={Position.Bottom}
-				isConnectable={isConnectable}
-				style={{ visibility: "hidden" }}
-			/>
-			<div className="mx-auto h-0 hidden group-hover:block">
-				<AddNodeButton id={id} xPos={xPos} yPos={yPos} />
+		<>
+			{editorVisible
+				? createPortal(
+						<ScreenEditor save={() => setEditorVisible(false)} />,
+						modalRoot
+				  )
+				: null}
+			<div
+				className="flex flex-col bg-white border border-black p-5 rounded-md shadow-md font-semibold group text-center"
+				onClick={() => setEditorVisible(true)}
+			>
+				<Handle
+					type="target"
+					position={Position.Top}
+					isConnectable={isConnectable}
+					style={{ visibility: "hidden" }}
+				/>
+				{data?.label}
+				<Handle
+					type="source"
+					position={Position.Bottom}
+					isConnectable={isConnectable}
+					style={{ visibility: "hidden" }}
+				/>
+				<div className="mx-auto h-0 hidden group-hover:block">
+					<AddNodeButton id={id} xPos={xPos} yPos={yPos} />
+				</div>
 			</div>
-		</div>
+		</>
 	);
 };
 
