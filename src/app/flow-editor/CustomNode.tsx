@@ -11,6 +11,7 @@ import {
 	useReactFlow,
 } from "reactflow";
 import ScreenEditor from "./ScreenEditor";
+import { FormComponentType } from "./types";
 
 const AddNodeButton: React.FC<{ id: string; xPos: number; yPos: number }> = ({
 	id,
@@ -45,7 +46,12 @@ const AddNodeButton: React.FC<{ id: string; xPos: number; yPos: number }> = ({
 								item: {
 									id: newId,
 									position: { x: xPos, y: yPos + 100 },
-									data: { label: "New Screen" },
+									data: {
+										label: "New Screen",
+										components: [
+											{ type: FormComponentType.Continue, label: "Continue" },
+										],
+									},
 									type: "custom",
 								},
 							},
@@ -78,7 +84,10 @@ const CustomNode: React.FC<NodeProps> = ({
 		<>
 			{editorVisible
 				? createPortal(
-						<ScreenEditor save={() => setEditorVisible(false)} />,
+						<ScreenEditor
+							save={() => setEditorVisible(false)}
+							components={data?.components}
+						/>,
 						modalRoot
 				  )
 				: null}

@@ -10,12 +10,29 @@ import {
 } from "reactflow";
 import "reactflow/dist/style.css";
 import CustomNode from "./CustomNode";
+import { FormComponentType } from "./types";
 
 const defaultNodes: Node[] = [
 	{
 		id: "node-0",
 		type: "custom",
-		data: { label: "Initial Screen" },
+		data: {
+			label: "Initial Screen",
+			components: [
+				{
+					type: FormComponentType.Heading,
+					label: "Welcome",
+				},
+				{
+					type: FormComponentType.Text,
+					label: "This is the first screen of the flow. Add some components...",
+				},
+				{
+					type: FormComponentType.Continue,
+					label: "Continue",
+				},
+			],
+		},
 		position: { x: 250, y: 250 },
 	},
 ];
