@@ -122,7 +122,7 @@ export const ScreenEditor: React.FC<{
 										<input
 											type="text"
 											value={component.label}
-											className="w-full bg-none border-none"
+											className="w-full bg-none border-none text-xl"
 											placeholder="Click to edit"
 											onChange={(e) =>
 												setComponents(
@@ -139,9 +139,48 @@ export const ScreenEditor: React.FC<{
 									)}
 								</h1>
 							) : component.type === FormComponentType.Text ? (
-								<p>{component.label}</p>
+								<p className="w-full">
+									{isEditing ? (
+										<textarea
+											value={component.label}
+											cols={60}
+											className="w-full bg-transparent border-none"
+											onChange={(e) =>
+												setComponents(
+													components.map((c, i) =>
+														i === index
+															? { ...c, label: e.currentTarget.value }
+															: c
+													)
+												)
+											}
+										/>
+									) : (
+										component.label
+									)}
+								</p>
 							) : component.type === FormComponentType.Continue ? (
-								<Button variant="primary">{component.label}</Button>
+								<Button variant="primary">
+									{isEditing ? (
+										<input
+											type="text"
+											value={component.label}
+											className="w-full bg-transparent border-none text-xl"
+											placeholder="Click to edit"
+											onChange={(e) =>
+												setComponents(
+													components.map((c, i) =>
+														i === index
+															? { ...c, label: e.currentTarget.value }
+															: c
+													)
+												)
+											}
+										/>
+									) : (
+										component.label
+									)}
+								</Button>
 							) : null}
 						</div>
 					))}
