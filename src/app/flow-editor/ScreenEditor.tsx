@@ -37,9 +37,19 @@ const AddComponentButton: React.FC<{
 					menuOpen ? "bg-gray-50" : "bg-white"
 				)}
 				onClick={() => setMenuOpen(!menuOpen)}
+				onBlur={(e) => {
+					if (e.relatedTarget === null) {
+						setMenuOpen(false);
+					}
+				}}
+				onKeyDown={(e) => {
+					if (e.key === "Escape") {
+						setMenuOpen(false);
+					}
+				}}
 			>
-				<PlusCircleIcon className="w-7 h-7 bottom-0 rounded-full mr-2" /> Add
-				component
+				<PlusCircleIcon className="w-7 h-7 bottom-0 rounded-full mr-2" />
+				Add component
 				{menuOpen ? (
 					<ul className="z-10 bg-white divide-y divide-gray-100 rounded-lg w-44 absolute top-12 shadow-lg py-2 border">
 						<AddComponentChoice
