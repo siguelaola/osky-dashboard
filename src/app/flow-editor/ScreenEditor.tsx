@@ -7,6 +7,7 @@ import {
 import clsx from "clsx";
 import React, { useState } from "react";
 import Button from "./Button";
+import DeleteComponentButton from "./DeleteComponentButton";
 import DragHandle from "./DragHandle";
 import { FormComponent, FormComponentType } from "./types";
 
@@ -197,6 +198,13 @@ export const ScreenEditor: React.FC<{
 										component.label
 									)}
 								</Button>
+							) : null}
+							{isEditing ? (
+								<DeleteComponentButton
+									onClick={() =>
+										setComponents(components.filter((c, i) => i !== index))
+									}
+								/>
 							) : null}
 						</div>
 					))}
