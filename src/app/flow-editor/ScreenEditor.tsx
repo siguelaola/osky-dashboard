@@ -9,11 +9,11 @@ import React, { useState } from "react";
 import Button from "./Button";
 import DeleteComponentButton from "./DeleteComponentButton";
 import DragHandle from "./DragHandle";
-import { FormComponent, FormComponentType } from "./types";
+import { FormComponent as FormComponentRow, FormComponentType } from "./types";
 
 const AddComponentChoice: React.FC<{
 	type: FormComponentType;
-	addComponent: (value: FormComponent) => void;
+	addComponent: (value: FormComponentRow) => void;
 	children: string;
 }> = ({ type, addComponent, children }) => (
 	<li className="flex w-full">
@@ -27,7 +27,7 @@ const AddComponentChoice: React.FC<{
 );
 
 const AddComponentButton: React.FC<{
-	addComponent: (value: FormComponent) => void;
+	addComponent: (value: FormComponentRow) => void;
 }> = ({ addComponent }) => {
 	const [menuOpen, setMenuOpen] = useState(false);
 	return (
@@ -72,9 +72,74 @@ const AddComponentButton: React.FC<{
 	);
 };
 
+const FormComponentRow: React.FC<{
+	component: FormComponentRow;
+	index: number;
+	isEditing: boolean;
+	onDelete: () => void;
+	onEdit: (value: string) => void;
+}> = ({ component, index, isEditing, onDelete, onEdit }) => (
+	<div
+		key={index}
+		className={clsx(
+			"flex w-full p-2 my-1",
+			isEditing ? "border-2 border-gray-100 cursor-text hover:bg-gray-100" : ""
+		)}
+		draggable={isEditing}
+		onDragEnd={(e) => {
+			console.log("TODO - drag & drop", e);
+		}}
+	>
+		{isEditing ? <DragHandle /> : null}
+		{component.type === FormComponentType.Heading ? (
+			<h1 className="font-bold text-xl w-full">
+				{isEditing ? (
+					<input
+						type="text"
+						value={component.label}
+						className="w-full bg-none border-none text-xl"
+						placeholder="Click to edit"
+						onChange={(e) => onEdit(e.currentTarget.value)}
+					/>
+				) : (
+					component.label
+				)}
+			</h1>
+		) : component.type === FormComponentType.Text ? (
+			<p className="w-full">
+				{isEditing ? (
+					<textarea
+						value={component.label}
+						cols={60}
+						className="w-full bg-transparent border-none"
+						onChange={(e) => onEdit(e.currentTarget.value)}
+					/>
+				) : (
+					component.label
+				)}
+			</p>
+		) : component.type === FormComponentType.Continue ? (
+			<Button variant="primary">
+				{isEditing ? (
+					<input
+						type="text"
+						value={component.label}
+						className="w-full bg-transparent border-none text-xl"
+						placeholder="Click to edit"
+						onChange={(e) => onEdit(e.currentTarget.value)}
+					/>
+				) : (
+					component.label
+				)}
+			</Button>
+		) : null}
+		{isEditing ? <DeleteComponentButton onClick={onDelete} /> : null}
+	</div>
+);
+
 export const ScreenEditor: React.FC<{
-	components: FormComponent[];
-	setComponents: (value: FormComponent[]) => void;
+	components: FormComponentRow[];
+	setComponents: (value: FormComponentRow[]) => void;
 	name: string;
 	setName: (value: string) => void;
 	save: () => void;
@@ -119,94 +184,22 @@ export const ScreenEditor: React.FC<{
 				</div>
 				<div className="flex flex-col p-3 border-2 border-gray-300 border-dashed w-full">
 					{components.map((component, index) => (
-						<div
+						<FormComponentRow
 							key={index}
-							className={clsx(
-								"flex w-full p-2 my-1",
-								isEditing
-									? "border-2 border-gray-100 cursor-text hover:bg-gray-100"
-									: ""
-							)}
-							draggable={isEditing}
-							onDragEnd={(e) => {
-								console.log("TODO - drag & drop", e);
-							}}
-						>
-							{isEditing ? <DragHandle /> : null}
-							{component.type === FormComponentType.Heading ? (
-								<h1 className="font-bold text-xl w-full">
-									{isEditing ? (
-										<input
-											type="text"
-											value={component.label}
-											className="w-full bg-none border-none text-xl"
-											placeholder="Click to edit"
-											onChange={(e) =>
-												setComponents(
-													components.map((c, i) =>
-														i === index
-															? { ...c, label: e.currentTarget.value }
-															: c
-													)
-												)
-											}
-										/>
-									) : (
-										component.label
-									)}
-								</h1>
-							) : component.type === FormComponentType.Text ? (
-								<p className="w-full">
-									{isEditing ? (
-										<textarea
-											value={component.label}
-											cols={60}
-											className="w-full bg-transparent border-none"
-											onChange={(e) =>
-												setComponents(
-													components.map((c, i) =>
-														i === index
-															? { ...c, label: e.currentTarget.value }
-															: c
-													)
-												)
-											}
-										/>
-									) : (
-										component.label
-									)}
-								</p>
-							) : component.type === FormComponentType.Continue ? (
-								<Button variant="primary">
-									{isEditing ? (
-										<input
-											type="text"
-											value={component.label}
-											className="w-full bg-transparent border-none text-xl"
-											placeholder="Click to edit"
-											onChange={(e) =>
-												setComponents(
-													components.map((c, i) =>
-														i === index
-															? { ...c, label: e.currentTarget.value }
-															: c
-													)
-												)
-											}
-										/>
-									) : (
-										component.label
-									)}
-								</Button>
-							) : null}
-							{isEditing ? (
-								<DeleteComponentButton
-									onClick={() =>
-										setComponents(components.filter((c, i) => i !== index))
-									}
-								/>
-							) : null}
-						</div>
+							index={index}
+							component={component}
+							isEditing={isEditing}
+							onEdit={(value) =>
+								setComponents(
+									components.map((c, i) =>
+										i === index ? { ...c, label: value } : c
+									)
+								)
+							}
+							onDelete={() =>
+								setComponents(components.filter((c, i) => i !== index))
+							}
+						/>
 					))}
 				</div>
 				{isEditing ? (
