@@ -134,7 +134,9 @@ const FormComponentRow: React.FC<{
 				)}
 			</Button>
 		) : null}
-		{isEditing ? <DeleteComponentButton onClick={onDelete} /> : null}
+		{isEditing && component.type !== FormComponentType.Continue ? (
+			<DeleteComponentButton onClick={onDelete} />
+		) : null}
 	</div>
 );
 
