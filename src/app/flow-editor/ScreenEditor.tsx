@@ -124,9 +124,10 @@ const FormComponentRow: React.FC<{
 					<input
 						type="text"
 						value={component.label}
-						className="w-full bg-transparent border-none text-xl"
+						className="bg-transparent border-none p-0"
 						placeholder="Click to edit"
 						onChange={(e) => onEdit(e.currentTarget.value)}
+						size={component.label.length}
 					/>
 				) : (
 					component.label
