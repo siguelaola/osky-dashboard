@@ -12,14 +12,15 @@ import DragHandle from "./DragHandle";
 import { FormComponent as FormComponentRow, FormComponentType } from "./types";
 
 const AddComponentChoice: React.FC<{
+	label: string;
 	type: FormComponentType;
 	addComponent: (value: FormComponentRow) => void;
 	children: string;
-}> = ({ type, addComponent, children }) => (
+}> = ({ label, type, addComponent, children }) => (
 	<li className="flex w-full">
 		<button
 			className="flex w-full p-2 hover:bg-gray-100"
-			onClick={() => addComponent({ label: "(click to edit)", type })}
+			onClick={() => addComponent({ label, type })}
 		>
 			{children}
 		</button>
@@ -56,14 +57,23 @@ const AddComponentButton: React.FC<{
 						<AddComponentChoice
 							type={FormComponentType.Heading}
 							addComponent={addComponent}
+							label="New heading"
 						>
 							Heading
 						</AddComponentChoice>
 						<AddComponentChoice
 							type={FormComponentType.Text}
 							addComponent={addComponent}
+							label="Click to edit text"
 						>
 							Text
+						</AddComponentChoice>
+						<AddComponentChoice
+							type={FormComponentType.TextInput}
+							addComponent={addComponent}
+							label="(default value)"
+						>
+							Text input
 						</AddComponentChoice>
 					</ul>
 				) : null}
@@ -118,6 +128,17 @@ const FormComponentRow: React.FC<{
 					component.label
 				)}
 			</p>
+		) : component.type === FormComponentType.TextInput ? (
+			<div className="flex flex-col w-full">
+				<input
+					type="text"
+					className="w-full"
+					value={component.label}
+					onChange={(e) => {
+						if (isEditing) onEdit(e.currentTarget.value);
+					}}
+				/>
+			</div>
 		) : component.type === FormComponentType.Continue ? (
 			<Button variant="primary">
 				{isEditing ? (

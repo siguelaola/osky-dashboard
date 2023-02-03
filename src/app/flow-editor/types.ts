@@ -1,6 +1,7 @@
 export enum FormComponentType {
 	Heading,
 	Text,
+	TextInput,
 	Continue,
 }
 
