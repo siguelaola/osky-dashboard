@@ -1,5 +1,11 @@
 import { EnvelopeIcon } from "@heroicons/react/24/outline";
-import { applyNodeChanges, EdgeAddChange, useReactFlow } from "reactflow";
+import React from "react";
+import {
+	applyEdgeChanges,
+	applyNodeChanges,
+	EdgeAddChange,
+	useReactFlow,
+} from "reactflow";
 
 const IntegrationListItem: React.FC<{
 	name: string;
@@ -13,15 +19,21 @@ const IntegrationListItem: React.FC<{
 			className="border p-3 mb-2 shadow-sm cursor-grab flex items-center justify-between"
 			draggable
 			onDragEnd={(e) => {
+				const nodeTarget = document
+					.elementFromPoint(e.clientX, e.clientY)
+					?.closest(".react-flow__node");
+				if (!nodeTarget) return;
+				const dropTargetCoords = nodeTarget.getBoundingClientRect();
+				const dropTargetId = nodeTarget.getAttribute("data-id") || "";
+
 				const edgeChanges: EdgeAddChange[] = [];
-				const id = "";
 				setNodes((nodes) => {
 					const newId = `node-${nodes.length}`;
 					edgeChanges.push({
 						type: "add",
 						item: {
-							id: `edge-${id}-${newId}`,
-							source: id,
+							id: `edge-${dropTargetId}-${newId}`,
+							source: dropTargetId,
 							target: newId,
 						},
 					});
@@ -32,9 +44,12 @@ const IntegrationListItem: React.FC<{
 								type: "add",
 								item: {
 									id: newId,
-									position: project({ x: e.clientX - 350, y: e.clientY }),
+									position: project({
+										x: dropTargetCoords.x - 200,
+										y: dropTargetCoords.y + 100,
+									}),
 									data: {
-										label: "Integration",
+										label: name,
 									},
 									type: "integration",
 								},
@@ -43,7 +58,7 @@ const IntegrationListItem: React.FC<{
 						nodes
 					);
 				});
-				// setEdges((edges) => applyEdgeChanges(edgeChanges, edges));
+				setEdges((edges) => applyEdgeChanges(edgeChanges, edges));
 			}}
 		>
 			<div className="flex items-center">
