@@ -10,6 +10,7 @@ import {
 } from "reactflow";
 import "reactflow/dist/style.css";
 import CustomNode from "./CustomNode";
+import IntegrationList from "./IntegrationsList";
 import { FormComponentType } from "./types";
 
 const defaultNodes: Node[] = [
@@ -55,12 +56,14 @@ const FlowEditor = () => {
 				onEdgesChange={onEdgesChange}
 				onConnect={(params) => setEdges((els) => addEdge(params, els))}
 				nodeTypes={nodeTypes}
+				className="flex flex-col"
 			>
 				<Background />
 				<div
 					id="modal-portal-root"
 					className="fixed w-full h-full z-10 empty:hidden flex justify-center items-center -ml-64"
 				/>
+				<IntegrationList />
 			</ReactFlow>
 		</div>
 	);
