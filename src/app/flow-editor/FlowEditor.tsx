@@ -10,6 +10,7 @@ import {
 } from "reactflow";
 import "reactflow/dist/style.css";
 import CustomNode from "./CustomNode";
+import IntegrationNode from "./IntegrationNode";
 import IntegrationList from "./IntegrationsList";
 import { FormComponentType } from "./types";
 
@@ -41,6 +42,7 @@ const defaultEdges: Edge[] = [];
 
 const nodeTypes = {
 	custom: CustomNode,
+	integration: IntegrationNode,
 };
 
 const FlowEditor = () => {
