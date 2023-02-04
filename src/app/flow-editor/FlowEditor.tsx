@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import {
 	addEdge,
 	Background,
@@ -10,6 +11,7 @@ import {
 } from "reactflow";
 import "reactflow/dist/style.css";
 import CustomNode from "./CustomNode";
+import EdgeEditor from "./EdgeEditor";
 import IntegrationNode from "./IntegrationNode";
 import IntegrationList from "./IntegrationsList";
 import { FormComponentType } from "./types";
@@ -48,6 +50,7 @@ const nodeTypes = {
 const FlowEditor = () => {
 	const [nodes, setNodes, onNodesChange] = useNodesState(defaultNodes);
 	const [edges, setEdges, onEdgesChange] = useEdgesState(defaultEdges);
+	const [editingEdge, setEditingEdge] = useState<Edge | null>(null);
 
 	return (
 		<div style={{ height: "600px" }} className="pl-64">
@@ -57,6 +60,7 @@ const FlowEditor = () => {
 				onNodesChange={onNodesChange}
 				onEdgesChange={onEdgesChange}
 				onConnect={(params) => setEdges((els) => addEdge(params, els))}
+				onEdgeClick={(e, edge) => setEditingEdge(edge)}
 				nodeTypes={nodeTypes}
 				className="flex flex-col"
 			>
@@ -65,6 +69,12 @@ const FlowEditor = () => {
 					id="modal-portal-root"
 					className="fixed w-full h-full z-10 empty:hidden flex justify-center items-center -ml-64"
 				/>
+				{editingEdge ? (
+					<EdgeEditor
+						edge={editingEdge}
+						onClose={() => setEditingEdge(false)}
+					/>
+				) : null}
 				<IntegrationList />
 			</ReactFlow>
 		</div>
