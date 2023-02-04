@@ -1,4 +1,5 @@
 import { EnvelopeIcon } from "@heroicons/react/24/outline";
+import Image from "next/image";
 import React from "react";
 import {
 	applyEdgeChanges,
@@ -6,6 +7,8 @@ import {
 	EdgeAddChange,
 	useReactFlow,
 } from "reactflow";
+import AlpacaLogo from "../../public/logos/third-party/alpaca.svg";
+import SalesForceLogo from "../../public/logos/third-party/salesforce.svg";
 
 const IntegrationListItem: React.FC<{
 	name: string;
@@ -79,6 +82,30 @@ export const IntegrationList = () => (
 				name="Email"
 				description="Send an email"
 				icon={<EnvelopeIcon className="h-10 w-10 text-primary-600" />}
+			/>
+			<IntegrationListItem
+				name="Salesforce"
+				description="Send data to Salesforce"
+				icon={
+					<Image
+						src={SalesForceLogo}
+						className="h-10 w-10"
+						alt="Salesforce logo"
+						draggable={false}
+					/>
+				}
+			/>
+			<IntegrationListItem
+				name="Alpaca"
+				description="Verify customer on Alpaca"
+				icon={
+					<Image
+						src={AlpacaLogo}
+						className="h-10 w-10"
+						alt="Alpaca logo"
+						draggable={false}
+					/>
+				}
 			/>
 		</ul>
 	</div>
