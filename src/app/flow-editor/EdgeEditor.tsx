@@ -10,7 +10,10 @@ interface Condition {
 	value: string;
 }
 
-const ConditionEntry: React.FC<{ condition: Condition }> = ({ condition }) => (
+const ConditionEntry: React.FC<{
+	condition: Condition;
+	setCondition: (condition: Condition | null) => void;
+}> = ({ condition, setCondition }) => (
 	<li className="flex justify-between items-center border-b border-gray-300 py-2">
 		<div className="flex items-center">
 			<input className="w-24 mr-2" type="text" placeholder="Input" />
@@ -30,8 +33,8 @@ const ConditionEntry: React.FC<{ condition: Condition }> = ({ condition }) => (
 			</select>
 			<input className="w-24" type="text" placeholder="Value" />
 		</div>
-		<button className="p-1">
-			<TrashIcon className="w-5 h-5 ml-3 text-gray-400" />
+		<button className="p-1" onClick={() => setCondition(null)}>
+			<TrashIcon className="w-5 h-5 ml-3 text-danger-600" />
 		</button>
 	</li>
 );
@@ -53,7 +56,23 @@ const EdgeEditor: React.FC<{ edge: Edge; onClose: () => void }> = ({
 
 				<ul>
 					{conditions.map((condition, index) => (
-						<ConditionEntry key={index} condition={condition} />
+						<ConditionEntry
+							key={index}
+							condition={condition}
+							setCondition={(newCondition) => {
+								setConditions(
+									conditions
+										.map((c, i) => (i === index ? newCondition : c))
+										.filter((c): c is Condition => c !== null)
+								);
+								const newConditions = [...conditions];
+								if (newCondition) {
+									newConditions[index] = newCondition;
+								} else {
+									delete newConditions[index];
+								}
+							}}
+						/>
 					))}
 				</ul>
 
