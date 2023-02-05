@@ -1,8 +1,8 @@
 export enum FormComponentType {
-	Heading,
-	Text,
-	TextInput,
-	Continue,
+	Heading = "heading",
+	Text = "text",
+	TextInput = "input-text",
+	Continue = "continue",
 }
 
 export interface FormComponent {
