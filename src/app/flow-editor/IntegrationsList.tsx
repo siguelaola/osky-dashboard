@@ -9,6 +9,7 @@ import {
 } from "reactflow";
 import AlpacaLogo from "../../public/logos/third-party/alpaca.svg";
 import SalesForceLogo from "../../public/logos/third-party/salesforce.svg";
+import Button from "./Button";
 
 const IntegrationListItem: React.FC<{
 	name: string;
@@ -76,7 +77,7 @@ const IntegrationListItem: React.FC<{
 };
 
 export const IntegrationList = () => (
-	<div className="bg-white self-end h-full z-10 shadow-md m-3 p-3 w-64">
+	<div className="bg-white self-end h-full z-10 shadow-md m-3 p-3 w-64 flex flex-col justify-between">
 		<ul>
 			<IntegrationListItem
 				name="Email"
@@ -108,7 +109,28 @@ export const IntegrationList = () => (
 				}
 			/>
 		</ul>
+		<ExportJSONButton />
 	</div>
 );
+
+const ExportJSONButton = () => {
+	const { getNodes, getEdges } = useReactFlow();
+	return (
+		<Button
+			variant="plain"
+			onClick={() => {
+				const state = JSON.stringify(
+					{ nodes: getNodes(), edges: getEdges() },
+					null,
+					2
+				);
+				console.log(state);
+				prompt("State has been logged to the console as well", state);
+			}}
+		>
+			Export JSON
+		</Button>
+	);
+};
 
 export default IntegrationList;
