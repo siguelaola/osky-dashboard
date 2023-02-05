@@ -52,7 +52,7 @@ const AddNodeButton: React.FC<{ id: string; xPos: number; yPos: number }> = ({
 											{ type: FormComponentType.Continue, label: "Continue" },
 										],
 									},
-									type: "custom",
+									type: "screen",
 								},
 							},
 						],

@@ -10,16 +10,16 @@ import {
 	useNodesState,
 } from "reactflow";
 import "reactflow/dist/style.css";
-import CustomNode from "./CustomNode";
 import EdgeEditor from "./EdgeEditor";
 import IntegrationNode from "./IntegrationNode";
 import IntegrationList from "./IntegrationsList";
+import ScreenNode from "./ScreenNode";
 import { FormComponentType } from "./types";
 
 const defaultNodes: Node[] = [
 	{
 		id: "node-0",
-		type: "custom",
+		type: "screen",
 		data: {
 			label: "Initial Screen",
 			components: [
@@ -43,7 +43,7 @@ const defaultNodes: Node[] = [
 const defaultEdges: Edge[] = [];
 
 const nodeTypes = {
-	custom: CustomNode,
+	screen: ScreenNode,
 	integration: IntegrationNode,
 };
 
