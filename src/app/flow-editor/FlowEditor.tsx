@@ -70,10 +70,7 @@ const FlowEditor = () => {
 					className="fixed w-full h-full z-10 empty:hidden flex justify-center items-center -ml-64"
 				/>
 				{editingEdge ? (
-					<EdgeEditor
-						edge={editingEdge}
-						onClose={() => setEditingEdge(false)}
-					/>
+					<EdgeEditor edge={editingEdge} onClose={() => setEditingEdge(null)} />
 				) : null}
 				<IntegrationList />
 			</ReactFlow>
