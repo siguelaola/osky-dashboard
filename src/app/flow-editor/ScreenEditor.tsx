@@ -75,6 +75,13 @@ const AddComponentButton: React.FC<{
 						>
 							Text input
 						</AddComponentChoice>
+						<AddComponentChoice
+							type={FormComponentType.Checkboxes}
+							addComponent={addComponent}
+							label="Click to edit label"
+						>
+							Choices (Checkboxes)
+						</AddComponentChoice>
 					</ul>
 				) : null}
 			</button>
@@ -115,7 +122,7 @@ const FormComponentRow: React.FC<{
 							value={component.label}
 							className="w-full bg-none border-none text-xl"
 							placeholder="Click to edit"
-							onChange={(e) => onEdit({ label: e.currentTarget.value)}
+							onChange={(e) => onEdit({ label: e.currentTarget.value })}
 						/>
 					) : (
 						component.label
@@ -128,7 +135,7 @@ const FormComponentRow: React.FC<{
 							value={component.label}
 							cols={60}
 							className="w-full bg-transparent border-none"
-							onChange={(e) => onEdit({ label: e.currentTarget.value)}
+							onChange={(e) => onEdit({ label: e.currentTarget.value })}
 						/>
 					) : (
 						component.label
@@ -141,9 +148,59 @@ const FormComponentRow: React.FC<{
 						className="w-full"
 						value={component.label}
 						onChange={(e) => {
-							if (isEditing) onEdit({ label: e.currentTarget.value});
+							if (isEditing) onEdit({ label: e.currentTarget.value });
 						}}
 					/>
+				</div>
+			) : component.type === FormComponentType.Checkboxes ? (
+				<div className="flex flex-col w-full">
+					{isEditing ? (
+						<input
+							type="text"
+							className="w-full bg-transparent border-none p-0"
+							value={component.label}
+							onChange={(e) => onEdit({ label: e.currentTarget.value })}
+						/>
+					) : (
+						component.label
+					)}
+					<ul className="my-2 flex flex-col">
+						{component.choices?.map((choice, i) => (
+							<li className="mb-1 flex items-center" key={i}>
+								<input type="checkbox" className="mr-2" />
+								{isEditing ? (
+									<input
+										type="text"
+										className="bg-transparent border-none p-0"
+										value={choice.value}
+										onChange={(e) => {
+											const newChoices = [...(component.choices || [])];
+											newChoices[i] = {
+												...choice,
+												value: e.currentTarget.value,
+											};
+											onEdit({ choices: newChoices });
+										}}
+										onKeyDown={(e) => {
+											console.log("keydown");
+
+											if (e.key === "Enter") {
+												console.log("enter");
+												const newChoices = [...(component.choices || [])];
+												newChoices.splice(i + 1, 0, {
+													label: "...",
+													value: "",
+												});
+												onEdit({ choices: newChoices });
+											}
+										}}
+									/>
+								) : (
+									choice.value
+								)}
+							</li>
+						))}
+					</ul>
 				</div>
 			) : component.type === FormComponentType.Continue ? (
 				<Button variant="primary">
@@ -153,7 +210,7 @@ const FormComponentRow: React.FC<{
 							value={component.label}
 							className="bg-transparent border-none p-0"
 							placeholder="Click to edit"
-							onChange={(e) => onEdit({ label: e.currentTarget.value})}
+							onChange={(e) => onEdit({ label: e.currentTarget.value })}
 							size={component.label.length}
 						/>
 					) : (
