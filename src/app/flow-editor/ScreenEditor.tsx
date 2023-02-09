@@ -87,7 +87,7 @@ const FormComponentRow: React.FC<{
 	index: number;
 	isEditing: boolean;
 	onDelete: () => void;
-	onEdit: (value: string) => void;
+	onEdit: (value: Record<string, any>) => void;
 }> = ({ component, index, isEditing, onDelete, onEdit }) => {
 	const [canDrag, setCanDrag] = useState(false);
 
@@ -115,7 +115,7 @@ const FormComponentRow: React.FC<{
 							value={component.label}
 							className="w-full bg-none border-none text-xl"
 							placeholder="Click to edit"
-							onChange={(e) => onEdit(e.currentTarget.value)}
+							onChange={(e) => onEdit({ label: e.currentTarget.value)}
 						/>
 					) : (
 						component.label
@@ -128,7 +128,7 @@ const FormComponentRow: React.FC<{
 							value={component.label}
 							cols={60}
 							className="w-full bg-transparent border-none"
-							onChange={(e) => onEdit(e.currentTarget.value)}
+							onChange={(e) => onEdit({ label: e.currentTarget.value)}
 						/>
 					) : (
 						component.label
@@ -141,7 +141,7 @@ const FormComponentRow: React.FC<{
 						className="w-full"
 						value={component.label}
 						onChange={(e) => {
-							if (isEditing) onEdit(e.currentTarget.value);
+							if (isEditing) onEdit({ label: e.currentTarget.value});
 						}}
 					/>
 				</div>
@@ -153,7 +153,7 @@ const FormComponentRow: React.FC<{
 							value={component.label}
 							className="bg-transparent border-none p-0"
 							placeholder="Click to edit"
-							onChange={(e) => onEdit(e.currentTarget.value)}
+							onChange={(e) => onEdit({ label: e.currentTarget.value})}
 							size={component.label.length}
 						/>
 					) : (
@@ -223,7 +223,7 @@ export const ScreenEditor: React.FC<{
 							onEdit={(value) =>
 								setComponents(
 									components.map((c, i) =>
-										i === index ? { ...c, label: value } : c
+										i === index ? { ...c, ...value } : c
 									)
 								)
 							}
