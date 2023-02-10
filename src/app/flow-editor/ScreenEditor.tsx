@@ -89,6 +89,16 @@ const AddComponentButton: React.FC<{
 						<AddComponentChoice
 							addComponent={() =>
 								addComponent({
+									type: FormComponentType.YesNoInput,
+									label: "Yes/No input",
+								})
+							}
+						>
+							Yes/No Prompt
+						</AddComponentChoice>
+						<AddComponentChoice
+							addComponent={() =>
+								addComponent({
 									type: FormComponentType.Checkboxes,
 									label: "(edit label)",
 									choices: [
@@ -152,6 +162,21 @@ const CheckboxesChoiceEdit: React.FC<{
 				className="bg-transparent border-none p-0"
 			/>
 		</li>
+	);
+};
+
+const YesNoRadios: React.FC<{}> = () => {
+	return (
+		<div className="flex items-center justify-around w-full">
+			<label className="bg-primary-600 p-2 rounded-3xl w-16 text-center font-semibold text-white cursor-pointer">
+				Yes
+				<input type="radio" name="yes" className="hidden" />
+			</label>
+			<label className="bg-primary-600 p-2 rounded-3xl w-16 text-center font-semibold text-white cursor-pointer">
+				No
+				<input type="radio" name="no" className="hidden" />
+			</label>
+		</div>
 	);
 };
 
@@ -230,6 +255,18 @@ const ComponentEditor: React.FC<{
 					))}
 				</ul>
 			);
+		case FormComponentType.YesNoInput:
+			return (
+				<div className="flex flex-col w-full">
+					<input
+						type="text"
+						value={component.label}
+						className="w-full bg-transparent border-none p-0 mb-2"
+						onChange={(e) => onEdit({ label: e.currentTarget.value })}
+					/>
+					<YesNoRadios />
+				</div>
+			);
 
 		case FormComponentType.Continue:
 			return (
@@ -257,6 +294,13 @@ const ComponentPreview: React.FC<{
 			return <p>{component.label}</p>;
 		case FormComponentType.TextInput:
 			return <input type="text" value={component.label} className="w-full" />;
+		case FormComponentType.YesNoInput:
+			return (
+				<div className="flex flex-col w-full">
+					<p className="mb-2">{component.label}</p>
+					<YesNoRadios />
+				</div>
+			);
 		case FormComponentType.Checkboxes:
 			return (
 				<ul className="divide-y divide-gray-100">

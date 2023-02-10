@@ -3,6 +3,7 @@ export enum FormComponentType {
 	Text = "text",
 	TextInput = "input-text",
 	Checkboxes = "checkboxes",
+	YesNoInput = "input-yes-no",
 	Continue = "continue",
 }
 
