@@ -118,8 +118,9 @@ const AddComponentButton: React.FC<{
 const CheckboxesChoiceEdit: React.FC<{
 	choice: FormInputChoice;
 	onEdit: (label: string, checked: boolean) => void;
+	onBackspace: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 	onEnter: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-}> = ({ choice, onEdit, onEnter }) => {
+}> = ({ choice, onEdit, onBackspace, onEnter }) => {
 	const [label, setLabel] = useState(choice.label);
 	const [checked, setChecked] = useState(choice.defaultChecked || false);
 
@@ -142,11 +143,10 @@ const CheckboxesChoiceEdit: React.FC<{
 					onEdit(e.currentTarget.value, checked);
 				}}
 				onKeyDown={(e) => {
-					console.log("keydown");
-
 					if (e.key === "Enter") {
-						console.log("enter");
 						onEnter(e);
+					} else if (e.key === "Backspace" && label === "") {
+						onBackspace(e);
 					}
 				}}
 				className="bg-transparent border-none p-0"
@@ -197,6 +197,12 @@ const ComponentEditor: React.FC<{
 									label,
 									defaultChecked: checked,
 								};
+								onEdit({ choices: newChoices });
+							}}
+							onBackspace={(e) => {
+								if (!component.choices || component.choices.length <= 1) return;
+								const newChoices = [...component.choices];
+								newChoices.splice(index, 1);
 								onEdit({ choices: newChoices });
 							}}
 							onEnter={(e) => {
