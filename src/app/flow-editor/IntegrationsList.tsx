@@ -6,14 +6,15 @@ import {
 	EdgeAddChange,
 	useReactFlow,
 } from "reactflow";
-import { integrations } from "../../integrations";
+import { integrations, IntegrationSettings } from "../../integrations";
 import Button from "./Button";
 
 const IntegrationListItem: React.FC<{
 	name: string;
 	description: string;
 	icon: JSX.Element;
-}> = ({ name, description, icon }) => {
+	settings: IntegrationSettings[];
+}> = ({ name, description, icon, settings }) => {
 	const { project, setEdges, setNodes } = useReactFlow();
 
 	return (
@@ -52,6 +53,7 @@ const IntegrationListItem: React.FC<{
 									}),
 									data: {
 										label: name,
+										settings,
 									},
 									type: "integration",
 								},
@@ -77,25 +79,28 @@ const IntegrationListItem: React.FC<{
 export const IntegrationList = () => (
 	<div className="bg-white self-end h-full z-10 shadow-md m-3 p-3 w-64 flex flex-col justify-between">
 		<ul>
-			{integrations.map(({ id, name, description, icon: Icon, image }) => (
-				<IntegrationListItem
-					key={id}
-					name={name}
-					description={description}
-					icon={
-						Icon ? (
-							<Icon className="h-10 w-10 text-primary-600" />
-						) : (
-							<Image
-								src={image}
-								className="h-10 w-10"
-								alt="Integration logo"
-								draggable={false}
-							/>
-						)
-					}
-				/>
-			))}
+			{integrations.map(
+				({ id, name, description, icon: Icon, image, settings }) => (
+					<IntegrationListItem
+						key={id}
+						name={name}
+						description={description}
+						icon={
+							Icon ? (
+								<Icon className="h-10 w-10 text-primary-600" />
+							) : (
+								<Image
+									src={image}
+									className="h-10 w-10"
+									alt="Integration logo"
+									draggable={false}
+								/>
+							)
+						}
+						settings={settings}
+					/>
+				)
+			)}
 		</ul>
 		<ExportJSONButton />
 	</div>

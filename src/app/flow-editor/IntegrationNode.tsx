@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { createPortal } from "react-dom";
 import { Handle, NodeProps, Position } from "reactflow";
-import IntegrationSettings from "./IntegrationSettings";
+import { IntegrationSettingsScreen } from "./IntegrationSettingsScreen";
 
 export const IntegrationNode: React.FC<NodeProps> = ({
 	data,
@@ -16,9 +16,10 @@ export const IntegrationNode: React.FC<NodeProps> = ({
 		<>
 			{settingsVisible
 				? createPortal(
-						<IntegrationSettings
+						<IntegrationSettingsScreen
 							name={data?.label}
 							save={() => setSettingsVisible(false)}
+							settings={data?.settings}
 						/>,
 						modalRoot
 				  )
