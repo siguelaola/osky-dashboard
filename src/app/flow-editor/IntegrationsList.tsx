@@ -1,4 +1,3 @@
-import { EnvelopeIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import React from "react";
 import {
@@ -7,8 +6,7 @@ import {
 	EdgeAddChange,
 	useReactFlow,
 } from "reactflow";
-import AlpacaLogo from "../../public/logos/third-party/alpaca.svg";
-import SalesForceLogo from "../../public/logos/third-party/salesforce.svg";
+import { integrations } from "../../integrations";
 import Button from "./Button";
 
 const IntegrationListItem: React.FC<{
@@ -79,35 +77,25 @@ const IntegrationListItem: React.FC<{
 export const IntegrationList = () => (
 	<div className="bg-white self-end h-full z-10 shadow-md m-3 p-3 w-64 flex flex-col justify-between">
 		<ul>
-			<IntegrationListItem
-				name="Email"
-				description="Send an email"
-				icon={<EnvelopeIcon className="h-10 w-10 text-primary-600" />}
-			/>
-			<IntegrationListItem
-				name="Salesforce"
-				description="Send data to Salesforce"
-				icon={
-					<Image
-						src={SalesForceLogo}
-						className="h-10 w-10"
-						alt="Salesforce logo"
-						draggable={false}
-					/>
-				}
-			/>
-			<IntegrationListItem
-				name="Alpaca"
-				description="Verify customer on Alpaca"
-				icon={
-					<Image
-						src={AlpacaLogo}
-						className="h-10 w-10"
-						alt="Alpaca logo"
-						draggable={false}
-					/>
-				}
-			/>
+			{integrations.map(({ id, name, description, icon: Icon, image }) => (
+				<IntegrationListItem
+					key={id}
+					name={name}
+					description={description}
+					icon={
+						Icon ? (
+							<Icon className="h-10 w-10 text-primary-600" />
+						) : (
+							<Image
+								src={image}
+								className="h-10 w-10"
+								alt="Integration logo"
+								draggable={false}
+							/>
+						)
+					}
+				/>
+			))}
 		</ul>
 		<ExportJSONButton />
 	</div>
