@@ -55,7 +55,7 @@ export const ComponentEditor: React.FC<{
 						type="text"
 						value={component.label}
 						className="w-full bg-transparent border-none text-xl"
-						placeholder="Click to edit"
+						placeholder="Heading"
 						onChange={(e) => onEdit({ label: e.target.value })}
 					/>
 				</h2>
@@ -66,6 +66,7 @@ export const ComponentEditor: React.FC<{
 					value={component.label}
 					cols={60}
 					className="w-full bg-transparent border-none"
+					placeholder="Text"
 					onChange={(e) => onEdit({ label: e.currentTarget.value })}
 				/>
 			);
@@ -112,7 +113,7 @@ export const ComponentEditor: React.FC<{
 							onEnter={(e) => {
 								const newChoices = [...component.choices!];
 								newChoices.splice(index + 1, 0, {
-									label: "Click to edit label",
+									label: "",
 									defaultChecked: false,
 									value: "",
 								});
