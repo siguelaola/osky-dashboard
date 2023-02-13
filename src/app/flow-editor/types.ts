@@ -2,6 +2,7 @@ export enum FormComponentType {
 	Heading = "heading",
 	Text = "text",
 	TextInput = "input-text",
+	PhoneInput = "input-phone",
 	Checkboxes = "checkboxes",
 	YesNoInput = "input-yes-no",
 	Continue = "continue",

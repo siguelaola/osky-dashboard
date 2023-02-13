@@ -87,6 +87,16 @@ const AddComponentButton: React.FC<{
 						<AddComponentChoice
 							addComponent={() =>
 								addComponent({
+									type: FormComponentType.PhoneInput,
+									label: "",
+								})
+							}
+						>
+							Phone input
+						</AddComponentChoice>
+						<AddComponentChoice
+							addComponent={() =>
+								addComponent({
 									type: FormComponentType.YesNoInput,
 									label: "Yes/No input",
 								})

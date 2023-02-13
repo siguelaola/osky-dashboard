@@ -12,6 +12,22 @@ export const ComponentPreview: React.FC<{
 			return <p>{component.label}</p>;
 		case FormComponentType.TextInput:
 			return <input type="text" value={component.label} className="w-full" />;
+		case FormComponentType.PhoneInput:
+			return (
+				<div className="flex w-full">
+					<select className="mr-2">
+						<option>+1</option>
+						<option>+44</option>
+						<option>...</option>
+					</select>
+					<input
+						type="text"
+						value={component.label}
+						inputMode="tel"
+						className="w-full"
+					/>
+				</div>
+			);
 		case FormComponentType.YesNoInput:
 			return (
 				<div className="flex flex-col w-full">
