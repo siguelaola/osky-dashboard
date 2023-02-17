@@ -25,15 +25,16 @@ const defaultNodes: Node[] = [
 			components: [
 				{
 					type: FormComponentType.Heading,
-					label: "Welcome",
+					data: {
+						text: "Welcome!",
+						level: 1,
+					}
 				},
 				{
-					type: FormComponentType.Text,
-					label: "This is the first screen of the flow. Add some components...",
-				},
-				{
-					type: FormComponentType.Continue,
-					label: "Continue",
+					type: FormComponentType.Paragraph,
+					data: {
+						text: "This is the first screen of the flow. Add some components...",
+					}
 				},
 			],
 		},
