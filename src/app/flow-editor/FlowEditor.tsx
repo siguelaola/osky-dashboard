@@ -53,7 +53,7 @@ const FlowEditor = () => {
 	const [editingEdge, setEditingEdge] = useState<Edge | null>(null);
 
 	return (
-		<div style={{ height: "600px" }} className="pl-64">
+		<div className="pl-64 h-screen">
 			<ReactFlow
 				nodes={nodes}
 				edges={edges}
