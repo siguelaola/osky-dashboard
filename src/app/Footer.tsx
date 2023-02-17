@@ -6,7 +6,7 @@ const navigation = {
 };
 
 const Footer = () => (
-	<footer className="bg-white">
+	<footer className="absolute w-full bottom-0">
 		<p className="mt-8 text-center text-base text-gray-400">
 			&copy; {new Date().getFullYear()} Ola Financial Technologies, Inc.
 		</p>
