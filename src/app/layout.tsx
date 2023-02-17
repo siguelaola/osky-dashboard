@@ -1,11 +1,12 @@
 import "../styles/tailwind.css";
 import Footer from "./Footer";
+import Head from "./head";
 import Sidebar from "./Sidebar";
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<html lang="en">
-			<head />
+			<Head />
 			<body>
 				<Sidebar />
 				<main>{children}</main>
