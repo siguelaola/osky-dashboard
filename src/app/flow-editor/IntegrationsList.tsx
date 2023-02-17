@@ -77,7 +77,7 @@ const IntegrationListItem: React.FC<{
 };
 
 export const IntegrationList = () => (
-	<div className="bg-white self-end h-full z-10 shadow-md m-3 p-3 w-64 flex flex-col justify-between">
+	<aside className="bg-white self-end h-full z-10 shadow-md m-3 p-3 w-64 flex flex-col justify-between">
 		<ul>
 			{integrations.map(
 				({ id, name, description, icon: Icon, image, settings }) => (
@@ -103,7 +103,7 @@ export const IntegrationList = () => (
 			)}
 		</ul>
 		<ExportJSONButton />
-	</div>
+	</aside>
 );
 
 const ExportJSONButton = () => {

@@ -21,7 +21,7 @@ const navigation = [
 ];
 
 export const Sidebar = () => (
-	<div className="fixed inset-y-0 flex w-64 flex-col">
+	<aside className="fixed inset-y-0 flex w-64 flex-col">
 		<div className="flex flex-grow flex-col overflow-y-auto bg-primary-700 pt-5">
 			<div className="flex flex-shrink-0 items-center px-4">
 				<Image
@@ -56,7 +56,7 @@ export const Sidebar = () => (
 				</nav>
 			</div>
 		</div>
-	</div>
+	</aside>
 );
 
 export default Sidebar;
