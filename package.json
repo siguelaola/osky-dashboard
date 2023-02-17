@@ -10,6 +10,9 @@
 		"format": "prettier --write ."
 	},
 	"dependencies": {
+		"@editorjs/editorjs": "^2.26.5",
+		"@editorjs/header": "^2.7.0",
+		"@editorjs/paragraph": "^2.9.0",
 		"@headlessui/react": "^1.7.7",
 		"@heroicons/react": "^2.0.13",
 		"@next/font": "13.1.1",
@@ -43,6 +46,7 @@
 		}
 	},
 	"devDependencies": {
+		"@editorjs/image": "^2.8.1",
 		"eslint-config-next": "^13.1.1"
 	}
 }
