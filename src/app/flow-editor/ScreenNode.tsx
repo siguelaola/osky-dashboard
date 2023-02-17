@@ -11,7 +11,7 @@ import {
 	useReactFlow,
 } from "reactflow";
 import ScreenEditor from "./ScreenEditor";
-import { FormComponent, FormComponentType } from "./types";
+import { FormComponent, FormComponentType, FormEditorComponent } from "./types";
 
 const AddNodeButton: React.FC<{ id: string; xPos: number; yPos: number }> = ({
 	id,
@@ -77,7 +77,7 @@ const CustomNode: React.FC<NodeProps> = ({
 }) => {
 	const [editorVisible, setEditorVisible] = useState(false);
 	const [nodeName, setNodeName] = useState(data?.label ?? "New Screen");
-	const [components, setComponents] = useState<FormComponent[]>(
+	const [components, setComponents] = useState<FormEditorComponent[]>(
 		data?.components ?? []
 	);
 	const { setNodes } = useReactFlow();
