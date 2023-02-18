@@ -1,19 +1,13 @@
-import EditorJS, { OutputData } from "@editorjs/editorjs";
+import EditorJS, { OutputBlockData } from "@editorjs/editorjs";
 import Header from "@editorjs/header";
 import ImageTool from "@editorjs/image";
 import Paragraph from "@editorjs/paragraph";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FormEditorComponent } from "./types";
-
-const EDITORJS_DATA_SCAFFOLDING: OutputData = {
-	time: -1,
-	blocks: [],
-	version: "2.26.5",
-};
 
 const EDITORJS_HOLDER_ID = "editorJsHolder";
 
-const EDITORJS_DEV_DISPLAY_OUTPUT = (data: OutputData) => {
+const EDITORJS_DEV_DISPLAY_OUTPUT = (data: any) => {
 	return console.log(data);
 };
 
@@ -21,54 +15,50 @@ const ScreenEditor: React.FC<{
 	components: FormEditorComponent[];
 	setComponents: (value: FormEditorComponent[]) => void;
 }> = ({ components, setComponents }) => {
-	const editorJsInstance = useRef<EditorJS | null>(null);
-	const [editorData, setEditorData] = React.useState(EDITORJS_DATA_SCAFFOLDING);
-	const [initializing, setInitializing] = useState(false);
+	const [editor, setEditor] = useState<EditorJS | null>(null);
+	const [blocks, setBlocks] = useState<OutputBlockData[]>([]);
+	const [editorReady, setEditorReady] = useState(false);
+
+	const onChange = async () => {
+		// TODO: implement data storage
+		if (!editor) return;
+		const content = await editor.save();
+		setBlocks(content.blocks);
+		EDITORJS_DEV_DISPLAY_OUTPUT(content);
+	};
 
 	useEffect(() => {
-		if (!editorJsInstance.current && !initializing) {
-			setInitializing(true);
-			initEditor();
+		if (!editor) {
+			const e = new EditorJS({
+				holder: EDITORJS_HOLDER_ID,
+				data: {
+					time: -1,
+					blocks: components.map(({ type, data }) => ({ type, data })),
+					version: "2.26.5",
+				},
+				onReady: async () => setEditorReady(true),
+				onChange,
+				autofocus: true,
+				tools: {
+					header: Header,
+					paragraph: Paragraph,
+					image: ImageTool,
+				},
+			});
+			setEditor(e);
 		}
 
 		return () => {
-			editorJsInstance.current?.destroy();
-			editorJsInstance.current = null;
+			if (editor) {
+				editor.destroy();
+				setEditor(null);
+			}
 		};
-	}, []);
+	}, [editor]);
 
 	const exitScreenEditor = () => {
-		editorJsInstance.current?.save();
+		editor?.save();
 		// TODO: empty out modal contents / close the modal
-	};
-
-	const initEditor = () => {
-		const editor = new EditorJS({
-			holder: EDITORJS_HOLDER_ID,
-			data: editorData,
-			onReady: () => {
-				editorJsInstance.current = editor;
-				components.map(({ type, data }) => {
-					editorJsInstance.current!.blocks.insert(type, data);
-				});
-				// remove initial empty block
-				// this auto-focuses the first component of the node
-				// TODO: there's probably a better way to to do this
-				editorJsInstance.current!.blocks.delete(0);
-			},
-			onChange: async () => {
-				// TODO: implement data storage
-				let content = await editor.save();
-				setEditorData(content);
-				EDITORJS_DEV_DISPLAY_OUTPUT(content);
-			},
-			autofocus: true,
-			tools: {
-				header: Header,
-				paragraph: Paragraph,
-				image: ImageTool,
-			},
-		});
 	};
 
 	return (
