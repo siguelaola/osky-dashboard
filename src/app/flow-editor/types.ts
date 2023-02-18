@@ -1,5 +1,5 @@
 export enum FormComponentType {
-	Heading = "heading",
+	Heading = "header",
 	Text = "text",
 	Paragraph = "paragraph",
 	Image = "image",
