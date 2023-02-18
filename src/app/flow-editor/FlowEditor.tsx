@@ -28,13 +28,13 @@ const defaultNodes: Node[] = [
 					data: {
 						text: "Welcome!",
 						level: 1,
-					}
+					},
 				},
 				{
 					type: FormComponentType.Paragraph,
 					data: {
 						text: "This is the first screen of the flow. Add some components...",
-					}
+					},
 				},
 			],
 		},
@@ -55,6 +55,10 @@ const FlowEditor = () => {
 
 	return (
 		<div className="pl-64 h-screen">
+			<div
+				id="modal-portal-root"
+				className="fixed w-full h-full z-10 empty:hidden flex justify-center items-center -ml-64"
+			/>
 			<ReactFlow
 				nodes={nodes}
 				edges={edges}
@@ -66,10 +70,6 @@ const FlowEditor = () => {
 				className="flex flex-col"
 			>
 				<Background />
-				<div
-					id="modal-portal-root"
-					className="fixed w-full h-full z-10 empty:hidden flex justify-center items-center -ml-64"
-				/>
 				{editingEdge ? (
 					<EdgeEditor edge={editingEdge} onClose={() => setEditingEdge(null)} />
 				) : null}
