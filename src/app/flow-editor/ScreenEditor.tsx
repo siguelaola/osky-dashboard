@@ -17,7 +17,6 @@ const ScreenEditor: React.FC<{
 }> = ({ components, setComponents }) => {
 	const [editor, setEditor] = useState<EditorJS | null>(null);
 	const [blocks, setBlocks] = useState<OutputBlockData[]>([]);
-	const [editorReady, setEditorReady] = useState(false);
 
 	const onChange = async () => {
 		// TODO: implement data storage
@@ -29,14 +28,30 @@ const ScreenEditor: React.FC<{
 
 	useEffect(() => {
 		if (!editor) {
+			const holder = document.getElementById(EDITORJS_HOLDER_ID);
+			if (!holder) {
+				console.warn("EditorJS holder not found", EDITORJS_HOLDER_ID);
+				return;
+			}
+
+			// Something is causing the Editor to be initialized twice in rapid succession
+			// From investigation (2023-02-18), it seems to originate from NextJS itself.
+			// Possibly a bug related to appDir? No idea. This workaround prevents the
+			// double render from causing a double initialization, by using the DOM as a lock.
+			if (holder.hasAttribute("editorjs-locked")) {
+				console.warn("EditorJS holder already initialized");
+				return;
+			}
+
+			holder.setAttribute("editorjs-locked", "");
+
 			const editorInstance = new EditorJS({
-				holder: EDITORJS_HOLDER_ID,
+				holder,
 				data: {
 					time: -1,
 					blocks: components.map(({ type, data }) => ({ type, data })),
 					version: "2.26.5",
 				},
-				onReady: async () => setEditorReady(true),
 				onChange,
 				autofocus: true,
 				tools: {
