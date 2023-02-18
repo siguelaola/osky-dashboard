@@ -29,7 +29,7 @@ const ScreenEditor: React.FC<{
 
 	useEffect(() => {
 		if (!editor) {
-			const e = new EditorJS({
+			const editorInstance = new EditorJS({
 				holder: EDITORJS_HOLDER_ID,
 				data: {
 					time: -1,
@@ -45,7 +45,7 @@ const ScreenEditor: React.FC<{
 					image: ImageTool,
 				},
 			});
-			setEditor(e);
+			setEditor(editorInstance);
 		}
 
 		return () => {
