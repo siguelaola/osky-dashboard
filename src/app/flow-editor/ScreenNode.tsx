@@ -11,7 +11,7 @@ import {
 	useReactFlow,
 } from "reactflow";
 import ScreenEditor from "./ScreenEditor";
-import { FormComponent, FormComponentType, FormEditorComponent } from "./types";
+import { FormComponentType, FormEditorComponent } from "./types";
 
 const AddNodeButton: React.FC<{ id: string; xPos: number; yPos: number }> = ({
 	id,
