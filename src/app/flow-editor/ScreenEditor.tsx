@@ -56,8 +56,9 @@ const Editor: React.FC<{
 			data: editorData,
 			onReady: () => {
 				editorJsInstance.current = editor;
-				components.length ? editorJsInstance.current.configuration.data.blocks = components : null;
-				console.log(editorJsInstance.current)
+				components.map(({ type, data }) => {
+					editorJsInstance.current!.blocks.insert(type, data);
+				});
 			},
 			onChange: async () => {
 				// TODO: implement data storage
