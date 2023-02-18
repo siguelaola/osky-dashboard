@@ -161,6 +161,9 @@ export const ComponentEditor: React.FC<{
 					/>
 				</Button>
 			);
+
+		default:
+			throw new Error("Unknown component type");
 	}
 };
 

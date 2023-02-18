@@ -52,6 +52,9 @@ export const ComponentPreview: React.FC<{
 			);
 		case FormComponentType.Continue:
 			return <Button variant="primary">{component.label}</Button>;
+
+		default:
+			throw new Error("Unknown component type");
 	}
 };
 
