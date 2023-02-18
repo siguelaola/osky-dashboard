@@ -51,6 +51,10 @@ const ScreenEditor: React.FC<{
 				components.map(({ type, data }) => {
 					editorJsInstance.current!.blocks.insert(type, data);
 				});
+				// remove initial empty block
+				// this auto-focuses the first component of the node
+				// TODO: there's probably a better way to to do this
+				editorJsInstance.current!.blocks.delete(0);
 			},
 			onChange: async () => {
 				// TODO: implement data storage
