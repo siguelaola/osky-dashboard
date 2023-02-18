@@ -2,7 +2,7 @@ import EditorJS, { OutputData } from "@editorjs/editorjs";
 import Header from "@editorjs/header";
 import ImageTool from "@editorjs/image";
 import Paragraph from "@editorjs/paragraph";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FormEditorComponent } from "./types";
 
 const EDITORJS_DATA_SCAFFOLDING: OutputData = {
@@ -23,9 +23,11 @@ const ScreenEditor: React.FC<{
 }> = ({ components, setComponents }) => {
 	const editorJsInstance = useRef<EditorJS | null>(null);
 	const [editorData, setEditorData] = React.useState(EDITORJS_DATA_SCAFFOLDING);
+	const [initializing, setInitializing] = useState(false);
 
 	useEffect(() => {
-		if (!editorJsInstance.current) {
+		if (!editorJsInstance.current && !initializing) {
+			setInitializing(true);
 			initEditor();
 		}
 
