@@ -69,7 +69,7 @@ const ScreenEditor: React.FC<{
 			/>
 			<div
 				id={EDITORJS_HOLDER_ID}
-				className="relative z-20 flex flex-col justify-between items-center bg-white rounded-lg p-5 shadow-lg gap-3"
+				className="prose relative z-20 flex flex-col justify-between items-center bg-white rounded-lg p-5 shadow-lg gap-3"
 			/>
 		</>
 	);
