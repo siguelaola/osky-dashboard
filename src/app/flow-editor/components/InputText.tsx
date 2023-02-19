@@ -13,6 +13,7 @@ export default class InputText {
 	}
 
 	render () {
+		// TODO: add support for providing input with initial text
 		const renderHTML = (html: string) =>
 			document.createRange().createContextualFragment(html);
 		const element = renderHTML(
