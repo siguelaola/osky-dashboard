@@ -78,9 +78,7 @@ const CustomNode: React.FC<NodeProps> = ({
 }) => {
 	const [editorVisible, setEditorVisible] = useState(false);
 	const [nodeName, setNodeName] = useState(data?.label ?? "New Screen");
-	const [components, setComponents] = useState<OutputBlockData[]>(
-		data?.components ?? []
-	);
+	const [blocks, setBlocks] = useState<OutputBlockData[]>(data?.blocks ?? []);
 	const { setNodes } = useReactFlow();
 
 	const modalRoot = document.getElementById("modal-portal-root");
@@ -89,13 +87,13 @@ const CustomNode: React.FC<NodeProps> = ({
 	const editorModal = () =>
 		createPortal(
 			<ScreenEditor
-				blocks={components}
+				blocks={blocks}
 				setBlocks={(value) => {
-					setComponents(value);
+					setBlocks(value);
 					setNodes((nodes) =>
 						nodes.map((node) =>
 							node.id === id
-								? { ...node, data: { ...node.data, components: value } }
+								? { ...node, data: { ...node.data, blocks: value } }
 								: node
 						)
 					);

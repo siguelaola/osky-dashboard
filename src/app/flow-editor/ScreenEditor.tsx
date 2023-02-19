@@ -58,10 +58,7 @@ const ScreenEditor: React.FC<{
 					</div>
 				</div>
 				<div className="flex flex-col p-3 border-2 border-gray-300 border-dashed w-full">
-					<BlockEditor
-						blocks={blocks.map(({ type, data }) => ({ type, data }))}
-						setBlocks={setBlocks}
-					/>
+					<BlockEditor blocks={blocks} setBlocks={setBlocks} />
 				</div>
 				<div className="flex justify-between">
 					<Button variant="plain" onClick={save}>
