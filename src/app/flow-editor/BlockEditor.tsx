@@ -2,7 +2,7 @@
 import EditorJS, { OutputBlockData } from "@editorjs/editorjs";
 import { useEffect, useState } from "react";
 
-const EDITORJS_HOLDER_ID = "editorJsHolder";
+const EDITORJS_ROOT_ID = "editorjs-root";
 
 const EDITORJS_DEV_DISPLAY_OUTPUT = (data: any) => {
 	return console.log(data);
@@ -11,7 +11,8 @@ const EDITORJS_DEV_DISPLAY_OUTPUT = (data: any) => {
 const BlockEditor: React.FC<{
 	blocks: OutputBlockData[];
 	setBlocks: (value: OutputBlockData[]) => void;
-}> = ({ blocks, setBlocks }) => {
+	onExit: () => void;
+}> = ({ blocks, setBlocks, onExit }) => {
 	const [editor, setEditor] = useState<EditorJS | null>(null);
 
 	const onChange = async () => {
@@ -24,9 +25,9 @@ const BlockEditor: React.FC<{
 
 	useEffect(() => {
 		if (!editor) {
-			const holder = document.getElementById(EDITORJS_HOLDER_ID);
+			const holder = document.getElementById(EDITORJS_ROOT_ID);
 			if (!holder) {
-				console.warn("EditorJS holder not found", EDITORJS_HOLDER_ID);
+				console.warn("EditorJS holder not found", EDITORJS_ROOT_ID);
 				return;
 			}
 
@@ -68,22 +69,13 @@ const BlockEditor: React.FC<{
 		};
 	}, [editor]);
 
-	const exitScreenEditor = () => {
-		editor?.save();
-		// TODO: empty out modal contents / close the modal
-	};
+	// TODO trigger editor.save when parent exits modal
 
 	return (
-		<>
-			<div
-				className="fixed z-10 inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
-				onClick={() => exitScreenEditor()}
-			/>
-			<div
-				id={EDITORJS_HOLDER_ID}
-				className="prose relative z-20 flex flex-col justify-between items-center bg-white rounded-lg p-5 shadow-lg gap-3"
-			/>
-		</>
+		<div
+			id={EDITORJS_ROOT_ID}
+			className="prose relative z-20 flex flex-col justify-between items-center bg-white gap-3 min-h-[300px]"
+		/>
 	);
 };
 
