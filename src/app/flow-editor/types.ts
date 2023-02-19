@@ -15,9 +15,3 @@ export interface FormInputChoice {
 	value: string;
 	defaultChecked?: boolean;
 }
-
-export interface FormComponent {
-	label: string;
-	type: FormComponentType;
-	choices?: FormInputChoice[];
-}

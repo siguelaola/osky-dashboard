@@ -7,11 +7,10 @@ import {
 import clsx from "clsx";
 import { useState } from "react";
 import Button from "./Button";
-import type { FormComponent } from "./types";
 
 const ScreenEditor: React.FC<{
 	blocks: OutputBlockData[];
-	setBlocks: (value: FormComponent[]) => void;
+	setBlocks: (value: OutputBlockData[]) => void;
 	name: string;
 	setName: (value: string) => void;
 	save: () => void;
