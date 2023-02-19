@@ -1,5 +1,8 @@
 "use client";
 import EditorJS, { OutputBlockData } from "@editorjs/editorjs";
+import Header from "@editorjs/header";
+import Paragraph from "@editorjs/paragraph";
+import ImageTool from "@editorjs/image";
 import { useEffect, useState } from "react";
 
 const EDITORJS_ROOT_ID = "editorjs-root";
@@ -43,9 +46,9 @@ const BlockEditor: React.FC<{
 				},
 				autofocus: true,
 				tools: {
-					header: require("@editorjs/header"),
-					paragraph: require("@editorjs/paragraph"),
-					image: require("@editorjs/image"),
+					header: Header,
+					paragraph: Paragraph,
+					image: ImageTool,
 				},
 				minHeight: 0,
 				onChange: async () => {
