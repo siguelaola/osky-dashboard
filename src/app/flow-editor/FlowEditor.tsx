@@ -22,7 +22,7 @@ const defaultNodes: Node[] = [
 		type: "screen",
 		data: {
 			label: "Initial Screen",
-			components: [
+			blocks: [
 				{
 					type: FormComponentType.Heading,
 					data: {
