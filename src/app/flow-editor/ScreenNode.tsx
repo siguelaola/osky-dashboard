@@ -10,6 +10,7 @@ import {
 	Position,
 	useReactFlow,
 } from "reactflow";
+import ScreenEditor from "./ScreenEditor";
 import { FormComponentType, FormEditorComponent } from "./types";
 
 const AddNodeButton: React.FC<{ id: string; xPos: number; yPos: number }> = ({
@@ -84,12 +85,8 @@ const CustomNode: React.FC<NodeProps> = ({
 	const modalRoot = document.getElementById("modal-portal-root");
 	if (!modalRoot) throw new Error("Missing modal portal root");
 
-	const editorModal = () => {
-		if (!editorVisible) return null;
-		// ScreenEditor depends on EditorJS which is not SSR compatible (refs window)
-		// lazy-load to prevent error noise
-		const ScreenEditor = require("./ScreenEditor").default;
-		return createPortal(
+	const editorModal = () =>
+		createPortal(
 			<ScreenEditor
 				components={components}
 				setComponents={(value) => {
@@ -117,11 +114,10 @@ const CustomNode: React.FC<NodeProps> = ({
 			/>,
 			modalRoot
 		);
-	};
 
 	return (
 		<>
-			{editorModal()}
+			{editorVisible ? editorModal() : null}
 			<div
 				className="flex flex-col bg-white border border-black p-5 rounded-md shadow-md font-semibold group text-center"
 				onClick={() => setEditorVisible(true)}
