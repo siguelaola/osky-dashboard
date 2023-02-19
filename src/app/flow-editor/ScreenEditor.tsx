@@ -1,9 +1,7 @@
+"use client";
 import EditorJS, { OutputBlockData } from "@editorjs/editorjs";
-import Header from "@editorjs/header";
-import ImageTool from "@editorjs/image";
-import Paragraph from "@editorjs/paragraph";
-import React, { useEffect, useState } from "react";
-import { FormEditorComponent } from "./types";
+import { useEffect, useState } from "react";
+import type { FormEditorComponent } from "./types";
 
 const EDITORJS_HOLDER_ID = "editorJsHolder";
 
@@ -55,9 +53,9 @@ const ScreenEditor: React.FC<{
 				onChange,
 				autofocus: true,
 				tools: {
-					header: Header,
-					paragraph: Paragraph,
-					image: ImageTool,
+					header: require("@editorjs/header"),
+					paragraph: require("@editorjs/paragraph"),
+					image: require("@editorjs/image"),
 				},
 				minHeight: 0,
 			});
