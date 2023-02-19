@@ -15,14 +15,6 @@ const BlockEditor: React.FC<{
 }> = ({ blocks, setBlocks, onExit }) => {
 	const [editor, setEditor] = useState<EditorJS | null>(null);
 
-	const onChange = async () => {
-		// TODO: implement data storage
-		if (!editor) return;
-		const content = await editor.save();
-		setBlocks(content.blocks);
-		EDITORJS_DEV_DISPLAY_OUTPUT(content);
-	};
-
 	useEffect(() => {
 		if (!editor) {
 			const holder = document.getElementById(EDITORJS_ROOT_ID);
@@ -49,7 +41,6 @@ const BlockEditor: React.FC<{
 					blocks,
 					version: "2.26.5",
 				},
-				onChange,
 				autofocus: true,
 				tools: {
 					header: require("@editorjs/header"),
@@ -57,6 +48,11 @@ const BlockEditor: React.FC<{
 					image: require("@editorjs/image"),
 				},
 				minHeight: 0,
+				onChange: async () => {
+					const content = await editorInstance.save();
+					setBlocks(content.blocks);
+					EDITORJS_DEV_DISPLAY_OUTPUT(content);
+				},
 			});
 			setEditor(editorInstance);
 		}
