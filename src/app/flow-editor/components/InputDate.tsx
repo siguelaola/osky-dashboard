@@ -27,7 +27,7 @@ export default class InputDate {
 		return element;
 	}
 
-	save (contents: HTMLElement) {
+	save (contents: HTMLFieldSetElement) {
 		const input = contents.querySelector("input");
 
 		return {
