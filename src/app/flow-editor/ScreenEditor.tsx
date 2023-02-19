@@ -59,6 +59,7 @@ const ScreenEditor: React.FC<{
 					paragraph: Paragraph,
 					image: ImageTool,
 				},
+				minHeight: 0,
 			});
 			setEditor(editorInstance);
 		}
