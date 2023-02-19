@@ -33,7 +33,19 @@ const defaultNodes: Node[] = [
 				{
 					type: FormComponentType.Paragraph,
 					data: {
-						text: "This is the first screen of the flow. Add some components...",
+						text: "This is the first screen of the flow.",
+					},
+				},
+				{
+					type: FormComponentType.Paragraph,
+					data: {
+						text: "This editor works similarly to other block editors you might be familiar with, such as Notion.",
+					},
+				},
+				{
+					type: FormComponentType.Paragraph,
+					data: {
+						text: "You can add new blocks, special components, and reorder components using the + and ⋮⋮ buttons on the right-hand side.",
 					},
 				},
 			],
