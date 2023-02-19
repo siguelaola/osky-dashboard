@@ -4,6 +4,7 @@ import Header from "@editorjs/header";
 import Paragraph from "@editorjs/paragraph";
 import ImageTool from "@editorjs/image";
 import InputText from "./components/InputText";
+import InputDate from "./components/InputDate";
 import { useEffect, useState } from "react";
 
 const EDITORJS_ROOT_ID = "editorjs-root";
@@ -51,6 +52,7 @@ const BlockEditor: React.FC<{
 					paragraph: Paragraph,
 					image: ImageTool,
 					input: InputText,
+					date: InputDate,
 				},
 				minHeight: 0,
 				onChange: async () => {
