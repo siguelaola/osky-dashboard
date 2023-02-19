@@ -21,9 +21,3 @@ export interface FormComponent {
 	type: FormComponentType;
 	choices?: FormInputChoice[];
 }
-
-export interface FormEditorComponent {
-	id: string,
-	type: string,
-	data: object
-}

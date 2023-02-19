@@ -1,5 +1,6 @@
+import type { OutputBlockData } from "@editorjs/editorjs";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
-import React, { memo, useState } from "react";
+import { memo, useState } from "react";
 import { createPortal } from "react-dom";
 import {
 	applyEdgeChanges,
@@ -11,7 +12,7 @@ import {
 	useReactFlow,
 } from "reactflow";
 import ScreenEditor from "./ScreenEditor";
-import { FormComponentType, FormEditorComponent } from "./types";
+import { FormComponentType } from "./types";
 
 const AddNodeButton: React.FC<{ id: string; xPos: number; yPos: number }> = ({
 	id,
@@ -77,7 +78,7 @@ const CustomNode: React.FC<NodeProps> = ({
 }) => {
 	const [editorVisible, setEditorVisible] = useState(false);
 	const [nodeName, setNodeName] = useState(data?.label ?? "New Screen");
-	const [components, setComponents] = useState<FormEditorComponent[]>(
+	const [components, setComponents] = useState<OutputBlockData[]>(
 		data?.components ?? []
 	);
 	const { setNodes } = useReactFlow();
@@ -88,8 +89,8 @@ const CustomNode: React.FC<NodeProps> = ({
 	const editorModal = () =>
 		createPortal(
 			<ScreenEditor
-				components={components}
-				setComponents={(value) => {
+				blocks={components}
+				setBlocks={(value) => {
 					setComponents(value);
 					setNodes((nodes) =>
 						nodes.map((node) =>

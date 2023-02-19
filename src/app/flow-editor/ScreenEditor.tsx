@@ -1,3 +1,4 @@
+import type { OutputBlockData } from "@editorjs/editorjs";
 import {
 	ComputerDesktopIcon,
 	DevicePhoneMobileIcon,
@@ -9,12 +10,12 @@ import Button from "./Button";
 import type { FormComponent } from "./types";
 
 const ScreenEditor: React.FC<{
-	components: FormComponent[];
-	setComponents: (value: FormComponent[]) => void;
+	blocks: OutputBlockData[];
+	setBlocks: (value: FormComponent[]) => void;
 	name: string;
 	setName: (value: string) => void;
 	save: () => void;
-}> = ({ components, setComponents, name, setName, save }) => {
+}> = ({ blocks, setBlocks, name, setName, save }) => {
 	const [isEditing, setEditing] = useState(false);
 
 	// BlockEditor depends on EditorJS which is not SSR compatible (refs window)
@@ -59,8 +60,8 @@ const ScreenEditor: React.FC<{
 				</div>
 				<div className="flex flex-col p-3 border-2 border-gray-300 border-dashed w-full">
 					<BlockEditor
-						blocks={components.map(({ type, data }) => ({ type, data }))}
-						setBlocks={setComponents}
+						blocks={blocks.map(({ type, data }) => ({ type, data }))}
+						setBlocks={setBlocks}
 					/>
 				</div>
 				<div className="flex justify-between">
