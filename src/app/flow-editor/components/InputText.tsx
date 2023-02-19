@@ -1,3 +1,5 @@
+import { OutputBlockData } from "@editorjs/editorjs";
+
 export default class InputText {
 	static get toolbox () {
 		return {
@@ -8,7 +10,7 @@ export default class InputText {
 
 	data = undefined;
 
-	constructor ({ data }) {
+	constructor ({ data }: OutputBlockData) {
 		this.data = data;
 	}
 
