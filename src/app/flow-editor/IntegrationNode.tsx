@@ -47,6 +47,4 @@ export const IntegrationNode: React.FC<NodeProps> = ({
 	);
 };
 
-IntegrationNode.displayName = "IntegrationNode";
-
 export default IntegrationNode;

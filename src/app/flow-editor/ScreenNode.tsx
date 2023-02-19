@@ -1,6 +1,6 @@
 import type { OutputBlockData } from "@editorjs/editorjs";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
-import { memo, useState } from "react";
+import { useState } from "react";
 import { createPortal } from "react-dom";
 import {
 	applyEdgeChanges,
@@ -142,6 +142,4 @@ const CustomNode: React.FC<NodeProps> = ({
 	);
 };
 
-CustomNode.displayName = "CustomNode";
-
-export default memo(CustomNode);
+export default CustomNode;
