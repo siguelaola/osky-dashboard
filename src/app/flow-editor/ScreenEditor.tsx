@@ -54,7 +54,7 @@ const ScreenEditor: React.FC<{
 						/>
 					</div>
 				</div>
-				<div className="flex flex-col p-3 border-2 border-gray-300 border-dashed w-full">
+				<div className="flex flex-col p-3 mt-2 border-2 border-gray-300 border-dashed focus-within:border-gray-900 focus-within:border-solid w-full">
 					<BlockEditor blocks={blocks} setBlocks={setBlocks} />
 				</div>
 				<div className="flex justify-between">
