@@ -78,6 +78,10 @@ const BlockEditor: React.FC<{
 
 	// TODO trigger editor.save when parent exits modal
 
+	// TODO store screen name during editing as state
+	// TODO on modal close, if screen has no name (value.trim() === ""), reset to existing name
+	// TODO else, use name stored in state
+
 	return (
 		<div
 			id={EDITORJS_ROOT_ID}
