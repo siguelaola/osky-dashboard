@@ -7,6 +7,7 @@ import InputText from "./components/InputText";
 import InputDate from "./components/InputDate";
 import AddressBlock from "./components/AddressBlock";
 import InputPhone from "./components/InputPhone";
+import SeparatorComponent from "./components/SeparatorComponent";
 import { useEffect, useState } from "react";
 
 const EDITORJS_ROOT_ID = "editorjs-root";
@@ -57,6 +58,7 @@ const BlockEditor: React.FC<{
 					date: InputDate,
 					address: AddressBlock,
 					phone: InputPhone,
+					separator: SeparatorComponent,
 				},
 				minHeight: 0,
 				onChange: async () => {
