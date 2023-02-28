@@ -29,17 +29,14 @@ const ScreenEditor: React.FC<{
 			/>
 			<div className="relative z-20 flex flex-col justify-between items-center bg-white rounded-lg p-5 shadow-lg gap-3">
 				<div className="flex w-full justify-between items-center">
-					{isEditing ? (
-						<input
-							type="text"
-							value={name}
-							placeholder="Enter a name for this screen"
-							onChange={(e) => setName(e.currentTarget.value)}
-						/>
-					) : (
-						<h1 className="font-semibold text-xl text-gray-800">{name}</h1>
-					)}
-					<div className="flex mb-3 gap-2">
+					<input
+						className="font-semibold text-xl text-gray-800 p-3 border-2 border-dashed border-gray-300"
+						type="text"
+						value={name}
+						placeholder="Enter a name for this screen"
+						onChange={(e) => setName(e.currentTarget.value)}
+					/>
+					<div className="flex gap-2">
 						<DevicePhoneMobileIcon
 							className="text-gray-500 w-8 h-8 p-1 hover:text-gray-800 cursor-pointer"
 							onClick={() => setEditing(false)}
