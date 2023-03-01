@@ -1,5 +1,6 @@
 "use client";
 import EditorJS, { OutputBlockData } from "@editorjs/editorjs";
+import DragDrop from 'editorjs-drag-drop';
 import Header from "@editorjs/header";
 import Paragraph from "@editorjs/paragraph";
 import ImageTool from "@editorjs/image";
@@ -73,6 +74,9 @@ const BlockEditor: React.FC<{
 					setBlocks(content.blocks);
 					EDITORJS_DEV_DISPLAY_OUTPUT(content);
 				},
+				onReady: () => {
+					new DragDrop(editorInstance);
+				}
 			});
 			setEditor(editorInstance);
 		}
