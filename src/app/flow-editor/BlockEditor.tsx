@@ -3,6 +3,7 @@ import EditorJS, { OutputBlockData } from "@editorjs/editorjs";
 import Header from "@editorjs/header";
 import Paragraph from "@editorjs/paragraph";
 import ImageTool from "@editorjs/image";
+import List from "@editorjs/list";
 import InputText from "./components/InputText";
 import InputDate from "./components/InputDate";
 import AddressBlock from "./components/AddressBlock";
@@ -55,6 +56,12 @@ const BlockEditor: React.FC<{
 					paragraph: Paragraph,
 					image: ImageTool,
 					input: InputText,
+					list: {
+						class: List,
+						config: {
+							defaultStyle: 'unordered'
+						}
+					},
 					date: InputDate,
 					address: AddressBlock,
 					phone: InputPhone,
