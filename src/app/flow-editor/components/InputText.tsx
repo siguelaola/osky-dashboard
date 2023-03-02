@@ -1,9 +1,18 @@
 import { API, BlockToolData } from "@editorjs/editorjs";
-import { useState } from "react";
+import React, { useState } from "react";
 import { render } from "react-dom";
 
-const TextInputElement = () => {
-	const [isRegex, setIsRegex] = useState(false);
+const InputParameters: React.FC<{ onDataChange: (data: any) => void }> = ({
+	onDataChange,
+}) => {
+	const [secure, setSecure] = useState(false);
+	const [required, setRequired] = useState(false);
+
+	// Triggers on every render
+	onDataChange({
+		secure,
+		required,
+	});
 
 	return (
 		<fieldset className="my-2 pr-2">
@@ -27,7 +36,8 @@ const TextInputElement = () => {
 							<input
 								type="checkbox"
 								className="align-middle"
-								data-setting="required"
+								checked={required}
+								onChange={(e) => setRequired(e.currentTarget.checked)}
 							/>
 							required
 						</label>
@@ -35,83 +45,11 @@ const TextInputElement = () => {
 							<input
 								type="checkbox"
 								className="align-middle"
-								data-setting="secure"
+								checked={secure}
+								onChange={(e) => setSecure(e.currentTarget.checked)}
 							/>
 							secure
 						</label>
-					</div>
-					<div className="flex flex-col gap-y-0.5">
-						<label>
-							<input
-								type="checkbox"
-								className="align-middle"
-								data-setting="validated"
-							/>
-							validated
-						</label>
-						<div>
-							Type of validation:
-							<div className="flex flex-col gap-y-0.5 pl-3">
-								<label>
-									<input
-										type="radio"
-										className="align-middle"
-										name="validationType"
-										data-setting="validationType"
-										value="ssn"
-										checked
-									/>
-									SSN
-								</label>
-								<label>
-									<input
-										type="radio"
-										className="align-middle"
-										name="validationType"
-										data-setting="validationType"
-										value="email"
-									/>
-									Email
-								</label>
-								<label>
-									<input
-										type="radio"
-										className="align-middle"
-										name="validationType"
-										data-setting="validationType"
-										value="custom"
-										checked={isRegex}
-										onChange={(e) => setIsRegex(e.currentTarget.checked)}
-									/>
-									Custom...
-								</label>
-							</div>
-						</div>
-						{isRegex ? (
-							<div>
-								<label>
-									Custom validation pattern:
-									<input
-										className="w-full border border-current px-1 py-0.5 m-0 leading-none"
-										data-setting="validationPattern"
-										placeholder="RegEx"
-									/>
-								</label>
-								<div>
-									<div className="flex flex-col gap-y-0.5 pl-3">
-										<label>
-											<input
-												type="checkbox"
-												className="align-middle"
-												data-setting="validationPatternFlags"
-												value="ignoreCase"
-											/>
-											case insensitive
-										</label>
-									</div>
-								</div>
-							</div>
-						) : null}
 					</div>
 				</fieldset>
 			</details>
@@ -129,29 +67,16 @@ export default class InputText {
 
 	data;
 	api;
-	state;
 	nodes: {
 		holder: HTMLElement | null;
 	};
 
 	constructor({ data, api }: { data: BlockToolData<any>; api: API }) {
-		console.log("const", data);
-
 		this.data = {
 			required: data.required || false,
 			secure: data.secure || false,
 		};
 		this.api = api;
-		this.state = {
-			validated: false,
-			validation: {
-				type: "ssn",
-				pattern: {
-					string: "",
-					flags: ["global"],
-				},
-			},
-		};
 		this.nodes = {
 			holder: null,
 		};
@@ -162,7 +87,11 @@ export default class InputText {
 		// rootNode.setAttribute("class", this.CSS.wrapper);
 		// this.nodes.holder = rootNode;
 
-		render(<TextInputElement />, rootNode);
+		const onDataChange = (newData: any) => {
+			this.data = { ...newData };
+		};
+
+		render(<InputParameters onDataChange={onDataChange} />, rootNode);
 
 		// this.api.listeners.on(element.children[0], "change", this.api.saver.save);
 
