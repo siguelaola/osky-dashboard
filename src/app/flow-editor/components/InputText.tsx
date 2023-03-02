@@ -7,11 +7,15 @@ const InputParameters: React.FC<{ onDataChange: (data: any) => void }> = ({
 }) => {
 	const [secure, setSecure] = useState(false);
 	const [required, setRequired] = useState(false);
+	const [label, setLabel] = useState("");
+	const [placeholder, setPlaceholder] = useState("");
 
 	// Triggers on every render
 	onDataChange({
 		secure,
 		required,
+		label,
+		placeholder,
 	});
 
 	return (
@@ -20,12 +24,14 @@ const InputParameters: React.FC<{ onDataChange: (data: any) => void }> = ({
 				<input
 					className="w-full border-none p-0 text-sm leading-none mb-0.5 outline-none"
 					placeholder="Label"
-					data-setting="label"
+					value={label}
+					onChange={(e) => setLabel(e.currentTarget.value)}
 				/>
 				<input
 					className="w-full border border-current px-1 py-0.5 m-0 leading-none"
 					placeholder="Placeholder text"
-					data-setting="placeholder"
+					value={placeholder}
+					onChange={(e) => setPlaceholder(e.currentTarget.value)}
 				/>
 			</label>
 			<details>
@@ -83,10 +89,10 @@ export default class InputText {
 	}
 
 	render() {
-		const rootNode = document.createElement("div");
 		// rootNode.setAttribute("class", this.CSS.wrapper);
 		// this.nodes.holder = rootNode;
 
+		const rootNode = document.createElement("div");
 		const onDataChange = (newData: any) => {
 			this.data = { ...newData };
 		};
