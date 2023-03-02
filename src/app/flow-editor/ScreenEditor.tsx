@@ -21,6 +21,8 @@ const ScreenEditor: React.FC<{
 	// lazy-load to prevent error noise
 	const BlockEditor = require("./BlockEditor").default;
 
+	const EDITORJS_ID = "editorjs-root";
+
 	return (
 		<>
 			<div
@@ -54,7 +56,10 @@ const ScreenEditor: React.FC<{
 						/>
 					</div>
 				</div>
-				<div className="flex flex-col p-3 mt-2 border-2 border-gray-300 border-dashed focus-within:border-gray-900 focus-within:border-solid w-full">
+				<div
+					className="flex flex-col border-2 border-gray-300 border-dashed focus-within:border-gray-900 focus-within:border-solid w-full"
+					onClick={() => {}}
+				>
 					<BlockEditor blocks={blocks} setBlocks={setBlocks} />
 				</div>
 				<div className="flex justify-between">

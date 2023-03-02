@@ -1,16 +1,16 @@
 "use client";
 import EditorJS, { OutputBlockData } from "@editorjs/editorjs";
-import DragDrop from 'editorjs-drag-drop';
 import Header from "@editorjs/header";
-import Paragraph from "@editorjs/paragraph";
 import ImageTool from "@editorjs/image";
 import List from "@editorjs/list";
-import InputText from "./components/InputText";
-import InputDate from "./components/InputDate";
-import AddressBlock from "./components/AddressBlock";
-import InputPhone from "./components/InputPhone";
-import SeparatorComponent from "./components/SeparatorComponent";
+import Paragraph from "@editorjs/paragraph";
+import DragDrop from "editorjs-drag-drop";
 import { useEffect, useState } from "react";
+import AddressBlock from "./components/AddressBlock";
+import InputDate from "./components/InputDate";
+import InputPhone from "./components/InputPhone";
+import InputText from "./components/InputText";
+import SeparatorComponent from "./components/SeparatorComponent";
 
 const EDITORJS_ROOT_ID = "editorjs-root";
 
@@ -60,8 +60,8 @@ const BlockEditor: React.FC<{
 					list: {
 						class: List,
 						config: {
-							defaultStyle: 'unordered'
-						}
+							defaultStyle: "unordered",
+						},
 					},
 					date: InputDate,
 					address: AddressBlock,
@@ -76,7 +76,7 @@ const BlockEditor: React.FC<{
 				},
 				onReady: () => {
 					new DragDrop(editorInstance);
-				}
+				},
 			});
 			setEditor(editorInstance);
 		}
@@ -98,7 +98,10 @@ const BlockEditor: React.FC<{
 	return (
 		<div
 			id={EDITORJS_ROOT_ID}
-			className="prose relative z-20 bg-white min-h-[300px]"
+			className="px-3 py-2 prose relative z-20 bg-white min-h-[300px]"
+			onClick={(e) => {
+				if ((e.target as any).id === EDITORJS_ROOT_ID) editor?.focus();
+			}}
 		/>
 	);
 };
