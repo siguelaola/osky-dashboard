@@ -1,5 +1,6 @@
+import clsx from "clsx";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import {
 	applyEdgeChanges,
 	applyNodeChanges,
@@ -76,35 +77,72 @@ const IntegrationListItem: React.FC<{
 	);
 };
 
-export const IntegrationList = () => (
-	<aside className="bg-white self-end h-full z-10 shadow-md m-3 p-3 w-64 flex flex-col justify-between">
-		<ul>
-			{integrations.map(
-				({ id, name, description, icon: Icon, image, settings }) => (
-					<IntegrationListItem
-						key={id}
-						name={name}
-						description={description}
-						icon={
-							Icon ? (
-								<Icon className="h-10 w-10 text-primary-600" />
-							) : (
-								<Image
-									src={image}
-									className="h-10 w-10"
-									alt="Integration logo"
-									draggable={false}
-								/>
-							)
-						}
-						settings={settings}
-					/>
-				)
-			)}
-		</ul>
-		<ExportJSONButton />
-	</aside>
+const IntegrationsList = () => (
+	<ul>
+		{integrations.map(
+			({ id, name, description, icon: Icon, image, settings }) => (
+				<IntegrationListItem
+					key={id}
+					name={name}
+					description={description}
+					icon={
+						Icon ? (
+							<Icon className="h-10 w-10 text-primary-600" />
+						) : (
+							<Image
+								src={image}
+								className="h-10 w-10"
+								alt="Integration logo"
+								draggable={false}
+							/>
+						)
+					}
+					settings={settings}
+				/>
+			)
+		)}
+	</ul>
 );
+
+const tabs = ["Integrations", "Settings"];
+
+const Settings = () => (
+	<div className="flex flex-col space-y-4">
+		<label>
+			Return URL
+			<input type="text" placeholder="https://example.com/" className="input" />
+		</label>
+	</div>
+);
+
+export const SidePanel = () => {
+	const [activeTab, setActiveTab] = useState("Integrations");
+	return (
+		<aside className="bg-white self-end h-full z-10 shadow-md m-3 p-3 w-64 flex flex-col justify-between mb-10">
+			<div>
+				<nav className="flex space-x-4 mb-3" aria-label="Tabs">
+					{tabs.map((tab) => (
+						<button
+							key={tab}
+							className={clsx(
+								tab === activeTab
+									? "bg-indigo-100 text-indigo-700"
+									: "text-gray-500 hover:text-gray-700",
+								"rounded-md px-3 py-2 text-sm font-medium"
+							)}
+							onClick={() => setActiveTab(tab)}
+						>
+							{tab}
+						</button>
+					))}
+				</nav>
+				{activeTab === "Integrations" && <IntegrationsList />}
+				{activeTab === "Settings" && <Settings />}
+			</div>
+			<ExportJSONButton />
+		</aside>
+	);
+};
 
 const ExportJSONButton = () => {
 	const { getNodes, getEdges } = useReactFlow();
@@ -126,4 +164,4 @@ const ExportJSONButton = () => {
 	);
 };
 
-export default IntegrationList;
+export default SidePanel;

@@ -12,8 +12,8 @@ import {
 import "reactflow/dist/style.css";
 import EdgeEditor from "./EdgeEditor";
 import IntegrationNode from "./IntegrationNode";
-import IntegrationList from "./IntegrationsList";
 import ScreenNode from "./ScreenNode";
+import SidePanel from "./SidePanel";
 import { FormComponentType } from "./types";
 
 const defaultNodes: Node[] = [
@@ -85,7 +85,7 @@ const FlowEditor = () => {
 				{editingEdge ? (
 					<EdgeEditor edge={editingEdge} onClose={() => setEditingEdge(null)} />
 				) : null}
-				<IntegrationList />
+				<SidePanel />
 			</ReactFlow>
 		</div>
 	);
