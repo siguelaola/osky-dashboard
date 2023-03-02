@@ -56,17 +56,17 @@ const BlockEditor: React.FC<{
 					header: Header,
 					paragraph: Paragraph,
 					image: ImageTool,
-					input: InputText,
 					list: {
 						class: List,
 						config: {
 							defaultStyle: "unordered",
 						},
 					},
-					date: InputDate,
-					address: AddressBlock,
-					phone: InputPhone,
 					separator: SeparatorComponent,
+					"input-text": InputText,
+					"input-date": InputDate,
+					"input-address": AddressBlock,
+					"input-phone": InputPhone,
 				},
 				minHeight: 0,
 				onChange: async () => {
