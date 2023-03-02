@@ -98,7 +98,7 @@ const BlockEditor: React.FC<{
 	return (
 		<div
 			id={EDITORJS_ROOT_ID}
-			className="prose relative z-20 flex flex-col justify-between items-center bg-white gap-3 min-h-[300px]"
+			className="prose relative z-20 bg-white min-h-[300px]"
 		/>
 	);
 };
