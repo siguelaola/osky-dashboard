@@ -1,9 +1,7 @@
 import {
-	CalendarIcon,
-	ChartBarIcon,
+	Cog6ToothIcon,
 	FolderIcon,
 	HomeIcon,
-	InboxIcon,
 	UsersIcon,
 } from "@heroicons/react/24/outline";
 import clsx from "clsx";
@@ -12,12 +10,10 @@ import Image from "next/image";
 import Logo from "../public/logo.svg";
 
 const navigation = [
-	{ name: "Dashboard", href: "#", icon: HomeIcon, current: true },
+	{ name: "Dashboard", href: "#", icon: HomeIcon, current: false },
+	{ name: "Flows", href: "/flow-editor", icon: FolderIcon, current: true },
 	{ name: "Team", href: "#", icon: UsersIcon, current: false },
-	{ name: "Projects", href: "#", icon: FolderIcon, current: false },
-	{ name: "Calendar", href: "#", icon: CalendarIcon, current: false },
-	{ name: "Documents", href: "#", icon: InboxIcon, current: false },
-	{ name: "Reports", href: "#", icon: ChartBarIcon, current: false },
+	{ name: "Settings", href: "#", icon: Cog6ToothIcon, current: false },
 ];
 
 export const Sidebar = () => (
