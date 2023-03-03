@@ -9,7 +9,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
 			<Head />
 			<body>
 				<Sidebar />
-				<main>{children}</main>
+				<main className="ml-64">{children}</main>
 				<Footer />
 			</body>
 		</html>

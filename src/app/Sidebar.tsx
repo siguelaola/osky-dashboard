@@ -13,7 +13,7 @@ const navigation = [
 	{ name: "Dashboard", href: "#", icon: HomeIcon, current: false },
 	{ name: "Flows", href: "/flow-editor", icon: FolderIcon, current: true },
 	{ name: "Team", href: "#", icon: UsersIcon, current: false },
-	{ name: "Settings", href: "#", icon: Cog6ToothIcon, current: false },
+	{ name: "Settings", href: "/settings", icon: Cog6ToothIcon, current: false },
 ];
 
 export const Sidebar = () => (
