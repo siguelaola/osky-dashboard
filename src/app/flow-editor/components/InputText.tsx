@@ -1,6 +1,6 @@
 import { API, BlockToolData } from "@editorjs/editorjs";
 import React, { useState } from "react";
-import { render } from "react-dom";
+import { createRoot } from "react-dom/client";
 
 const InputParameters: React.FC<{ onDataChange: (data: any) => void }> = ({
 	onDataChange,
@@ -84,8 +84,8 @@ export default class InputText {
 		const onDataChange = (newData: any) => {
 			this.data = { ...newData };
 		};
-
-		render(<InputParameters onDataChange={onDataChange} />, rootNode);
+		const root = createRoot(rootNode);
+		root.render(<InputParameters onDataChange={onDataChange} />);
 
 		return rootNode;
 	}

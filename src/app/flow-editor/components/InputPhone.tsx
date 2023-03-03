@@ -1,6 +1,6 @@
 import { API, OutputBlockData } from "@editorjs/editorjs";
 import { useState } from "react";
-import { render } from "react-dom";
+import { createRoot } from "react-dom/client";
 
 const PhoneInputElement: React.FC<{
 	onDataChange: (data: any) => void;
@@ -67,7 +67,8 @@ export default class InputPhone {
 			this.data = { ...newData };
 		};
 
-		render(<PhoneInputElement onDataChange={onDataChange} />, rootNode);
+		const root = createRoot(rootNode);
+		root.render(<PhoneInputElement onDataChange={onDataChange} />);
 
 		return rootNode;
 	}
