@@ -80,9 +80,6 @@ export default class InputText {
 	}
 
 	render() {
-		// rootNode.setAttribute("class", this.CSS.wrapper);
-		// this.nodes.holder = rootNode;
-
 		const rootNode = document.createElement("div");
 		const onDataChange = (newData: any) => {
 			this.data = { ...newData };
@@ -90,8 +87,11 @@ export default class InputText {
 
 		render(<InputParameters onDataChange={onDataChange} />, rootNode);
 
-		// this.api.listeners.on(element.children[0], "change", this.api.saver.save);
-
 		return rootNode;
+	}
+
+	save(contents: HTMLFieldSetElement) {
+		// stub
+		return {};
 	}
 }
