@@ -106,14 +106,52 @@ const IntegrationsList = () => (
 
 const tabs = ["Integrations", "Settings"];
 
-const Settings = () => (
-	<div className="flex flex-col space-y-4">
-		<label>
-			Return URL
-			<input type="text" placeholder="https://example.com/" className="input" />
-		</label>
-	</div>
-);
+const Settings = () => {
+	const [redirect, setRedirect] = useState(false);
+	const [poweredBy, setPoweredBy] = useState(true);
+
+	return (
+		<div className="flex flex-col space-y-4">
+			<label>
+				<div className="flex justify-between">
+					<p>Redirect on completion</p>
+					<input
+						type="checkbox"
+						checked={redirect}
+						onChange={(e) => setRedirect(e.target.checked)}
+					/>
+				</div>
+				<p className="text-sm text-gray-500">
+					Redirect to a custom URL when the form is submitted.
+				</p>
+			</label>
+
+			{redirect ? (
+				<input
+					type="text"
+					placeholder="https://example.com/"
+					className="border p-2 rounded-md"
+					required
+				/>
+			) : null}
+			<hr />
+
+			<label>
+				<div className="flex justify-between">
+					<p>Ola branding</p>
+					<input
+						type="checkbox"
+						checked={poweredBy}
+						onChange={(e) => setPoweredBy(e.target.checked)}
+					/>
+				</div>
+				<p className="text-sm text-gray-500">
+					Show "Powered by Ola" at the bottom of your screens.
+				</p>
+			</label>
+		</div>
+	);
+};
 
 export const SidePanel = () => {
 	const [activeTab, setActiveTab] = useState("Integrations");
