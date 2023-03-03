@@ -1,5 +1,4 @@
 import { API, OutputBlockData } from "@editorjs/editorjs";
-import { AsYouType } from "libphonenumber-js";
 import { useState } from "react";
 import { render } from "react-dom";
 
@@ -71,28 +70,6 @@ export default class InputPhone {
 		render(<PhoneInputElement onDataChange={onDataChange} />, rootNode);
 
 		return rootNode;
-
-		const countryCodeSelect = element.querySelector(
-			"[name='code']"
-		) as HTMLSelectElement;
-		const numberInput = element.querySelector(
-			"[data-field='phone-number']"
-		) as HTMLInputElement;
-
-		this.api.listeners.on(numberInput, "input", () => {
-			const formatter = new AsYouType();
-			const countryCode = countryCodeSelect.selectedOptions[0].label;
-
-			const numberWithoutCountryCode = numberInput.value;
-			const numberBeforeFormatting = countryCode + numberWithoutCountryCode;
-			const numberFormatted = formatter.input(numberBeforeFormatting);
-
-			const regex = /\+\d+? /g;
-
-			numberInput.value = numberFormatted.replace(regex, "");
-		});
-
-		return element;
 	}
 
 	save(contents: HTMLFieldSetElement) {

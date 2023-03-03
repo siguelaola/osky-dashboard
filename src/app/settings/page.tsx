@@ -1,6 +1,6 @@
 const Page = () => {
 	return (
-		<div>
+		<div className="p-3">
 			<h1>Settings</h1>
 		</div>
 	);

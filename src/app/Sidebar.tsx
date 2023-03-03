@@ -11,9 +11,14 @@ import Logo from "../public/logo.svg";
 
 const navigation = [
 	{ name: "Dashboard", href: "#", icon: HomeIcon, current: false },
-	{ name: "Flows", href: "/flow-editor", icon: FolderIcon, current: true },
+	{ name: "Flows", href: "/flows", icon: FolderIcon, current: true },
 	{ name: "Team", href: "#", icon: UsersIcon, current: false },
-	{ name: "Settings", href: "/settings", icon: Cog6ToothIcon, current: false },
+	{
+		name: "Settings",
+		href: "/settings/organization",
+		icon: Cog6ToothIcon,
+		current: false,
+	},
 ];
 
 export const Sidebar = () => (
