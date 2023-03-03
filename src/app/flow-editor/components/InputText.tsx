@@ -35,7 +35,7 @@ const InputParameters: React.FC<{ onDataChange: (data: any) => void }> = ({
 				/>
 			</label>
 			<details>
-				<summary>Parameters</summary>
+				<summary>Input settings</summary>
 				<fieldset className="grid grid-cols-2 gap-y-0.5">
 					<div className="flex flex-col gap-y-0.5 pl-3">
 						<label>
@@ -45,16 +45,7 @@ const InputParameters: React.FC<{ onDataChange: (data: any) => void }> = ({
 								checked={required}
 								onChange={(e) => setRequired(e.currentTarget.checked)}
 							/>
-							required
-						</label>
-						<label>
-							<input
-								type="checkbox"
-								className="align-middle"
-								checked={secure}
-								onChange={(e) => setSecure(e.currentTarget.checked)}
-							/>
-							secure
+							Required
 						</label>
 					</div>
 				</fieldset>
@@ -102,41 +93,5 @@ export default class InputText {
 		// this.api.listeners.on(element.children[0], "change", this.api.saver.save);
 
 		return rootNode;
-	}
-
-	save(contents: HTMLFieldSetElement) {
-		const labelInput = contents.querySelector(
-			"[data-setting='label']"
-		) as HTMLInputElement;
-		const label = labelInput.value;
-
-		const placeholderInput = contents.querySelector(
-			"[data-setting='placeholder']"
-		) as HTMLInputElement;
-		const placeholder = placeholderInput.value;
-
-		const requiredCheckbox = contents.querySelector(
-			"[data-setting='required']"
-		) as HTMLInputElement;
-		const required = requiredCheckbox.checked;
-
-		const secureCheckbox = contents.querySelector(
-			"[data-setting='secure']"
-		) as HTMLInputElement;
-		const secure = secureCheckbox.checked;
-
-		const validatedCheckbox = contents.querySelector(
-			"[data-setting='validated']"
-		) as HTMLInputElement;
-		const validated = validatedCheckbox.checked;
-
-		return {
-			label,
-			placeholder,
-			required,
-			secure,
-			validated,
-			// ...(validated && validation)
-		};
 	}
 }
