@@ -11,6 +11,7 @@ import InputDate from "./components/InputDate";
 import InputPhone from "./components/InputPhone";
 import InputText from "./components/InputText";
 import SeparatorComponent from "./components/SeparatorComponent";
+import Checklist from "@editorjs/checklist";
 
 const EDITORJS_ROOT_ID = "editorjs-root";
 
@@ -63,6 +64,10 @@ const BlockEditor: React.FC<{
 						},
 					},
 					separator: SeparatorComponent,
+					checklist: {
+						class: Checklist,
+						inlineToolbar: true
+					},
 					"input-text": InputText,
 					"input-date": InputDate,
 					"input-address": AddressBlock,
