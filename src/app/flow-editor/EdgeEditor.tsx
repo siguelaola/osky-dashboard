@@ -1,6 +1,7 @@
+import { OutputBlockData } from "@editorjs/editorjs";
 import { PlusSmallIcon, TrashIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
-import { Edge } from "reactflow";
+import { Edge, Node } from "reactflow";
 import Button from "./Button";
 
 interface Condition {
@@ -10,13 +11,33 @@ interface Condition {
 	value: string;
 }
 
+const SelectVariable: React.FC<{
+	node: Node<any, string | undefined>;
+}> = ({ node }) => {
+	const blocks: OutputBlockData[] = node.data.blocks || [];
+	console.log(blocks, "blocks");
+	const variables = blocks.filter((block) =>
+		(block.type as string).startsWith("input-")
+	);
+	return (
+		<select>
+			{variables.map((variable) => (
+				<option key={variable.id}>
+					{variable.data.label || variable.type}
+				</option>
+			))}
+		</select>
+	);
+};
+
 const ConditionEntry: React.FC<{
 	condition: Condition;
 	setCondition: (condition: Condition | null) => void;
-}> = ({ condition, setCondition }) => (
+	node: Node<any, string | undefined>;
+}> = ({ condition, setCondition, node }) => (
 	<li className="flex justify-between items-center border-b border-gray-300 py-2">
 		<div className="flex items-center">
-			<input className="w-24 mr-2" type="text" placeholder="Input" />
+			<SelectVariable node={node} />
 			<select className="mr-2">
 				<option value="eq">equals</option>
 				<option value="neq">does not equal</option>
@@ -39,10 +60,11 @@ const ConditionEntry: React.FC<{
 	</li>
 );
 
-const EdgeEditor: React.FC<{ edge: Edge; onClose: () => void }> = ({
-	edge,
-	onClose,
-}) => {
+const EdgeEditor: React.FC<{
+	edge: Edge;
+	onClose: () => void;
+	nodes: Node<any, string | undefined>[];
+}> = ({ edge, onClose, nodes }) => {
 	const [conditions, setConditions] = useState<Condition[]>([]);
 
 	return (
@@ -72,6 +94,7 @@ const EdgeEditor: React.FC<{ edge: Edge; onClose: () => void }> = ({
 									delete newConditions[index];
 								}
 							}}
+							node={nodes.filter((node) => node.id === edge.source)[0]}
 						/>
 					))}
 				</ul>

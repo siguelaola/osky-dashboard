@@ -79,7 +79,11 @@ const FlowEditor = () => {
 			>
 				<Background />
 				{editingEdge ? (
-					<EdgeEditor edge={editingEdge} onClose={() => setEditingEdge(null)} />
+					<EdgeEditor
+						edge={editingEdge}
+						onClose={() => setEditingEdge(null)}
+						nodes={nodes}
+					/>
 				) : null}
 				<SidePanel />
 			</ReactFlow>
