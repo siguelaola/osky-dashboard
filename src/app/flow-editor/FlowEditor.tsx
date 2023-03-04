@@ -50,7 +50,7 @@ const defaultNodes: Node[] = [
 				},
 			],
 		},
-		position: { x: 250, y: 250 },
+		position: { x: 0, y: 0 },
 	},
 ];
 const defaultEdges: Edge[] = [];
@@ -75,6 +75,8 @@ const FlowEditor = () => {
 				onConnect={(params) => setEdges((els) => addEdge(params, els))}
 				onEdgeClick={(e, edge) => setEditingEdge(edge)}
 				nodeTypes={nodeTypes}
+				fitView={true}
+				fitViewOptions={{ maxZoom: 1 }}
 				className="flex flex-col"
 			>
 				<Background />
