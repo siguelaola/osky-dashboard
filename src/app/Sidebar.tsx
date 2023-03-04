@@ -10,9 +10,14 @@ import Image from "next/image";
 import Logo from "../public/logo.svg";
 
 const navigation = [
-	{ name: "Dashboard", href: "#", icon: HomeIcon, current: false },
+	{ name: "Dashboard", href: "/flows", icon: HomeIcon, current: false },
 	{ name: "Flows", href: "/flows", icon: FolderIcon, current: true },
-	{ name: "Team", href: "#", icon: UsersIcon, current: false },
+	{
+		name: "Team",
+		href: "/settings/organization/users",
+		icon: UsersIcon,
+		current: false,
+	},
 	{
 		name: "Settings",
 		href: "/settings/organization",
