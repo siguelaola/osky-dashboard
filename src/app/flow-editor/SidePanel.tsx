@@ -177,7 +177,17 @@ export const SidePanel = () => {
 				{activeTab === "Integrations" && <IntegrationsList />}
 				{activeTab === "Settings" && <Settings />}
 			</div>
-			<ExportJSONButton />
+			<div className="flex flex-col gap-2">
+				<hr />
+
+				<ExportJSONButton />
+				<Button
+					variant="primary"
+					onClick={() => alert("Error publishing to web")}
+				>
+					Publish to web
+				</Button>
+			</div>
 		</aside>
 	);
 };
