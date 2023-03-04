@@ -26,7 +26,7 @@ const ScreenEditor: React.FC<{
 	return (
 		<>
 			<div
-				className="fixed z-10 inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+				className="absolute z-10 inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
 				onClick={() => save()}
 			/>
 			<div className="relative z-20 flex flex-col justify-between items-center bg-white rounded-lg p-5 shadow-lg gap-3">

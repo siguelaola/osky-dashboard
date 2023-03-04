@@ -7,9 +7,13 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<html lang="en">
 			<Head />
-			<body>
+			<body className="flex">
 				<Sidebar />
-				<main className="ml-64">{children}</main>
+				<main className="w-full pl-64">{children}</main>
+				<div
+					id="modal-portal-root"
+					className="absolute w-full h-full z-10 empty:hidden flex justify-center items-center"
+				/>
 				<Footer />
 			</body>
 		</html>

@@ -67,10 +67,6 @@ const FlowEditor = () => {
 
 	return (
 		<div className="h-screen">
-			<div
-				id="modal-portal-root"
-				className="fixed w-full h-full z-10 empty:hidden flex justify-center items-center"
-			/>
 			<ReactFlow
 				nodes={nodes}
 				edges={edges}
