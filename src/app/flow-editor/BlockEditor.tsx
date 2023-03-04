@@ -55,7 +55,10 @@ const BlockEditor: React.FC<{
 				autofocus: true,
 				tools: {
 					header: Header,
-					paragraph: Paragraph,
+					paragraph: {
+						class: Paragraph,
+						inlineToolbar: true
+					},
 					image: ImageTool,
 					list: {
 						class: List,
