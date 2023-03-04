@@ -73,7 +73,7 @@ const FlowEditor = () => {
 				onNodesChange={onNodesChange}
 				onEdgesChange={onEdgesChange}
 				onConnect={(params) => setEdges((els) => addEdge(params, els))}
-				onEdgeClick={(e, edge) => setEditingEdge(edge)}
+				onEdgeClick={(_, edge) => setEditingEdge(edge)}
 				nodeTypes={nodeTypes}
 				fitView={true}
 				fitViewOptions={{ maxZoom: 1 }}

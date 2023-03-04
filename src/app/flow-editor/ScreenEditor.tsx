@@ -34,7 +34,7 @@ const ScreenEditor: React.FC<{
 						type="text"
 						value={name}
 						placeholder="Enter a name for this screen"
-						onChange={(e) => setName(e.currentTarget.value)}
+						onChange={(event) => setName(event.currentTarget.value)}
 					/>
 					<div className="flex gap-2">
 						<DevicePhoneMobileIcon

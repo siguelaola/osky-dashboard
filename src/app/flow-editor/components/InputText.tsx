@@ -24,13 +24,13 @@ const InputParameters: React.FC<{
 					className="w-full border-none p-0 text-sm leading-none mb-0.5 outline-none"
 					placeholder="Label"
 					value={label}
-					onChange={(e) => setLabel(e.currentTarget.value)}
+					onChange={(event) => setLabel(event.currentTarget.value)}
 				/>
 				<input
 					className="w-full border border-current px-1 py-0.5 m-0 leading-none"
 					placeholder="Placeholder text"
 					value={placeholder}
-					onChange={(e) => setPlaceholder(e.currentTarget.value)}
+					onChange={(event) => setPlaceholder(event.currentTarget.value)}
 				/>
 			</label>
 			<details>
@@ -42,7 +42,7 @@ const InputParameters: React.FC<{
 								type="checkbox"
 								className="align-middle"
 								checked={required}
-								onChange={(e) => setRequired(e.currentTarget.checked)}
+								onChange={(event) => setRequired(event.currentTarget.checked)}
 							/>
 							required
 						</label>
