@@ -1,4 +1,4 @@
-import { API, OutputBlockData } from "@editorjs/editorjs";
+import { API, BlockToolData } from "@editorjs/editorjs";
 import { useState } from "react";
 import { createRoot } from "react-dom/client";
 
@@ -54,8 +54,8 @@ export default class InputPhone {
 	data;
 	api;
 
-	constructor({ data, api }: { data: OutputBlockData; api: API }) {
 		this.data = data;
+	constructor({ data, api }: { data: BlockToolData; api: API }) {
 		this.api = api;
 	}
 
