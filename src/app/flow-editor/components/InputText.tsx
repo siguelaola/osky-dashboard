@@ -64,16 +64,10 @@ export default class InputText {
 
 	data;
 	api;
-	nodes: {
-		holder: HTMLElement | null;
-	};
 
 	constructor({ data, api }: { data: BlockToolData<any>; api: API }) {
 		this.data = data || {};
 		this.api = api;
-		this.nodes = {
-			holder: null,
-		};
 	}
 
 	render() {
