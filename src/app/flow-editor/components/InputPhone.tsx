@@ -54,8 +54,8 @@ export default class InputPhone {
 	data;
 	api;
 
-		this.data = data;
 	constructor({ data, api }: { data: BlockToolData; api: API }) {
+		this.data = data || {};
 		this.api = api;
 	}
 
