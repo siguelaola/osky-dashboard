@@ -25,7 +25,6 @@ const PhoneInputElement: React.FC<{
 					defaultValue={defaultCountry}
 					onChange={(e) => setDefaultCountry(e.currentTarget.value)}
 				>
-					<option value="ca">+1</option>
 					<option value="us">+1</option>
 					<option value="nl">+31</option>
 					<option value="be">+32</option>
