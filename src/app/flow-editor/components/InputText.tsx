@@ -2,10 +2,10 @@ import { API, BlockToolData } from "@editorjs/editorjs";
 import React, { useState } from "react";
 import { createRoot } from "react-dom/client";
 
-const InputParameters: React.FC<{ onDataChange: (data: any) => void }> = ({
-	onDataChange,
-}) => {
-	const [secure, setSecure] = useState(false);
+const InputParameters: React.FC<{
+	onDataChange: (data: any) => void;
+	onChange: (event: any) => void;
+}> = ({ onDataChange, onChange }) => {
 	const [required, setRequired] = useState(false);
 	const [label, setLabel] = useState("");
 	const [placeholder, setPlaceholder] = useState("");
@@ -19,7 +19,7 @@ const InputParameters: React.FC<{ onDataChange: (data: any) => void }> = ({
 	});
 
 	return (
-		<fieldset className="my-2 pr-2">
+		<fieldset onChange={onChange} className="my-2 pr-2">
 			<label>
 				<input
 					className="w-full border-none p-0 text-sm leading-none mb-0.5 outline-none"
@@ -85,7 +85,12 @@ export default class InputText {
 			this.data = { ...newData };
 		};
 		const root = createRoot(rootNode);
-		root.render(<InputParameters onDataChange={onDataChange} />);
+		root.render(
+			<InputParameters
+				onDataChange={onDataChange}
+				onChange={this.api.saver.save}
+			/>
+		);
 
 		return rootNode;
 	}
