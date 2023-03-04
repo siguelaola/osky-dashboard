@@ -69,10 +69,7 @@ export default class InputText {
 	};
 
 	constructor({ data, api }: { data: BlockToolData<any>; api: API }) {
-		this.data = {
-			required: data.required || false,
-			secure: data.secure || false,
-		};
+		this.data = data || {};
 		this.api = api;
 		this.nodes = {
 			holder: null,
