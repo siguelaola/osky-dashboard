@@ -44,7 +44,7 @@ const InputParameters: React.FC<{
 								checked={required}
 								onChange={(e) => setRequired(e.currentTarget.checked)}
 							/>
-							Required
+							required
 						</label>
 					</div>
 				</fieldset>
