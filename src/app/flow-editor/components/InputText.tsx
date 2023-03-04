@@ -87,7 +87,6 @@ export default class InputText {
 	}
 
 	save(contents: HTMLFieldSetElement) {
-		// stub
-		return {};
+		return this.data;
 	}
 }
