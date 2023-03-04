@@ -11,6 +11,7 @@ import InputDate from "./components/InputDate";
 import InputPhone from "./components/InputPhone";
 import InputText from "./components/InputText";
 import SeparatorComponent from "./components/SeparatorComponent";
+import YesNoRadios from "./components/YesNoRadios";
 import Checklist from "@editorjs/checklist";
 
 const EDITORJS_ROOT_ID = "editorjs-root";
@@ -67,6 +68,7 @@ const BlockEditor: React.FC<{
 						},
 					},
 					separator: SeparatorComponent,
+					yesno: YesNoRadios,
 					checklist: {
 						class: Checklist,
 						inlineToolbar: true
