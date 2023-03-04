@@ -21,8 +21,6 @@ const ScreenEditor: React.FC<{
 	// lazy-load to prevent error noise
 	const BlockEditor = require("./BlockEditor").default;
 
-	const EDITORJS_ID = "editorjs-root";
-
 	return (
 		<>
 			<div
