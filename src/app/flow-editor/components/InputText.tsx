@@ -12,7 +12,6 @@ const InputParameters: React.FC<{
 
 	// Triggers on every render
 	onDataChange({
-		secure,
 		required,
 		label,
 		placeholder,
