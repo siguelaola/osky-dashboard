@@ -1,4 +1,4 @@
-import { API, BlockToolData } from "@editorjs/editorjs";
+import { BlockAPI, BlockToolData } from "@editorjs/editorjs";
 import React, { useState } from "react";
 import { createRoot } from "react-dom/client";
 
@@ -62,11 +62,11 @@ export default class InputText {
 	}
 
 	data;
-	api;
+	block;
 
-	constructor({ data, api }: { data: BlockToolData<any>; api: API }) {
+	constructor({ data, block }: { data: BlockToolData<any>; block: BlockAPI }) {
 		this.data = data || {};
-		this.api = api;
+		this.block = block;
 	}
 
 	render() {
@@ -78,7 +78,7 @@ export default class InputText {
 		root.render(
 			<InputParameters
 				onDataChange={onDataChange}
-				onChange={this.api.saver.save}
+				onChange={this.block.dispatchChange}
 			/>
 		);
 
