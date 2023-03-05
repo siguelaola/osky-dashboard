@@ -1,5 +1,5 @@
 import { createRoot } from "react-dom/client";
-import { BlockToolData } from "@editorjs/editorjs";
+import { BlockAPI, BlockToolData } from "@editorjs/editorjs";
 
 export default class YesNoRadios {
 	static get toolbox() {
@@ -10,15 +10,14 @@ export default class YesNoRadios {
 	}
 
 	data;
+	_id;
 
-	constructor({ data }: { data: BlockToolData<any> }) {
+	constructor({ data, block }: { data: BlockToolData<any>; block: BlockAPI }) {
 		this.data = data || {};
+		this._id = block.id;
 	}
 
 	render() {
-		// TODO: generate unique IDs and names for radios
-		// use block ID?
-
 		// TODO: generalize radio+label as its own element
 
 		const rootNode = document.createElement("div");
@@ -34,14 +33,14 @@ export default class YesNoRadios {
 					<div className="flex">
 						<input
 							type="radio"
-							id="no"
+							id={this._id + "-no"}
 							value="false"
 							className="hidden peer"
-							name="yes-no"
+							name={this._id + "-yes-no"}
 							defaultChecked
 						/>
 						<label
-							htmlFor="no"
+							htmlFor={this._id + "-no"}
 							className="p-2 rounded-2xl border border-gray-600 min-w-[4rem] text-center text-black leading-none cursor-pointer peer-checked:bg-primary-600 peer-checked:text-white peer-checked:font-semibold"
 						>
 							No
@@ -50,13 +49,13 @@ export default class YesNoRadios {
 					<div className="flex">
 						<input
 							type="radio"
-							id="yes"
+							id={this._id + "-yes"}
 							value="true"
-							name="yes-no"
+							name={this._id + "-yes-no"}
 							className="hidden peer"
 						/>
 						<label
-							htmlFor="yes"
+							htmlFor={this._id + "-yes"}
 							className="p-2 rounded-3xl border border-gray-600 min-w-[4rem] text-center font-semibold text-black leading-none cursor-pointer peer-checked:bg-primary-600 peer-checked:text-white peer-checked:font-semibold"
 						>
 							Yes
