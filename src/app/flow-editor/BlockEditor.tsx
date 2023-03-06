@@ -108,7 +108,7 @@ const BlockEditor: React.FC<{
 	return (
 		<div
 			id={EDITORJS_ROOT_ID}
-			className="px-3 py-2 prose relative z-20 bg-white min-h-[300px]"
+			className="px-3 py-2 prose relative z-20 bg-white min-h-[300px] max-w-[100%]"
 			onMouseDown={(e) => {
 				if ((e.target as any).id === EDITORJS_ROOT_ID) editor?.focus();
 			}}

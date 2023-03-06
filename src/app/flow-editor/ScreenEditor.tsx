@@ -27,7 +27,7 @@ const ScreenEditor: React.FC<{
 				className="absolute z-10 inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
 				onClick={() => save()}
 			/>
-			<div className="relative z-20 flex flex-col justify-between items-center bg-white rounded-lg p-5 shadow-lg gap-3">
+			<div className="relative z-20 w-[80%] flex flex-col justify-between items-center bg-white rounded-lg p-5 shadow-lg gap-3">
 				<div className="flex w-full justify-between items-center">
 					<input
 						className="font-semibold text-xl text-gray-800 p-3 border-2 border-dashed border-gray-300"
