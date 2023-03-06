@@ -12,7 +12,7 @@ import InputPhone from "./components/InputPhone";
 import InputText from "./components/InputText";
 import SeparatorComponent from "./components/SeparatorComponent";
 import YesNoRadios from "./components/YesNoRadios";
-import Checklist from "@editorjs/checklist";
+import Checklist from "./components/ChecklistComponent";
 
 const EDITORJS_ROOT_ID = "editorjs-root";
 
