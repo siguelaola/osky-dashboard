@@ -1,5 +1,11 @@
 import { IconChecklist } from "@codexteam/icons";
-import { API, BlockToolData } from "@editorjs/editorjs";
+import {
+	API,
+	BlockTool,
+	BlockToolConstructable,
+	BlockToolConstructorOptions,
+	BlockToolData,
+} from "@editorjs/editorjs";
 import { BlockAPI } from "@editorjs/editorjs/types/api";
 import { nanoid } from "nanoid";
 import React, { useState } from "react";
@@ -69,7 +75,7 @@ const ChecklistComponent: React.FC<{
 	return <>{checklist}</>;
 };
 
-export default class Checklist {
+export default class Checklist implements BlockTool {
 	/**
 	 * Notify core that read-only mode is supported
 	 *
@@ -126,10 +132,10 @@ export default class Checklist {
 		};
 	} */
 
-	data: BlockToolData;
+	data: ChecklistData;
 	api: API;
-	block: BlockAPI;
-	_id;
+	block?: BlockAPI;
+	_id?: string;
 	_events;
 	readOnly;
 	root?: Root;
@@ -139,16 +145,11 @@ export default class Checklist {
 		block,
 		api,
 		readOnly,
-	}: {
-		data: BlockToolData;
-		block: BlockAPI;
-		api: API;
-		readOnly: boolean;
-	}) {
+	}: BlockToolConstructorOptions<ChecklistData, {}>) {
 		const component = this;
 
 		this.block = block;
-		this._id = this.block.id;
+		this._id = this.block?.id;
 
 		this._events = {
 			enter(event: KeyboardEvent) {
@@ -159,6 +160,7 @@ export default class Checklist {
 					(item: ChecklistItem) =>
 						item.id === document.activeElement?.parentElement?.id
 				);
+				if (!currentItem) return;
 				const currentItemIndex = items.indexOf(currentItem);
 				const isLastItem = currentItemIndex === items.length - 1;
 
@@ -166,7 +168,7 @@ export default class Checklist {
 
 				// Prevent checklist item generation if it's the last item and it's empty
 				// and get out of checklist
-				if (isLastItem && currentItem.text.length === 0) {
+				if (isLastItem && currentItem?.text.length === 0) {
 					return component.api.blocks.delete(currentBlockIndex);
 				}
 
@@ -200,6 +202,7 @@ export default class Checklist {
 					(item: ChecklistItem) =>
 						item.id === document.activeElement?.parentElement?.id
 				);
+				if (!currentItem) return;
 				const currentIndex = items.indexOf(currentItem);
 				const previousItem = items[currentIndex - 1];
 
@@ -250,7 +253,7 @@ export default class Checklist {
 		this.data = data || {};
 	}
 
-	render(): Element {
+	render(): HTMLElement {
 		if (!this.data.items) {
 			this.data.items = [
 				{
@@ -265,9 +268,10 @@ export default class Checklist {
 			const target = this.data.items.find(
 				(item: ChecklistItem) => item.id === updatedItem.id
 			);
+			if (!target) return;
 			Object.assign(target, updatedItem);
 
-			this.block.dispatchChange();
+			this.block?.dispatchChange();
 		};
 
 		const rootNode = document.createElement("fieldset");
@@ -308,12 +312,12 @@ export default class Checklist {
 		return rootNode;
 	}
 
-	save(): [] {
+	save() {
 		// TODO: skip empty lines (`item.text.trim().length`)
 		return this.data;
 	}
 
-	validate(savedData: BlockToolData): boolean {
+	validate(savedData: BlockToolData<ChecklistData>): boolean {
 		return !!savedData.items.length;
 	}
 }

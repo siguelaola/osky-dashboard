@@ -58,7 +58,7 @@ const BlockEditor: React.FC<{
 					header: Header,
 					paragraph: {
 						class: Paragraph,
-						inlineToolbar: true
+						inlineToolbar: true,
 					},
 					image: ImageTool,
 					list: {
@@ -70,8 +70,9 @@ const BlockEditor: React.FC<{
 					separator: SeparatorComponent,
 					yesno: YesNoRadios,
 					checklist: {
+						// @ts-ignore EditorJS's provided interface type cannot be satisfied
 						class: Checklist,
-						inlineToolbar: true
+						inlineToolbar: true,
 					},
 					"input-text": InputText,
 					"input-date": InputDate,
