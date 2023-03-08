@@ -8,6 +8,7 @@ import DragDrop from "editorjs-drag-drop";
 import { useEffect, useState } from "react";
 import AddressBlock from "./components/AddressBlock";
 import Checklist from "./components/ChecklistComponent";
+import CountryComponent from "./components/CountryComponent";
 import InputDate from "./components/InputDate";
 import InputPhone from "./components/InputPhone";
 import InputText from "./components/InputText";
@@ -74,6 +75,7 @@ const BlockEditor: React.FC<{
 						class: Checklist,
 						inlineToolbar: true,
 					},
+					country: CountryComponent,
 					"input-text": InputText,
 					"input-date": InputDate,
 					"input-address": AddressBlock,
