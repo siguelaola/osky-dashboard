@@ -5,7 +5,6 @@ import PlaceholderAvatar from "./PlaceholderAvatar";
 const UserCard: React.FC<{}> = async () => {
 	const supabase = createClient();
 	const { data } = await supabase.auth.getUser();
-	let displayName = "Login";
 	if (data.user) {
 		const { data: profile, error } = await supabase
 			.from("profiles")
@@ -15,14 +14,24 @@ const UserCard: React.FC<{}> = async () => {
 		if (error) {
 			throw error;
 		}
-		displayName = profile.display_name ?? profile.email;
+		return (
+			<div>
+				<PlaceholderAvatar />
+				<div>{profile.display_name ?? profile.email}</div>
+				<div>
+					<form action="/logout" method="post">
+						<button type="submit">Logout</button>
+					</form>
+				</div>
+			</div>
+		);
+	} else {
+		return (
+			<div>
+				<a href="/login">Login</a>
+			</div>
+		);
 	}
-	return (
-		<div>
-			<PlaceholderAvatar />
-			{displayName}
-		</div>
-	);
 };
 
 export default UserCard;
