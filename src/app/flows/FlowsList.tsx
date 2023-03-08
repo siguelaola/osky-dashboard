@@ -4,7 +4,10 @@ import { createClient } from "../utils/supabase/server";
 // @ts-expect-error Async Server Component
 const FlowsList: React.FC<{}> = async () => {
 	const supabase = createClient();
-	const { data, error } = await supabase.from("flows").select("*");
+	const { data, error } = await supabase
+		.from("flows")
+		.select("*")
+		.eq("is_starter", false);
 	if (error) {
 		throw error;
 	}

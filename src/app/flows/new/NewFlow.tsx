@@ -1,14 +1,46 @@
 "use client";
+import { useSupabase } from "../../(components)/supabase/SupabaseProvider";
 import Button from "../../flow-editor/Button";
+import { Json } from "../../utils/supabase/types";
 
-const NewFlow = () => {
+const NewFlow = ({
+	starters,
+}: {
+	starters: Array<{ title: string; data: any }>;
+}) => {
+	const { supabase } = useSupabase();
+	const getOrganizationId = async () => {
+		const { data, error } = await supabase
+			.from("organization_members")
+			.select("organization_id")
+			.limit(1)
+			.single();
+		if (error) {
+			throw error;
+		}
+		return data.organization_id;
+	};
 	return (
 		<>
 			<h1 className="font-semibold text-3xl mb-5">Create a new flow</h1>
 
 			<div className="w-full flex justify-center">
 				<Button
-					onClick={() => (window.location.pathname = "/flows/1")}
+					onClick={async () => {
+						const organization_id = await getOrganizationId();
+						const { data, error } = await supabase
+							.from("flows")
+							.insert({
+								organization_id,
+								title: `New Blank Flow`,
+								data: {},
+							})
+							.select("id");
+						if (error) {
+							throw error;
+						}
+						window.location.pathname = `/flows/${data[0].id}`;
+					}}
 					className="px-5 py-10 text-xl"
 				>
 					Blank flow
@@ -20,19 +52,28 @@ const NewFlow = () => {
 			</h2>
 
 			<div className="grid grid-cols-2 gap-3 max-w-lg">
-				<Button
-					onClick={() => (window.location.pathname = "/flows/1")}
-					className="px-5 py-10 text-xl"
-				>
-					Simple onboarding
-				</Button>
-
-				<Button
-					onClick={() => (window.location.pathname = "/flows/1")}
-					className="px-5 py-10 text-xl"
-				>
-					FinTech onboarding
-				</Button>
+				{starters.map((starter) => (
+					<Button
+						onClick={async () => {
+							const organization_id = await getOrganizationId();
+							const { data, error } = await supabase
+								.from("flows")
+								.insert({
+									organization_id,
+									title: `Copy of ${starter.title}`,
+									data: starter.data as Json,
+								})
+								.select("id");
+							if (error) {
+								throw error;
+							}
+							window.location.pathname = `/flows/${data[0].id}`;
+						}}
+						className="px-5 py-10 text-xl"
+					>
+						{starter.title}
+					</Button>
+				))}
 			</div>
 		</>
 	);
