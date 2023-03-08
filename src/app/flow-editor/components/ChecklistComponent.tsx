@@ -166,7 +166,7 @@ export default class Checklist {
 
 				// Prevent checklist item generation if it's the last item and it's empty
 				// and get out of checklist
-				if (isLastItem && currentItem.text.length === 0) {
+				if (isLastItem && items.length === 1 && currentItem.text.length === 0) {
 					return component.api.blocks.delete(currentBlockIndex);
 				}
 
