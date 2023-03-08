@@ -153,7 +153,7 @@ export default class Checklist {
 			enter(event: KeyboardEvent) {
 				event.preventDefault();
 
-				const items = component.data.items;
+				const items = [...component.data.items];
 				const currentItem = items.find(
 					(item: ChecklistItem) =>
 						item.id === document.activeElement?.parentElement?.id
@@ -180,7 +180,13 @@ export default class Checklist {
 				};
 
 				// Insert new checklist item as sibling to currently selected item
-				items.splice(currentItemIndex + 1, 0, newItem);
+				const newItems = [
+					...items.slice(0, currentItemIndex + 1),
+					newItem,
+					...items.slice(currentItemIndex + 2, items.length),
+				];
+
+				component.data.items = [...newItems];
 
 				// Move caret to contentEditable textField of new checklist item
 				component.api.caret.setToBlock(currentBlockIndex + 1);
