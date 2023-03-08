@@ -2,7 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "../utils/supabase/server";
 
 export async function POST(request: NextRequest) {
-	const res = NextResponse.redirect("/");
+	const url = request.nextUrl.clone();
+	url.pathname = "/";
+	const res = NextResponse.redirect(url, 302);
 	res.cookies.set("supabase-auth-token", "");
 
 	const supabase = createClient();
