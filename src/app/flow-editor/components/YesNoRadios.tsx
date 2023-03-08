@@ -1,8 +1,13 @@
+import {
+	BlockAPI,
+	BlockTool,
+	BlockToolConstructable,
+	BlockToolData,
+} from "@editorjs/editorjs";
 import { createRoot } from "react-dom/client";
-import { BlockAPI, BlockToolData } from "@editorjs/editorjs";
 
-export default class YesNoRadios {
-	static get toolbox() {
+export default class YesNoRadios implements BlockTool {
+	static get toolbox(): BlockToolConstructable["toolbox"] {
 		return {
 			title: "Yes/No Choice",
 			icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0 0 10h10a5 5 0 0 0 0-10Zm0 8a3 3 0 1 1 3-3 3 3 0 0 1-3 3Z"/></svg>`,

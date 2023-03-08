@@ -1,6 +1,5 @@
 import { IconChecklist } from "@codexteam/icons";
 import {
-	API,
 	BlockTool,
 	BlockToolConstructable,
 	BlockToolConstructorOptions,
@@ -102,7 +101,7 @@ export default class Checklist implements BlockTool {
 	 *
 	 * @returns {{icon: string, title: string}}
 	 */
-	static get toolbox(): { icon: string; title: string } {
+	static get toolbox(): BlockToolConstructable["toolbox"] {
 		return {
 			icon: IconChecklist,
 			title: "Checklist",
@@ -132,30 +131,25 @@ export default class Checklist implements BlockTool {
 		};
 	} */
 
-	data: ChecklistData;
-	api: API;
-	block?: BlockAPI;
-	_id?: string;
+	api: BlockToolConstructorOptions["api"];
+	readOnly: BlockToolConstructorOptions["readOnly"];
+	data: BlockToolData;
+	block: BlockAPI;
+	_id;
 	_events;
-	readOnly;
 	root?: Root;
 
-	constructor({
-		data,
-		block,
-		api,
-		readOnly,
-	}: BlockToolConstructorOptions<ChecklistData, {}>) {
+	constructor({ data, block, api, readOnly }: BlockToolConstructorOptions) {
 		const component = this;
 
-		this.block = block;
-		this._id = this.block?.id;
+		this.block = block!;
+		this._id = this.block.id;
 
 		this._events = {
 			enter(event: KeyboardEvent) {
 				event.preventDefault();
 
-				const items = [...component.data.items];
+				const items = component.data.items;
 				const currentItem = items.find(
 					(item: ChecklistItem) =>
 						item.id === document.activeElement?.parentElement?.id
@@ -168,7 +162,7 @@ export default class Checklist implements BlockTool {
 
 				// Prevent checklist item generation if it's the last item and it's empty
 				// and get out of checklist
-				if (isLastItem && currentItem?.text.length === 0) {
+				if (isLastItem && items.length === 1 && currentItem.text.length === 0) {
 					return component.api.blocks.delete(currentBlockIndex);
 				}
 
@@ -183,16 +177,10 @@ export default class Checklist implements BlockTool {
 				};
 
 				// Insert new checklist item as sibling to currently selected item
-				const newItems = [
-					...items.slice(0, currentItemIndex + 1),
-					newItem,
-					...items.slice(currentItemIndex + 2, items.length),
-				];
+				items.splice(currentItemIndex + 1, 0, newItem);
 
-				component.data.items = [...newItems];
-
-				// Move caret to contentEditable textField of new checklist item
-				component.api.caret.setToBlock(currentBlockIndex + 1);
+				// TODO: Move caret to <ContentEditable /> of the new checklist item
+				// component.api.caret.setToBlock(currentBlockIndex + 1);
 
 				component.render();
 			},
@@ -240,11 +228,15 @@ export default class Checklist implements BlockTool {
 				// and remove the current one
 				const currentItemText = extractContentAfterCaret();
 
-				component.api.caret.setToPreviousBlock();
-
 				previousItem.text += currentItemText;
 
-				component.api.blocks.delete(currentBlockIndex);
+				items.splice(currentIndex, 1);
+
+				if (items.length === 0) {
+					component.api.blocks.delete(currentBlockIndex);
+				} else {
+					component.render();
+				}
 			},
 		};
 
@@ -275,11 +267,13 @@ export default class Checklist implements BlockTool {
 		};
 
 		const rootNode = document.createElement("fieldset");
+
 		if (!this.root) {
 			this.root = createRoot(rootNode);
 
 			// If read-only mode is on, do not bind events
 			if (this.readOnly) return rootNode;
+
 			this.api.listeners.on(rootNode, "keydown", (eventOriginal) => {
 				const event = eventOriginal as KeyboardEvent;
 				const key = event.key;
