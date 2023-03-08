@@ -184,7 +184,7 @@ export default class Checklist {
 				items.splice(currentItemIndex + 1, 0, newItem);
 
 				// Move caret to contentEditable textField of new checklist item
-				component.api.caret.setToBlock(currentBlockIndex + 1);
+				// component.api.caret.setToBlock(currentBlockIndex + 1);
 
 				component.render();
 			},
