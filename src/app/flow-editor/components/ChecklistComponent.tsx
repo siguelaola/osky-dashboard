@@ -1,5 +1,10 @@
 import { IconChecklist } from "@codexteam/icons";
-import { API, BlockToolData } from "@editorjs/editorjs";
+import {
+	BlockTool,
+	BlockToolConstructable,
+	BlockToolConstructorOptions,
+	BlockToolData,
+} from "@editorjs/editorjs";
 import { BlockAPI } from "@editorjs/editorjs/types/api";
 import { nanoid } from "nanoid";
 import React, { useState } from "react";
@@ -69,7 +74,7 @@ const ChecklistComponent: React.FC<{
 	return <>{checklist}</>;
 };
 
-export default class Checklist {
+export default class Checklist implements BlockTool {
 	/**
 	 * Notify core that read-only mode is supported
 	 *
@@ -96,7 +101,7 @@ export default class Checklist {
 	 *
 	 * @returns {{icon: string, title: string}}
 	 */
-	static get toolbox(): { icon: string; title: string } {
+	static get toolbox(): BlockToolConstructable["toolbox"] {
 		return {
 			icon: IconChecklist,
 			title: "Checklist",
@@ -126,28 +131,18 @@ export default class Checklist {
 		};
 	} */
 
+	api: BlockToolConstructorOptions["api"];
+	readOnly: BlockToolConstructorOptions["readOnly"];
 	data: BlockToolData;
-	api: API;
 	block: BlockAPI;
 	_id;
 	_events;
-	readOnly;
 	root?: Root;
 
-	constructor({
-		data,
-		block,
-		api,
-		readOnly,
-	}: {
-		data: BlockToolData;
-		block: BlockAPI;
-		api: API;
-		readOnly: boolean;
-	}) {
+	constructor({ data, block, api, readOnly }: BlockToolConstructorOptions) {
 		const component = this;
 
-		this.block = block;
+		this.block = block!;
 		this._id = this.block.id;
 
 		this._events = {
@@ -239,7 +234,7 @@ export default class Checklist {
 					component.api.blocks.delete(currentBlockIndex);
 				} else {
 					component.render();
-				};
+				}
 			},
 		};
 
@@ -248,7 +243,7 @@ export default class Checklist {
 		this.data = data || {};
 	}
 
-	render(): Element {
+	render() {
 		if (!this.data.items) {
 			this.data.items = [
 				{
@@ -270,6 +265,7 @@ export default class Checklist {
 		};
 
 		const rootNode = document.createElement("fieldset");
+
 		if (!this.root) {
 			this.root = createRoot(rootNode);
 

@@ -7,12 +7,12 @@ import Paragraph from "@editorjs/paragraph";
 import DragDrop from "editorjs-drag-drop";
 import { useEffect, useState } from "react";
 import AddressBlock from "./components/AddressBlock";
+import Checklist from "./components/ChecklistComponent";
 import InputDate from "./components/InputDate";
 import InputPhone from "./components/InputPhone";
 import InputText from "./components/InputText";
 import SeparatorComponent from "./components/SeparatorComponent";
 import YesNoRadios from "./components/YesNoRadios";
-import Checklist from "./components/ChecklistComponent";
 
 const EDITORJS_ROOT_ID = "editorjs-root";
 
@@ -58,7 +58,7 @@ const BlockEditor: React.FC<{
 					header: Header,
 					paragraph: {
 						class: Paragraph,
-						inlineToolbar: true
+						inlineToolbar: true,
 					},
 					image: ImageTool,
 					list: {
@@ -70,8 +70,9 @@ const BlockEditor: React.FC<{
 					separator: SeparatorComponent,
 					yesno: YesNoRadios,
 					checklist: {
+						// @ts-ignore Something's broken with EditorJS's types
 						class: Checklist,
-						inlineToolbar: true
+						inlineToolbar: true,
 					},
 					"input-text": InputText,
 					"input-date": InputDate,
