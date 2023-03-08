@@ -1,10 +1,10 @@
 import { IconChecklist } from "@codexteam/icons";
-import { BlockToolData, API } from "@editorjs/editorjs";
+import { API, BlockToolData } from "@editorjs/editorjs";
 import { BlockAPI } from "@editorjs/editorjs/types/api";
-import { useState } from "react";
-import { createRoot } from "react-dom/client";
 import { nanoid } from "nanoid";
+import React, { useState } from "react";
 import ContentEditable from "react-contenteditable";
+import { createRoot, Root } from "react-dom/client";
 
 type ChecklistData = {
 	items: ChecklistItem[];
@@ -132,6 +132,7 @@ export default class Checklist {
 	_id;
 	_events;
 	readOnly;
+	root?: Root;
 
 	constructor({
 		data,
@@ -190,6 +191,8 @@ export default class Checklist {
 
 				// Move caret to contentEditable textField of new checklist item
 				component.api.caret.setToBlock(currentBlockIndex + 1);
+
+				component.render();
 			},
 			backspace(event: KeyboardEvent) {
 				const items = component.data.items;
@@ -268,38 +271,39 @@ export default class Checklist {
 		};
 
 		const rootNode = document.createElement("fieldset");
-		const root = createRoot(rootNode);
+		if (!this.root) {
+			this.root = createRoot(rootNode);
 
-		root.render(
+			// If read-only mode is on, do not bind events
+			if (this.readOnly) return rootNode;
+			this.api.listeners.on(rootNode, "keydown", (eventOriginal) => {
+				const event = eventOriginal as KeyboardEvent;
+				const key = event.key;
+
+				const target = event.target as Element;
+
+				if (target && target.matches("[type='checkbox']")) return;
+
+				const action: { [key: string]: Function } = {
+					Enter: () => {
+						return this._events.enter(event);
+					},
+					Backspace: () => {
+						return this._events.backspace(event);
+					},
+				};
+
+				return key in action ? action[key]() : null;
+			});
+		}
+
+		this.root.render(
 			<ChecklistComponent
 				items={this.data.items}
 				onDataChange={onDataChange}
 				readOnly={this.readOnly}
 			/>
 		);
-
-		// If read-only mode is on, do not bind events
-		if (this.readOnly) return rootNode;
-
-		this.api.listeners.on(rootNode, "keydown", (eventOriginal) => {
-			const event = eventOriginal as KeyboardEvent;
-			const key = event.key;
-
-			const target = event.target as Element;
-
-			if (target && target.matches("[type='checkbox']")) return;
-
-			const action: { [key: string]: Function } = {
-				Enter: () => {
-					return this._events.enter(event);
-				},
-				Backspace: () => {
-					return this._events.backspace(event);
-				},
-			};
-
-			return key in action ? action[key]() : null;
-		});
 
 		return rootNode;
 	}
