@@ -1,4 +1,71 @@
-import { BlockToolConstructable, OutputBlockData } from "@editorjs/editorjs";
+import {
+	BlockAPI,
+	BlockToolConstructable,
+	OutputBlockData,
+} from "@editorjs/editorjs";
+import { useState } from "react";
+import { createRoot } from "react-dom/client";
+import clsx from "clsx";
+
+const AddressBlockElement: React.FC<{ onDataChange: Function }> = ({
+	onDataChange,
+}) => {
+	const [addressLineOne, setAddressLineOne] = useState("");
+	const [addressLineTwo, setAddressLineTwo] = useState("");
+	const [postalCode, setPostalCode] = useState("");
+	const [city, setCity] = useState("");
+
+	onDataChange({
+		address: [addressLineOne, addressLineTwo],
+		postalCode,
+		city,
+	});
+
+	return (
+		<>
+			<div className="flex flex-col mt-2">
+				<label className="leading-none">Address</label>
+				<input
+					value={addressLineOne}
+					onChange={(event) => setAddressLineOne(event.target.value)}
+					className="w-96 border border-gray-400 rounded px-1.5 py-1 pt-0.5 m-0 mt-1 leading-none"
+					placeholder="Address line 1..."
+				/>
+				<input
+					value={addressLineTwo}
+					onChange={(event) => setAddressLineTwo(event.target.value)}
+					className="w-96 border border-gray-400 rounded px-1.5 py-1 pt-0.5 m-0 mt-1 leading-none"
+					placeholder="Address line 2..."
+				/>
+			</div>
+			<div
+				className={clsx([
+					"flex flex-col flex-wrap-reverse gap-y-2 mt-2 justify-between w-96",
+					"md:flex-row md:flex-nowrap md:gap-x-1 md:gap-y-0",
+				])}
+			>
+				<div className="flex flex-col">
+					<label className="leading-none">Postal code</label>
+					<input
+						value={postalCode}
+						onChange={(event) => setPostalCode(event.target.value)}
+						className="w-auto md:w-24 border border-gray-400 rounded px-1.5 py-1 pt-0.5 m-0 mt-1 leading-none"
+						placeholder="Code..."
+					/>
+				</div>
+				<div className="flex flex-col w-full">
+					<label className="leading-none">City</label>
+					<input
+						value={city}
+						onChange={(event) => setCity(event.target.value)}
+						className="border border-gray-400 rounded px-1.5 py-1 pt-0.5 m-0 mt-1 leading-none"
+						placeholder="City..."
+					/>
+				</div>
+			</div>
+		</>
+	);
+};
 
 export default class AddressBlock {
 	static get toolbox(): BlockToolConstructable["toolbox"] {
@@ -8,70 +75,29 @@ export default class AddressBlock {
 		};
 	}
 
-	data = undefined;
+	data;
+	block;
 
-	constructor({ data }: OutputBlockData) {
-		this.data = data;
+	constructor({ data, block }: { data: OutputBlockData; block: BlockAPI }) {
+		this.data = data || {};
+		this.block = block;
 	}
 
 	render() {
-		const renderHTML = (html: string) =>
-			document.createRange().createContextualFragment(html);
-		const element = renderHTML(
-			`<fieldset class="my-1 pr-2">
-				<div>
-					<label class="leading-none">Address</label>
-					<input data-field="address-line-one" class="w-full border border-current px-1 py-0.5 m-0 mt-1 leading-none">
-					<input data-field="address-line-two" class="w-full border border-current px-1 py-0.5 m-0 mt-1 leading-none">
-				</div>
-				<div class="flex mt-2 justify-between">
-					<div class="flex flex-col">
-						<label class="leading-none">Postal code</label>
-						<input data-field="postal-code" class="w-24 border border-current px-1 py-0.5 m-0 mt-1 leading-none">
-					</div>
-					<div class="flex flex-col w-full ml-2">
-						<label class="leading-none">City</label>
-						<input data-field="city" class="w-full border border-current px-1 py-0.5 m-0 mt-1 leading-none">
-					</div>
-				</div>
-				<select class="mt-2" name="country">
-					<option value="">Select country...</option>
-					<option value="be">Belgium</option>
-					<option value="ca">Canada</option>
-					<option value="fr">France</option>
-					<option value="mx">Mexico</option>
-					<option value="nl">Netherlands</option>
-					<option value="uk">United Kingdom</option>
-					<option value="us">United States of America</option>
-				</select>
-			</fieldset>`
-		);
+		const rootNode = document.createElement("fieldset");
+		const root = createRoot(rootNode);
 
-		return element;
+		const onDataChange = (data: OutputBlockData) => {
+			this.data = { ...data };
+			this.block.dispatchChange();
+		};
+
+		root.render(<AddressBlockElement onDataChange={onDataChange} />);
+
+		return rootNode;
 	}
 
-	save(contents: HTMLFieldSetElement) {
-		const addressLineOne = contents.querySelector(
-			"[data-field='address-line-one']"
-		) as HTMLInputElement;
-		const addressLineTwo = contents.querySelector(
-			"[data-field='address-line-two']"
-		) as HTMLInputElement;
-		const postalCode = contents.querySelector(
-			"[data-field='postal-code']"
-		) as HTMLInputElement;
-		const city = contents.querySelector(
-			"[data-field='city']"
-		) as HTMLInputElement;
-		const country = contents.querySelector(
-			"[name='country']"
-		) as HTMLSelectElement;
-
-		return {
-			addressLine: [addressLineOne!.value, addressLineTwo!.value],
-			postalCode: postalCode!.value,
-			city: city!.value,
-			country: country!.value,
-		};
+	save() {
+		return this.data;
 	}
 }
