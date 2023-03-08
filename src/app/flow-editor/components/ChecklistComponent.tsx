@@ -279,7 +279,7 @@ export default class Checklist {
 		);
 
 		// If read-only mode is on, do not bind events
-		if (this.readOnly) return rootNode.firstElementChild!;
+		if (this.readOnly) return rootNode;
 
 		this.api.listeners.on(rootNode, "keydown", (eventOriginal) => {
 			const event = eventOriginal as KeyboardEvent;
