@@ -1,33 +1,24 @@
 import { CalendarIcon, UsersIcon } from "@heroicons/react/20/solid";
+import { createClient } from "../utils/supabase/server";
 
-const flows = [
-	{
-		id: 1,
-		title: "Untitled Flow",
-		type: "live",
-		sharing: "Public",
-		closeDateFull: new Date("2023-01-07"),
-		href: "/flows/1",
-	},
-	{
-		id: 2,
-		title: "New Flow",
-		type: "live",
-		sharing: "Public",
-		closeDateFull: new Date("2023-01-07"),
-		href: "/flows/2",
-	},
-	{
-		id: 3,
-		title: "Disabled Flow",
-		type: "Disabled",
-		sharing: "Private",
-		closeDateFull: new Date("2023-01-07"),
-		href: "/flows/3",
-	},
-];
+// @ts-expect-error Async Server Component
+const FlowsList: React.FC<{}> = async () => {
+	const supabase = createClient();
+	const { data, error } = await supabase.from("flows").select("*");
+	if (error) {
+		throw error;
+	}
+	const flows = data.map((flow) => {
+		return {
+			id: flow.id,
+			title: flow.title,
+			type: flow.is_live ? "live" : "disabled",
+			sharing: flow.is_public ? "Public" : "Private",
+			closeDateFull: new Date(flow.created_at),
+			href: `/flows/${flow.id}`,
+		};
+	});
 
-const FlowsList: React.FC<{}> = () => {
 	return (
 		<div className="overflow-hidden bg-white shadow sm:rounded-md">
 			<ul role="list" className="divide-y divide-gray-200">

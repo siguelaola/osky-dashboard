@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
 	addEdge,
 	Background,
@@ -15,6 +15,10 @@ import IntegrationNode from "./IntegrationNode";
 import ScreenNode from "./ScreenNode";
 import SidePanel from "./SidePanel";
 import { FormComponentType } from "./types";
+import throttle from "lodash.throttle";
+import { useSupabase } from "../(components)/supabase/SupabaseProvider";
+import { Database, Json } from "../utils/supabase/types";
+import { SupabaseClient } from "@supabase/supabase-js";
 
 const defaultNodes: Node[] = [
 	{
@@ -60,10 +64,53 @@ const nodeTypes = {
 	integration: IntegrationNode,
 };
 
-const FlowEditor = () => {
-	const [nodes, setNodes, onNodesChange] = useNodesState(defaultNodes);
-	const [edges, setEdges, onEdgesChange] = useEdgesState(defaultEdges);
+// interval in milliseconds of the frequency of saving an edited flow to the database
+const SAVE_INTERVAL = 2500;
+
+const save = throttle(
+	async (
+		supabase: SupabaseClient<Database>,
+		id: string,
+		nodes: Node[],
+		edges: Edge[]
+	) => {
+		const { data, error } = await supabase
+			.from("flows")
+			.update({
+				data: { nodes, edges } as unknown as Json,
+				updated_at: "now()",
+			})
+			.eq("id", id)
+			.select("updated_at")
+			.single();
+		if (error) {
+			console.error("Save error", error);
+		}
+		console.log("Saved", data);
+	},
+	SAVE_INTERVAL,
+	{
+		leading: false,
+	}
+);
+
+const FlowEditor: React.FC<{ id?: string; nodes?: Node[]; edges?: Edge[] }> = (
+	props
+) => {
+	const [nodes, setNodes, onNodesChange] = useNodesState(
+		props.nodes ?? defaultNodes
+	);
+	const [edges, setEdges, onEdgesChange] = useEdgesState(
+		props.edges ?? defaultEdges
+	);
 	const [editingEdge, setEditingEdge] = useState<Edge | null>(null);
+	const { supabase } = useSupabase();
+
+	if (props.id) {
+		useEffect(() => {
+			save(supabase, props.id as string, nodes, edges);
+		}, [nodes, edges]);
+	}
 
 	return (
 		<div className="h-screen">

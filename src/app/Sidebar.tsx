@@ -8,6 +8,7 @@ import clsx from "clsx";
 import Image from "next/image";
 
 import Logo from "../public/logo.svg";
+import UserCard from "./(components)/UserCard";
 
 const navigation = [
 	{ name: "Dashboard", href: "/flows", icon: HomeIcon, current: false },
@@ -39,7 +40,7 @@ export const Sidebar = () => (
 					priority={true}
 				/>
 			</div>
-			<div className="mt-5 flex flex-1 flex-col">
+			<div className="mt-5 flex flex-1 flex-col content-between">
 				<nav className="flex-1 space-y-1 px-2 pb-4">
 					{navigation.map((item) => (
 						<a
@@ -60,6 +61,9 @@ export const Sidebar = () => (
 						</a>
 					))}
 				</nav>
+				<div className="flex-initial w-full text-center">
+					<UserCard />
+				</div>
 			</div>
 		</div>
 	</aside>

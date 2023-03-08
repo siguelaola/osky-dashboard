@@ -2,10 +2,27 @@
 import React, { useState } from "react";
 import LabelledArea from "../../(components)/forms/LabelledArea";
 import PlaceholderAvatar from "../../(components)/PlaceholderAvatar";
+import { useSupabase } from "../../(components)/supabase/SupabaseProvider";
 import Button from "../../flow-editor/Button";
+import { Database } from "../../utils/supabase/types";
 
-const EditOrganizationDetailsPage: React.FC<{}> = () => {
-	const [name, setName] = useState("ACME Inc.");
+type Organization = Database["public"]["Tables"]["organizations"]["Row"];
+
+const EditOrganizationDetailsPage: React.FC<{ organization: Organization }> = ({
+	organization,
+}) => {
+	const [name, setName] = useState(organization.name);
+	const { supabase } = useSupabase();
+
+	const save = async () => {
+		const { error } = await supabase
+			.from("organizations")
+			.update({ name, updated_at: "now()" })
+			.eq("id", organization.id);
+		if (error) {
+			console.error(error);
+		}
+	};
 
 	return (
 		<form
@@ -57,7 +74,14 @@ const EditOrganizationDetailsPage: React.FC<{}> = () => {
 			</div>
 
 			<div className="pt-5 flex justify-end">
-				<Button variant="primary" type="submit">
+				<Button
+					variant="primary"
+					type="submit"
+					onClick={(e) => {
+						e.preventDefault();
+						save();
+					}}
+				>
 					Save
 				</Button>
 			</div>
