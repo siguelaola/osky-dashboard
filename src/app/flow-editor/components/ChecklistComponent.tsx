@@ -231,11 +231,8 @@ export default class Checklist {
 				// and remove the current one
 				const currentItemText = extractContentAfterCaret();
 
-				component.api.caret.setToPreviousBlock();
-
 				previousItem.text += currentItemText;
 
-				component.api.blocks.delete(currentBlockIndex);
 			},
 		};
 
