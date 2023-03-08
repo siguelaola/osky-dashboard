@@ -233,6 +233,13 @@ export default class Checklist {
 
 				previousItem.text += currentItemText;
 
+				items.splice(currentIndex, 1);
+
+				if (items.length === 0) {
+					component.api.blocks.delete(currentBlockIndex);
+				} else {
+					component.render();
+				};
 			},
 		};
 
