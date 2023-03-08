@@ -183,7 +183,7 @@ export default class Checklist {
 				// Insert new checklist item as sibling to currently selected item
 				items.splice(currentItemIndex + 1, 0, newItem);
 
-				// Move caret to contentEditable textField of new checklist item
+				// TODO: Move caret to <ContentEditable /> of the new checklist item
 				// component.api.caret.setToBlock(currentBlockIndex + 1);
 
 				component.render();
