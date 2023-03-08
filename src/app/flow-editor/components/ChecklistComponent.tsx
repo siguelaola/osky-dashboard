@@ -174,7 +174,7 @@ export default class Checklist {
 
 				// Create new checklist item
 				const newItem = {
-					_id: nanoid(8),
+					id: nanoid(8),
 					text: separatedText,
 					checked: false,
 				};
@@ -245,7 +245,7 @@ export default class Checklist {
 		if (!this.data.items) {
 			this.data.items = [
 				{
-					_id: nanoid(8),
+					id: nanoid(8),
 					text: "",
 					checked: false,
 				},
