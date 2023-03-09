@@ -29,13 +29,13 @@ const AddressBlockElement: React.FC<{ onDataChange: Function }> = ({
 					value={addressLineOne}
 					onChange={(event) => setAddressLineOne(event.target.value)}
 					className="w-96 border border-gray-400 rounded px-1.5 py-1 pt-0.5 m-0 mt-1 leading-none"
-					placeholder="Address line 1..."
+					placeholder="Address line 1"
 				/>
 				<input
 					value={addressLineTwo}
 					onChange={(event) => setAddressLineTwo(event.target.value)}
 					className="w-96 border border-gray-400 rounded px-1.5 py-1 pt-0.5 m-0 mt-1 leading-none"
-					placeholder="Address line 2..."
+					placeholder="Address line 2"
 				/>
 			</div>
 			<div
@@ -50,7 +50,7 @@ const AddressBlockElement: React.FC<{ onDataChange: Function }> = ({
 						value={postalCode}
 						onChange={(event) => setPostalCode(event.target.value)}
 						className="w-auto md:w-24 border border-gray-400 rounded px-1.5 py-1 pt-0.5 m-0 mt-1 leading-none"
-						placeholder="Code..."
+						placeholder="Code"
 					/>
 				</div>
 				<div className="flex flex-col w-full">
@@ -59,7 +59,7 @@ const AddressBlockElement: React.FC<{ onDataChange: Function }> = ({
 						value={city}
 						onChange={(event) => setCity(event.target.value)}
 						className="border border-gray-400 rounded px-1.5 py-1 pt-0.5 m-0 mt-1 leading-none"
-						placeholder="City..."
+						placeholder="City"
 					/>
 				</div>
 			</div>
