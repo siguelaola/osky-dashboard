@@ -100,13 +100,11 @@ const CustomNode: React.FC<NodeProps> = ({
 				}}
 				name={nodeName}
 				setName={(value) => {
-					const name = value.trim();
-					
-					setNodeName(name);
+					setNodeName(value);
 					setNodes((nodes) =>
 						nodes.map((node) =>
 							node.id === id
-								? { ...node, data: { ...node.data, label: name } }
+								? { ...node, data: { ...node.data, label: value } }
 								: node
 						)
 					);
