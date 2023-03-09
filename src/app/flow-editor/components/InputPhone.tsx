@@ -10,25 +10,27 @@ import { createRoot } from "react-dom/client";
 const PhoneInputElement: React.FC<{
 	onDataChange: (data: any) => void;
 }> = ({ onDataChange }) => {
-	const [defaultCountry, setDefaultCountry] = useState("us");
+	const defaultCountry = "us";
+	const [country, setCountry] = useState(defaultCountry);
+	const [number, setNumber] = useState("");
 	const [label, setLabel] = useState("Phone number");
 
-	onDataChange({ defaultCountry });
+	onDataChange({ label, country, number });
 
 	return (
-		<fieldset className="my-2 pr-2 flex">
+		<fieldset className="w-96 flex flex-col mt-2">
 			<input
 				className="w-full border-none p-0 text-sm leading-none mb-0.5 outline-none"
 				placeholder="Label"
 				value={label}
-				onChange={(e) => setLabel(e.currentTarget.value)}
+				onChange={(event) => setLabel(event.target.value)}
 			/>
-			<div className="flex flex-col">
+			<div className="flex items-stretch gap-x-1">
 				<select
-					className="w-20 border border-current px-1 py-1 m-0 mt-1 leading-none"
+					className="w-20 border border-gray-400 rounded px-1.5 py-1 pt-0.5 leading-none"
 					name="code"
 					defaultValue={defaultCountry}
-					onChange={(e) => setDefaultCountry(e.currentTarget.value)}
+					onChange={(event) => setCountry(event.target.value)}
 				>
 					<option value="us">+1</option>
 					<option value="nl">+31</option>
@@ -37,11 +39,10 @@ const PhoneInputElement: React.FC<{
 					<option value="uk">+44</option>
 					<option value="mx">+52</option>
 				</select>
-			</div>
-			<div className="flex flex-col ml-2 w-full">
 				<input
-					data-field="phone-number"
-					className="w-full border border-current px-1 py-0.5 m-0 mt-1 leading-none"
+					value={number}
+					onChange={(event) => setNumber(event.target.value)}
+					className="w-full border border-gray-400 rounded px-1.5 py-1 pt-0.5 leading-none"
 				/>
 			</div>
 		</fieldset>
@@ -65,28 +66,19 @@ export default class InputPhone implements BlockTool {
 	}
 
 	render() {
-		const rootNode = document.createElement("div");
 		const onDataChange = (newData: any) => {
 			this.data = { ...newData };
 		};
 
+		const rootNode = document.createElement("div");
 		const root = createRoot(rootNode);
+
 		root.render(<PhoneInputElement onDataChange={onDataChange} />);
 
 		return rootNode;
 	}
 
-	save(contents: HTMLFieldSetElement) {
-		const listOfCountryCodes = contents.querySelector(
-			"[name='code']"
-		) as HTMLSelectElement;
-		const code = listOfCountryCodes.selectedOptions[0].label;
-		const number = contents.querySelector(
-			"[data-field='phone-number']"
-		) as HTMLInputElement;
-
-		return {
-			number: code + number.value,
-		};
+	save() {
+		return this.data;
 	}
 }
