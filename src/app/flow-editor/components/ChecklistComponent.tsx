@@ -184,10 +184,10 @@ export default class Checklist implements BlockTool {
 				// Insert new checklist item as sibling to currently selected item
 				items.splice(currentItemIndex + 1, 0, newItem);
 
+				component.render();
+
 				// TODO: Move caret to <ContentEditable /> of the new checklist item
 				// component.api.caret.setToBlock(currentBlockIndex + 1);
-
-				component.render();
 			},
 			backspace(event: KeyboardEvent) {
 				const items = component.data.items;
