@@ -10,6 +10,7 @@ import { nanoid } from "nanoid";
 import React, { useState } from "react";
 import ContentEditable from "react-contenteditable";
 import { createRoot, Root } from "react-dom/client";
+import clsx from "clsx";
 
 type ChecklistData = {
 	items: ChecklistItem[];
@@ -52,7 +53,11 @@ const ChecklistItem: React.FC<{
 				html={text}
 				onChange={(event) => setText(event.currentTarget.innerHTML)}
 				disabled={readOnly}
-				className="ml-1 w-full leading-tight cursor-text outline-none empty:before:content-['New_checklist_item...'] before:text-gray-400 focus:before:content-['']"
+				className={clsx([
+					"w-full leading-tight cursor-text outline-none ml-1",
+					// ↓ pseudo-placeholder for a `contentEditable` item
+					"empty:before:content-['New_checklist_item...'] before:text-gray-400 focus:before:content-['']"
+				])}
 			/>
 		</div>
 	);
