@@ -125,14 +125,14 @@ const CustomNode: React.FC<NodeProps> = ({
 					type="target"
 					position={Position.Top}
 					isConnectable={isConnectable}
-					style={{ visibility: "hidden" }}
+					className="invisible"
 				/>
 				{data?.label}
 				<Handle
 					type="source"
 					position={Position.Bottom}
 					isConnectable={isConnectable}
-					style={{ visibility: "hidden" }}
+					className="invisible"
 				/>
 				<div className="mx-auto h-0 hidden group-hover:block">
 					<AddNodeButton id={id} xPos={xPos} yPos={yPos} />
