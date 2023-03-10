@@ -159,7 +159,9 @@ export default class Checklist implements BlockTool {
 					(item: ChecklistItem) =>
 						item.id === document.activeElement?.parentElement?.id
 				);
+
 				if (!currentItem) return;
+
 				const currentItemIndex = items.indexOf(currentItem);
 				const isLastItem = currentItemIndex === items.length - 1;
 
