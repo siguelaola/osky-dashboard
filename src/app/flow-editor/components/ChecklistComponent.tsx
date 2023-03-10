@@ -56,7 +56,7 @@ const ChecklistItem: React.FC<{
 				className={clsx([
 					"w-full leading-tight cursor-text outline-none ml-1",
 					// ↓ pseudo-placeholder for a `contentEditable` item
-					"empty:before:content-['New_checklist_item...'] before:text-gray-400 focus:before:content-['']"
+					"empty:before:content-['New_checklist_item...'] before:text-gray-400 focus:before:content-['']",
 				])}
 			/>
 		</div>
