@@ -5,6 +5,85 @@ import {
 	BlockToolData,
 } from "@editorjs/editorjs";
 import { createRoot } from "react-dom/client";
+import ContentEditable from "react-contenteditable";
+import { useState } from "react";
+import clsx from "clsx";
+
+const RadioOption: React.FC<{
+	id: string;
+	value: string;
+	setValue: Function;
+	label: string;
+	checked?: boolean;
+}> = ({ id, value, setValue, label, checked = false }) => {
+	const radioLabelClassName = clsx([
+		"p-2 rounded-2xl border border-gray-600 min-w-[4rem] text-center text-black leading-none cursor-pointer",
+		"peer-checked:bg-primary-600 peer-checked:text-white peer-checked:font-semibold",
+	]);
+
+	const inputID = id + "-" + label.toLowerCase();
+
+	return (
+		<div className="flex">
+			<input
+				type="radio"
+				id={inputID}
+				value={value}
+				className="hidden peer"
+				name={id}
+				onChange={(event) => setValue(event.target.value)}
+				checked={checked}
+			/>
+			<label htmlFor={inputID} className={radioLabelClassName}>
+				{label}
+			</label>
+		</div>
+	);
+};
+
+const YesNoElement: React.FC<{
+	id: string;
+	onDataChange: Function;
+	data: { label: string; value: string };
+}> = ({ id, onDataChange, data }) => {
+	const [label, setLabel] = useState(data.label || "");
+	const [value, setValue] = useState(data.value || "false");
+
+	onDataChange({
+		label,
+		value,
+	});
+
+	return (
+		<>
+			<ContentEditable
+				html={label}
+				onChange={(event) => setLabel(event.target.value)}
+				className={clsx([
+					"text-gray-800 w-full py-0.5 my-1",
+					"cursor-text outline-none",
+					"empty:before:content-['Question_for_the_consumer...'] before:text-gray-400 focus:before:content-['']",
+				])}
+			/>
+			<div className="flex w-full gap-x-2">
+				<RadioOption
+					id={id}
+					value={"false"}
+					setValue={setValue}
+					label={"No"}
+					checked={value === "false"}
+				/>
+				<RadioOption
+					id={id}
+					value={"true"}
+					setValue={setValue}
+					label={"Yes"}
+					checked={value === "true"}
+				/>
+			</div>
+		</>
+	);
+};
 
 export default class YesNoRadios implements BlockTool {
 	static get toolbox(): BlockToolConstructable["toolbox"] {
@@ -23,57 +102,27 @@ export default class YesNoRadios implements BlockTool {
 	}
 
 	render() {
-		// TODO: generalize radio+label as its own element
-
-		const rootNode = document.createElement("div");
+		const rootNode = document.createElement("fieldset");
 		const root = createRoot(rootNode);
+
+		const onDataChange = (newData: {}) => {
+			this.data = { ...newData };
+		};
+
 		root.render(
-			<fieldset className="mb-2">
-				<input
-					data-value="label"
-					className="text-gray-800 w-full py-0.5 px-1 mb-1 -ml-1"
-					placeholder="Question for the consumer..."
+			<>
+				<YesNoElement
+					id={this._id}
+					onDataChange={onDataChange}
+					data={this.data}
 				/>
-				<div className="flex w-full gap-x-2">
-					<div className="flex">
-						<input
-							type="radio"
-							id={this._id + "-no"}
-							value="false"
-							className="hidden peer"
-							name={this._id + "-yes-no"}
-							defaultChecked
-						/>
-						<label
-							htmlFor={this._id + "-no"}
-							className="p-2 rounded-2xl border border-gray-600 min-w-[4rem] text-center text-black leading-none cursor-pointer peer-checked:bg-primary-600 peer-checked:text-white peer-checked:font-semibold"
-						>
-							No
-						</label>
-					</div>
-					<div className="flex">
-						<input
-							type="radio"
-							id={this._id + "-yes"}
-							value="true"
-							name={this._id + "-yes-no"}
-							className="hidden peer"
-						/>
-						<label
-							htmlFor={this._id + "-yes"}
-							className="p-2 rounded-3xl border border-gray-600 min-w-[4rem] text-center font-semibold text-black leading-none cursor-pointer peer-checked:bg-primary-600 peer-checked:text-white peer-checked:font-semibold"
-						>
-							Yes
-						</label>
-					</div>
-				</div>
-			</fieldset>
+			</>
 		);
 
 		return rootNode;
 	}
 
-	save(contents: HTMLDivElement) {
+	save() {
 		return this.data;
 	}
 }
