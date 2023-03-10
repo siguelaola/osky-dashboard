@@ -269,7 +269,7 @@ export default class Checklist implements BlockTool {
 			if (!target) return;
 			Object.assign(target, updatedItem);
 
-			this.block?.dispatchChange();
+			this.block.dispatchChange();
 		};
 
 		const rootNode = document.createElement("fieldset");
