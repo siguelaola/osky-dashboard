@@ -71,8 +71,8 @@ const ChecklistComponent: React.FC<{
 	const checklist = items.map((item: ChecklistItem) => (
 		<ChecklistItem
 			item={item}
-			readOnly={readOnly}
 			onDataChange={onDataChange}
+			readOnly={readOnly}
 			key={item.id}
 		/>
 	));
