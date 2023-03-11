@@ -27,6 +27,8 @@ const navigation = [
 	},
 ];
 
+// TODO: go lighter on hover highlights (e.g. `filter: brightness(1.125)`)
+
 export const Sidebar = () => (
 	<aside className="flex absolute inset-y-0 w-64 z-10">
 		<div className="flex flex-grow flex-col overflow-y-auto bg-primary-700 pt-5">
