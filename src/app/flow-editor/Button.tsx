@@ -3,7 +3,6 @@ import type { LinkProps } from "next/link";
 import Link from "next/link";
 
 const BASE_CLASSES = [
-	"ml-3 first:ml-0",
 	"py-2 px-4 inline-flex justify-center items-center rounded-md text-sm font-medium",
 	"border shadow-sm",
 	"focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2",
