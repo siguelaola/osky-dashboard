@@ -177,9 +177,7 @@ export const SidePanel = () => {
 				{activeTab === "Integrations" && <IntegrationsList />}
 				{activeTab === "Settings" && <Settings />}
 			</div>
-			<div className="flex flex-col gap-2">
-				<hr />
-
+			<div className="flex flex-col gap-2 border-t rounded-lg -mx-3 -mb-3 p-3 bg-gray-50">
 				<ExportJSONButton />
 				<Button
 					variant="primary"
