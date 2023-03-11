@@ -156,7 +156,7 @@ const Settings = () => {
 export const SidePanel = () => {
 	const [activeTab, setActiveTab] = useState("Integrations");
 	return (
-		<aside className="bg-white self-end h-full z-10 shadow-md m-3 p-3 w-64 flex flex-col justify-between mb-10">
+		<aside className="bg-white self-end h-full z-10 shadow-lg rounded-lg m-3 p-3 w-64 flex flex-col justify-between mb-6">
 			<div>
 				<nav className="flex space-x-4 mb-3" aria-label="Tabs">
 					{tabs.map((tab) => (
