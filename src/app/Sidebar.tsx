@@ -63,9 +63,7 @@ export const Sidebar = () => (
 						</a>
 					))}
 				</nav>
-				<div className="flex-initial w-full text-center">
-					<UserCard />
-				</div>
+				<UserCard />
 			</div>
 		</div>
 	</aside>

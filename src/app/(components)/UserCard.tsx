@@ -11,7 +11,11 @@ interface UserProfile {
 }
 
 const UserCardContainer = ({ children }: { children: React.ReactNode }) => {
-	return <div className="bg-primary-900 rounded-t-lg py-2">{children}</div>;
+	return (
+		<div className="bg-primary-900 rounded-t-lg py-2 text-center">
+			{children}
+		</div>
+	);
 };
 
 const LoginComponent = () => {
