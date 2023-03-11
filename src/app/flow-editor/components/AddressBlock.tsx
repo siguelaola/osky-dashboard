@@ -21,6 +21,9 @@ const AddressBlockElement: React.FC<{ onDataChange: Function }> = ({
 		city,
 	});
 
+	const InputClassList =
+		"border border-gray-400 rounded px-1.5 py-1 pt-0.5 m-0 mt-1 leading-none";
+
 	return (
 		<>
 			<div className="flex flex-col mt-2">
@@ -28,13 +31,13 @@ const AddressBlockElement: React.FC<{ onDataChange: Function }> = ({
 				<input
 					value={addressLineOne}
 					onChange={(event) => setAddressLineOne(event.target.value)}
-					className="w-96 border border-gray-400 rounded px-1.5 py-1 pt-0.5 m-0 mt-1 leading-none"
+					className={clsx(["w-96", InputClassList])}
 					placeholder="Address line 1"
 				/>
 				<input
 					value={addressLineTwo}
 					onChange={(event) => setAddressLineTwo(event.target.value)}
-					className="w-96 border border-gray-400 rounded px-1.5 py-1 pt-0.5 m-0 mt-1 leading-none"
+					className={clsx(["w-96", InputClassList])}
 					placeholder="Address line 2"
 				/>
 			</div>
@@ -49,7 +52,12 @@ const AddressBlockElement: React.FC<{ onDataChange: Function }> = ({
 					<input
 						value={postalCode}
 						onChange={(event) => setPostalCode(event.target.value)}
-						className="w-auto md:w-24 border border-gray-400 rounded px-1.5 py-1 pt-0.5 m-0 mt-1 leading-none"
+						className={clsx([
+							// Make postal code input take full width on smaller devices
+							// and collapse into a side input on larger ones
+							"w-auto md:w-24",
+							InputClassList,
+						])}
 						placeholder="Code"
 					/>
 				</div>
@@ -58,7 +66,7 @@ const AddressBlockElement: React.FC<{ onDataChange: Function }> = ({
 					<input
 						value={city}
 						onChange={(event) => setCity(event.target.value)}
-						className="border border-gray-400 rounded px-1.5 py-1 pt-0.5 m-0 mt-1 leading-none"
+						className={InputClassList}
 						placeholder="City"
 					/>
 				</div>
