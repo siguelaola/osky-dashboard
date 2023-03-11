@@ -85,32 +85,15 @@ const ChecklistComponent: React.FC<{
 };
 
 export default class Checklist implements BlockTool {
-	/**
-	 * Notify core that read-only mode is supported
-	 *
-	 * @returns {boolean}
-	 */
 	static get isReadOnlySupported(): boolean {
 		return true;
 	}
 
-	/**
-	 * Allow to use native Enter behaviour
-	 *
-	 * @returns {boolean}
-	 * @public
-	 */
+	// Allow to use native Enter behaviour
 	static get enableLineBreaks(): boolean {
 		return true;
 	}
 
-	/**
-	 * Get Tool toolbox settings
-	 * icon - Tool icon's SVG
-	 * title - title to show in toolbox
-	 *
-	 * @returns {{icon: string, title: string}}
-	 */
 	static get toolbox(): BlockToolConstructable["toolbox"] {
 		return {
 			icon: IconChecklist,
@@ -335,6 +318,9 @@ export default class Checklist implements BlockTool {
 			this.root = createRoot(rootNode);
 
 			// If read-only mode is on, do not bind events
+			// TODO: make sure this renders as expected in preview mode
+			// aka read-only mode (EditorJS terminology)
+			// NOTE: inputs are disabled on render in read-only mode
 			if (this.readOnly) return rootNode;
 		}
 
