@@ -15,7 +15,14 @@ const UserCardContainer = ({ children }: { children: React.ReactNode }) => {
 };
 
 const LoginComponent = () => {
-	return <a className="block mx-2 py-2 bg-primary-600 hover:bg-primary-500 rounded text-gray-200 hover:text-white" href="/login">Login</a>;
+	return (
+		<a
+			className="block mx-2 py-2 bg-primary-600 hover:bg-primary-500 rounded text-gray-200 hover:text-white"
+			href="/login"
+		>
+			Login
+		</a>
+	);
 };
 
 const CardComponent: React.FC<{ profile: UserProfile }> = ({ profile }) => {
