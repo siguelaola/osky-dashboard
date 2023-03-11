@@ -21,6 +21,8 @@ const LoginComponent = () => {
 const CardComponent: React.FC<{ profile: UserProfile }> = ({ profile }) => {
 	return (
 		<>
+			{/* TODO: make sure the avatar does not overlap with sidebar items */}
+			{/* might have to use hardcoded values for this */}
 			<PlaceholderAvatar className="mb-1 -mt-[50%]" />
 			<div className="mb-1 text-gray-200">
 				{profile.display_name ?? profile.email}
