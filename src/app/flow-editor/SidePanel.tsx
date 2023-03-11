@@ -20,7 +20,7 @@ const IntegrationListItem: React.FC<{
 
 	return (
 		<li
-			className="border p-3 mb-2 shadow-sm cursor-grab flex items-center justify-between"
+			className="border rounded-lg p-3 mb-2 shadow-sm cursor-grab flex items-center justify-between hover:bg-gray-50"
 			draggable
 			onDragEnd={(e) => {
 				const nodeTarget = document
