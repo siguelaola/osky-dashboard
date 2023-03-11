@@ -362,9 +362,10 @@ export function extractContentAfterCaret(): string {
 	const contents = range.extractContents();
 	const holder = document.createElement("div");
 
+	// Append `DocumentFragment` to an actual `Node` and
+	// extract the `Node`'s contents (extracting from `DocumentFragment`
+	// does not appear to work)
 	holder.append(contents);
 
-	const html = holder.innerHTML;
-
-	return html;
+	return holder.innerHTML;
 }
