@@ -8,7 +8,11 @@ const Login: React.FC<{}> = () => {
 	const { supabase } = useSupabase();
 	return (
 		<div className="max-w-md p-8 m-auto mt-4">
-			<Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} />
+			<Auth
+				supabaseClient={supabase}
+				appearance={{ theme: ThemeSupa }}
+				redirectTo="/flows"
+			/>
 		</div>
 	);
 };
