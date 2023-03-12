@@ -49,7 +49,7 @@ const RadioOption: React.FC<{
 const YesNoElement: React.FC<{
 	id: string;
 	onDataChange: Function;
-	data: { label: string; value: string };
+	data: { label: string; value: "true" | "false" };
 }> = ({ id, onDataChange, data }) => {
 	const [label, setLabel] = useState(data.label || "");
 	const [value, setValue] = useState(data.value || "false");
