@@ -3,8 +3,8 @@ import Link from "next/link";
 
 const tabs = [
 	{ name: "General", href: "/settings/organization" },
-	{ name: "Team", href: "/settings/organization/users" },
-	{ name: "Billing", href: "/settings/organization/billing" },
+	// { name: "Team", href: "/settings/organization/users" },
+	// { name: "Billing", href: "/settings/organization/billing" },
 ];
 
 export const OrgSettingsNavigation: React.FC = () => {

@@ -2,7 +2,6 @@ import {
 	Cog6ToothIcon,
 	FolderIcon,
 	HomeIcon,
-	UsersIcon,
 } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import Image from "next/image";
@@ -13,12 +12,12 @@ import UserCard from "./(components)/UserCard";
 const navigation = [
 	{ name: "Dashboard", href: "/flows", icon: HomeIcon, current: false },
 	{ name: "Flows", href: "/flows", icon: FolderIcon, current: true },
-	{
+	/* {
 		name: "Team",
 		href: "/settings/organization/users",
 		icon: UsersIcon,
 		current: false,
-	},
+	}, */
 	{
 		name: "Settings",
 		href: "/settings/organization",
