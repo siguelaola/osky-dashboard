@@ -6,11 +6,11 @@ import {
 	BlockToolData,
 } from "@editorjs/editorjs";
 import { BlockAPI } from "@editorjs/editorjs/types/api";
+import clsx from "clsx";
 import { nanoid } from "nanoid";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ContentEditable from "react-contenteditable";
 import { createRoot, Root } from "react-dom/client";
-import clsx from "clsx";
 
 type ChecklistData = {
 	items: ChecklistItem[];
@@ -40,6 +40,10 @@ const ChecklistItem: React.FC<{
 		checked,
 	});
 
+	// Trigger focus on the newest input box created.
+	// useEffect will run on the very first render of the element; ie. when the element is created.
+	useEffect(() => document.getElementById(`${id}-ce`)?.focus(), []);
+
 	return (
 		<div id={id} className="flex items-center">
 			<input
@@ -51,6 +55,7 @@ const ChecklistItem: React.FC<{
 				onChange={(event) => setChecked(event.target.checked)}
 			/>
 			<ContentEditable
+				id={`${id}-ce`}
 				html={text}
 				onChange={(event) => setText(event.currentTarget.innerHTML)}
 				onKeyDown={(event) => component._events.handler(event)}
@@ -210,14 +215,6 @@ export default class Checklist implements BlockTool {
 
 				// call `.render()` to re-render the component based on new data
 				component.render();
-
-				// TODO: Move caret to <ContentEditable /> of the new checklist item
-				// right now, despite being called after `.render()` this ↓
-				// is unable to focus the new sibling, supposedly because the sibling
-				// is not yet there during the call (right now, if it exists, the sibling
-				// after the new one gets focused instead)
-				// @ts-ignore
-				currentInput.parentElement?.nextElementSibling?.children[1].focus();
 			},
 			backspace(event: KeyboardEvent) {
 				const items = component.data.items;
