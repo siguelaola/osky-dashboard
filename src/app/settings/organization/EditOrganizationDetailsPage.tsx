@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import LabelledArea from "../../(components)/forms/LabelledArea";
+import Notification from "../../(components)/Notification";
 import PlaceholderAvatar from "../../(components)/PlaceholderAvatar";
 import { useSupabase } from "../../(components)/supabase/SupabaseProvider";
 import Button from "../../flow-editor/Button";
@@ -12,6 +13,7 @@ const EditOrganizationDetailsPage: React.FC<{ organization: Organization }> = ({
 	organization,
 }) => {
 	const [name, setName] = useState(organization.name);
+	const [error, setError] = useState("");
 	const { supabase } = useSupabase();
 
 	const save = async () => {
@@ -21,6 +23,7 @@ const EditOrganizationDetailsPage: React.FC<{ organization: Organization }> = ({
 			.eq("id", organization.id);
 		if (error) {
 			console.error(error);
+			setError(error.message);
 		}
 	};
 
@@ -41,6 +44,10 @@ const EditOrganizationDetailsPage: React.FC<{ organization: Organization }> = ({
 							This information will be displayed on your screens.
 						</p>
 					</div>
+
+					{error ? (
+						<Notification title="Error" message={error} type="error" />
+					) : null}
 
 					<div className="space-y-6 sm:space-y-5">
 						<LabelledArea id="photo" label="Company logo">
