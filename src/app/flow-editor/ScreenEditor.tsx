@@ -1,5 +1,6 @@
 import type { OutputBlockData } from "@editorjs/editorjs";
 import {
+	Cog6ToothIcon,
 	ComputerDesktopIcon,
 	DevicePhoneMobileIcon,
 	PencilSquareIcon,
@@ -52,6 +53,12 @@ const ScreenEditor: React.FC<{
 							)}
 							onClick={() => setEditing(true)}
 						/>
+						<Cog6ToothIcon
+							className={clsx(
+								"text-gray-500 w-8 h-8 p-1 hover:text-gray-800 cursor-pointer"
+							)}
+							onClick={() => setEditing(true)}
+						/>
 					</div>
 				</div>
 				<div
@@ -60,7 +67,7 @@ const ScreenEditor: React.FC<{
 				>
 					<BlockEditor blocks={blocks} setBlocks={setBlocks} />
 				</div>
-				<div className="flex justify-between">
+				<div className="flex justify-between gap-3">
 					<Button variant="plain" onClick={save}>
 						Cancel
 					</Button>
