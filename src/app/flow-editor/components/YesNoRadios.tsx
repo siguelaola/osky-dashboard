@@ -4,10 +4,10 @@ import {
 	BlockToolConstructable,
 	BlockToolData,
 } from "@editorjs/editorjs";
-import { createRoot } from "react-dom/client";
-import ContentEditable from "react-contenteditable";
-import { useState } from "react";
 import clsx from "clsx";
+import { useState } from "react";
+import ContentEditable from "react-contenteditable";
+import { createRoot } from "react-dom/client";
 
 const RadioOption: React.FC<{
 	id: string;
@@ -31,7 +31,12 @@ const RadioOption: React.FC<{
 				value={value}
 				className="hidden peer"
 				name={id}
-				onChange={(event) => setValue(event.target.value)}
+				onChange={(event) => setValue(event.currentTarget.value)}
+				onClick={(event) => {
+					if (event.currentTarget.value === value) {
+						setValue("");
+					}
+				}}
 				checked={checked}
 			/>
 			<label htmlFor={inputID} className={radioLabelClassName}>
