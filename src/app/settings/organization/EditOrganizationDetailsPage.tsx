@@ -53,19 +53,23 @@ const EditOrganizationDetailsPage: React.FC<{ organization: Organization }> = ({
 						<LabelledArea id="photo" label="Company logo">
 							<div className="flex items-center">
 								<PlaceholderAvatar />
-								<input type="file" hidden id="avatar-file-input" />
+								<input
+									type="file"
+									hidden
+									id="logo-file-input"
+									onChange={() => setError("Error uploading company logo.")}
+								/>
 								<Button
 									type="button"
-									onClick={(e) => {
-										e.preventDefault();
-										document.getElementById("avatar-file-input")?.click();
-									}}
+									onClick={() =>
+										document.getElementById("logo-file-input")?.click()
+									}
 								>
 									Change
 								</Button>
 							</div>
 						</LabelledArea>
-						<LabelledArea id="name" label="Legal name">
+						<LabelledArea id="name" label="Company name">
 							<input
 								type="text"
 								name="name"
