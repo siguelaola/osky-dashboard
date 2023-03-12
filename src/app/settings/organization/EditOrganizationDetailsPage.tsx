@@ -49,10 +49,9 @@ const EditOrganizationDetailsPage: React.FC<{ organization: Organization }> = ({
 						<Notification title="Error" message={error} type="error" />
 					) : null}
 
-					<div className="space-y-6 sm:space-y-5">
+					<div className="space-y-6 sm:space-y-5 max-w-lg">
 						<LabelledArea id="photo" label="Company logo">
-							<div className="flex items-center">
-								<PlaceholderAvatar />
+							<div className="flex justify-between">
 								<input
 									type="file"
 									hidden
@@ -67,6 +66,7 @@ const EditOrganizationDetailsPage: React.FC<{ organization: Organization }> = ({
 								>
 									Change
 								</Button>
+								<PlaceholderAvatar />
 							</div>
 						</LabelledArea>
 						<LabelledArea id="name" label="Company name">
@@ -74,7 +74,7 @@ const EditOrganizationDetailsPage: React.FC<{ organization: Organization }> = ({
 								type="text"
 								name="name"
 								id="name"
-								className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:max-w-xs sm:text-sm"
+								className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:max-w-xs sm:text-sm p-2"
 								value={name}
 								onChange={(e) => setName(e.currentTarget.value)}
 								required
