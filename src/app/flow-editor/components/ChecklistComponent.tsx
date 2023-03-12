@@ -8,7 +8,7 @@ import {
 import { BlockAPI } from "@editorjs/editorjs/types/api";
 import clsx from "clsx";
 import { nanoid } from "nanoid";
-import React, { useEffect, useState } from "react";
+import React, { SyntheticEvent, useEffect, useState } from "react";
 import ContentEditable from "react-contenteditable";
 import { createRoot, Root } from "react-dom/client";
 
@@ -144,19 +144,11 @@ export default class Checklist implements BlockTool {
 		this._id = this.block.id;
 
 		this._events = {
-			handler(event: KeyboardEvent) {
-				const key = event.key;
-				const target = event.target as Element;
-
-				if (target && target.matches("[type='checkbox']")) return;
-
+			handler(event: SyntheticEvent<HTMLDivElement, KeyboardEvent>) {
+				const { key } = event.nativeEvent;
 				const action: { [key: string]: Function } = {
-					Enter: (event: KeyboardEvent) => {
-						return this.enter(event);
-					},
-					Backspace: (event: KeyboardEvent) => {
-						return this.backspace(event);
-					},
+					Enter: this.enter,
+					Backspace: this.backspace,
 				};
 
 				if (!(key in action)) return;
@@ -165,7 +157,7 @@ export default class Checklist implements BlockTool {
 
 				return action[key](event);
 			},
-			enter(event: KeyboardEvent) {
+			enter(event: SyntheticEvent<HTMLDivElement, KeyboardEvent>) {
 				event.preventDefault();
 
 				const items = component.data.items;
@@ -216,17 +208,18 @@ export default class Checklist implements BlockTool {
 				// call `.render()` to re-render the component based on new data
 				component.render();
 			},
-			backspace(event: KeyboardEvent) {
-				const items = component.data.items;
 
-				const currentInput = event.target as Element;
+			backspace(event: SyntheticEvent<HTMLDivElement, KeyboardEvent>) {
+				console.log("backspace", event);
+				const items = component.data.items as ChecklistItem[];
+
+				const currentInput = event.currentTarget;
 				const currentItem = items.find(
-					(item: ChecklistItem) => item.id === currentInput.parentElement!.id
+					(item) => item.id === currentInput.parentElement!.id
 				);
 				if (!currentItem) return;
 				const currentIndex = items.indexOf(currentItem);
 				const previousItem = items[currentIndex - 1];
-
 				const currentBlockIndex = component.api.blocks.getCurrentBlockIndex();
 
 				if (!previousItem) {
