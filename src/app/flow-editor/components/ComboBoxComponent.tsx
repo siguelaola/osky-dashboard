@@ -3,7 +3,9 @@ import {
 	BlockToolConstructable,
 	OutputBlockData,
 } from "@editorjs/editorjs";
+import clsx from "clsx";
 import { useState } from "react";
+import ContentEditable from "react-contenteditable";
 import { createRoot } from "react-dom/client";
 import ComboBox from "../../(components)/forms/ComboBox";
 
@@ -14,6 +16,7 @@ const ComboBoxElement: React.FC<{ onDataChange: (data: any) => void }> = ({
 	onDataChange,
 }) => {
 	const [defaultValue, setDefaultValue] = useState("");
+	const [label, setLabel] = useState("Select an option");
 	const [entries, setEntries] = useState<{ value: string; label: string }[]>(
 		[]
 	);
@@ -25,7 +28,15 @@ const ComboBoxElement: React.FC<{ onDataChange: (data: any) => void }> = ({
 
 	return (
 		<div className="flex flex-col">
-			<span>Select an option</span>
+			<ContentEditable
+				html={label}
+				onChange={(event) => setLabel(event.currentTarget.innerText)}
+				className={clsx([
+					"text-gray-800 w-full",
+					"cursor-text outline-none",
+					"empty:before:content-['Label_for_select...'] before:text-gray-400 focus:before:content-['']",
+				])}
+			/>
 			<ComboBox
 				entries={entries}
 				label="Label"
