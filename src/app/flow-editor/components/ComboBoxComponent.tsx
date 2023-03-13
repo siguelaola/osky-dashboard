@@ -8,7 +8,7 @@ import { createRoot } from "react-dom/client";
 import ComboBox from "../../(components)/forms/ComboBox";
 
 const normalize = (value: string) =>
-	value.trim().toLowerCase().replace(" ", "_");
+	value.trim().toLowerCase().replaceAll(" ", "_");
 
 const ComboBoxElement: React.FC<{ onDataChange: (data: any) => void }> = ({
 	onDataChange,
