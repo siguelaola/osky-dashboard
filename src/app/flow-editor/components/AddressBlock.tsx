@@ -99,7 +99,13 @@ export default class AddressBlock {
 	data;
 	block;
 
-	constructor({ data, block }: { data: OutputBlockData; block: BlockAPI }) {
+	constructor({
+		data,
+		block,
+	}: {
+		data: OutputBlockData["data"];
+		block: BlockAPI;
+	}) {
 		this.data = data || {};
 		this.block = block;
 	}
@@ -108,7 +114,7 @@ export default class AddressBlock {
 		const rootNode = document.createElement("fieldset");
 		const root = createRoot(rootNode);
 
-		const onDataChange = (data: OutputBlockData) => {
+		const onDataChange = (data: OutputBlockData["data"]) => {
 			this.data = { ...data };
 			this.block.dispatchChange();
 		};

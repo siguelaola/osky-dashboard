@@ -1,8 +1,7 @@
 import {
-	API,
 	BlockTool,
 	BlockToolConstructable,
-	BlockToolData,
+	OutputBlockData,
 } from "@editorjs/editorjs";
 import clsx from "clsx";
 import { useState } from "react";
@@ -64,16 +63,14 @@ export default class InputPhone implements BlockTool {
 	}
 
 	data;
-	api;
 
-	constructor({ data, api }: { data: BlockToolData; api: API }) {
+	constructor({ data }: { data: OutputBlockData["data"] }) {
 		this.data = data || {};
-		this.api = api;
 	}
 
 	render() {
-		const onDataChange = (newData: any) => {
-			this.data = { ...newData };
+		const onDataChange = (data: OutputBlockData["data"]) => {
+			this.data = { ...data };
 		};
 
 		const rootNode = document.createElement("div");
