@@ -12,11 +12,12 @@ import ComboBox from "../../(components)/forms/ComboBox";
 const normalize = (value: string) =>
 	value.trim().toLowerCase().replaceAll(" ", "_");
 
-const ComboBoxElement: React.FC<{ onDataChange: (data: any) => void }> = ({
-	onDataChange,
-}) => {
+const ComboBoxElement: React.FC<{
+	onDataChange: (data: any) => void;
+	componentLabel?: string;
+}> = ({ onDataChange, componentLabel = "Select an option" }) => {
 	const [defaultValue, setDefaultValue] = useState("");
-	const [label, setLabel] = useState("Select an option");
+	const [label, setLabel] = useState(componentLabel);
 	const [entries, setEntries] = useState<{ value: string; label: string }[]>(
 		[]
 	);
@@ -76,7 +77,11 @@ export default class ComboBoxComponent {
 			this.block.dispatchChange();
 		};
 
-		root.render(<ComboBoxElement onDataChange={onDataChange} />);
+		const label = this.data.label || "";
+
+		root.render(
+			<ComboBoxElement componentLabel={label} onDataChange={onDataChange} />
+		);
 
 		return rootNode;
 	}

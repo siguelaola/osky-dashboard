@@ -3,29 +3,38 @@ import {
 	BlockToolConstructable,
 	OutputBlockData,
 } from "@editorjs/editorjs";
+import clsx from "clsx";
 import { useState } from "react";
+import ContentEditable from "react-contenteditable";
 import { CountryDropdown } from "react-country-region-selector";
 import { createRoot } from "react-dom/client";
 
-const CountrySelectElement: React.FC<{ onDataChange: Function }> = ({
-	onDataChange,
-}) => {
+const CountrySelectElement: React.FC<{
+	onDataChange: Function;
+	componentLabel?: string;
+}> = ({ onDataChange, componentLabel = "Country" }) => {
 	const [country, setCountry] = useState("");
+	const [label, setLabel] = useState(componentLabel);
 
-	const onChange = (country: string) => {
-		setCountry(country);
-		onDataChange({ country });
-	};
+	onDataChange({ country, label });
 
 	// `w-96` is not necessary, but it makes the dropdown (already at 23.5rem)
 	// align with the address block lines (made to fit the closest Tailwind width class)
 	return (
 		<div className="flex flex-col">
-			<span>Country</span>
+			<ContentEditable
+				html={label}
+				onChange={(event) => setLabel(event.currentTarget.innerText)}
+				className={clsx([
+					"text-gray-800 w-full",
+					"cursor-text outline-none",
+					"empty:before:content-['Label_for_country_select...'] before:text-gray-400 focus:before:content-['']",
+				])}
+			/>
 			<CountryDropdown
 				classes="w-96 border border-gray-400 rounded px-0.5 py-1 pt-0.5"
 				value={country}
-				onChange={onChange}
+				onChange={setCountry}
 				valueType="short"
 				defaultOptionLabel="Select country..."
 			/>
@@ -58,7 +67,14 @@ export default class CountryComponent {
 			this.block.dispatchChange();
 		};
 
-		root.render(<CountrySelectElement onDataChange={onDataChange} />);
+		const label = this.data.label || "";
+
+		root.render(
+			<CountrySelectElement
+				componentLabel={label}
+				onDataChange={onDataChange}
+			/>
+		);
 
 		return rootNode;
 	}

@@ -4,26 +4,32 @@ import {
 	BlockToolConstructable,
 	BlockToolData,
 } from "@editorjs/editorjs";
+import clsx from "clsx";
 import { useState } from "react";
+import ContentEditable from "react-contenteditable";
 import { createRoot } from "react-dom/client";
 
 const PhoneInputElement: React.FC<{
 	onDataChange: (data: any) => void;
-}> = ({ onDataChange }) => {
+	componentLabel?: string;
+}> = ({ onDataChange, componentLabel = "Phone number" }) => {
 	const defaultCountry = "us";
 	const [country, setCountry] = useState(defaultCountry);
 	const [number, setNumber] = useState("");
-	const [label, setLabel] = useState("Phone number");
+	const [label, setLabel] = useState(componentLabel);
 
 	onDataChange({ label, country, number });
 
 	return (
 		<fieldset className="w-96 flex flex-col mt-2">
-			<input
-				className="w-full border-none p-0 text-sm leading-none mb-0.5 outline-none"
-				placeholder="Label"
-				value={label}
-				onChange={(event) => setLabel(event.target.value)}
+			<ContentEditable
+				html={label}
+				onChange={(event) => setLabel(event.currentTarget.innerText)}
+				className={clsx([
+					"text-gray-800 w-full",
+					"cursor-text outline-none",
+					"empty:before:content-['Label_for_country_select...'] before:text-gray-400 focus:before:content-['']",
+				])}
 			/>
 			<div className="flex items-stretch gap-x-1">
 				<select
@@ -73,7 +79,11 @@ export default class InputPhone implements BlockTool {
 		const rootNode = document.createElement("div");
 		const root = createRoot(rootNode);
 
-		root.render(<PhoneInputElement onDataChange={onDataChange} />);
+		const label = this.data.label || "";
+
+		root.render(
+			<PhoneInputElement componentLabel={label} onDataChange={onDataChange} />
+		);
 
 		return rootNode;
 	}
