@@ -22,7 +22,7 @@ const RadioOption: React.FC<{
 	setLabel: Function;
 }> = ({ id, value, label, setLabel }) => {
 	const radioLabelClassName = clsx([
-		"p-2 rounded-2xl border border-gray-600 min-w-[4rem] text-center text-black leading-none cursor-pointer",
+		"p-2 rounded-2xl border border-gray-600 min-w-[4rem] text-center text-black leading-none cursor-text",
 		"peer-checked:bg-primary-600 peer-checked:text-white peer-checked:font-semibold",
 	]);
 
@@ -68,17 +68,17 @@ const YesNoElement: React.FC<{
 	});
 
 	return (
-		<>
+		<div className="mt-2">
 			<ContentEditable
 				html={labelForComponent}
 				onChange={(event) => setLabelForComponent(event.target.value)}
 				className={clsx([
-					"text-gray-800 w-full py-0.5 my-1",
+					"text-gray-800 w-full",
 					"cursor-text outline-none",
 					"empty:before:content-['Question_for_the_consumer...'] before:text-gray-400 focus:before:content-['']",
 				])}
 			/>
-			<div className="flex w-full gap-x-2">
+			<div className="flex w-full gap-x-2 mt-1">
 				<RadioOption
 					id={id}
 					value={"false"}
@@ -92,7 +92,7 @@ const YesNoElement: React.FC<{
 					setLabel={setLabelForTrue}
 				/>
 			</div>
-		</>
+		</div>
 	);
 };
 
