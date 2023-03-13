@@ -40,7 +40,10 @@ const RadioOption: React.FC<{
 				checked={checked}
 			/>
 			<label htmlFor={inputID} className={radioLabelClassName}>
-				{label}
+				<ContentEditable
+					html={label}
+					onChange={(event) => setLabel(event.currentTarget.innetText)}
+				/>
 			</label>
 		</div>
 	);
