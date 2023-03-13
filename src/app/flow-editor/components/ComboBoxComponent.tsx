@@ -21,10 +21,7 @@ const ComboBoxElement: React.FC<{ onDataChange: (data: any) => void }> = ({
 		[]
 	);
 
-	const onChange = (country: string) => {
-		setDefaultValue(country);
-		onDataChange({ defaultValue });
-	};
+	onDataChange({ label, defaultValue, entries });
 
 	return (
 		<div className="flex flex-col">
@@ -47,7 +44,6 @@ const ComboBoxElement: React.FC<{ onDataChange: (data: any) => void }> = ({
 					if (!value) return;
 					setEntries((entries) => [...entries, { value, label: label }]);
 					setDefaultValue(value);
-					onChange(value);
 					return value;
 				}}
 			/>
