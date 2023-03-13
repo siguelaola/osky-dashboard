@@ -40,10 +40,10 @@ const ComboBoxElement: React.FC<{
 				label="Label"
 				placeholder="Type to add options..."
 				onChange={() => null}
-				onAddOption={(label: string) => {
-					const value = normalize(label);
+				onAddOption={(optionLabel: string) => {
+					const value = normalize(optionLabel);
 					if (!value) return;
-					setEntries((entries) => [...entries, { value, label: label }]);
+					setEntries((entries) => [...entries, { value, label: optionLabel }]);
 					setDefaultValue(value);
 					return value;
 				}}
