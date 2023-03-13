@@ -24,7 +24,7 @@ const ComboBoxElement: React.FC<{ onDataChange: (data: any) => void }> = ({
 	onDataChange({ label, defaultValue, entries });
 
 	return (
-		<div className="flex flex-col">
+		<div className="flex flex-col w-96 mt-2">
 			<ContentEditable
 				html={label}
 				onChange={(event) => setLabel(event.currentTarget.innerText)}
