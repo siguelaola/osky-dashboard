@@ -44,7 +44,7 @@ const AddressBlockElement: React.FC<{
 				<input
 					value={addressLineOne}
 					onChange={(event) => setAddressLineOne(event.target.value)}
-					className={clsx(["w-96", InputClassList])}
+					className={clsx(["w-96", InputClassList.replace("mt-1", "")])}
 					placeholder="Address line 1"
 				/>
 				<input
