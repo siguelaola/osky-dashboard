@@ -9,6 +9,12 @@ import { useState } from "react";
 import ContentEditable from "react-contenteditable";
 import { createRoot } from "react-dom/client";
 
+interface YesNoLabels {
+	component: string;
+	true: string;
+	false: string;
+};
+
 const RadioOption: React.FC<{
 	id: string;
 	value: string;
@@ -52,21 +58,25 @@ const RadioOption: React.FC<{
 const YesNoElement: React.FC<{
 	id: string;
 	onDataChange: Function;
-	data: { label: string; value: "true" | "false" };
+	data: { label: YesNoLabels; };
 }> = ({ id, onDataChange, data }) => {
-	const [label, setLabel] = useState(data.label || "");
-	const [value, setValue] = useState(data.value || "false");
+	const [labelForComponent, setLabelForComponent] = useState(data.label.component || "");
+	const [labelForTrue, setLabelForTrue] = useState(data.label.true || "Yes");
+	const [labelForFalse, setLabelForFalse] = useState(data.label.false || "No");
 
 	onDataChange({
-		label,
-		value,
+		label: {
+			component: labelForComponent,
+			true: labelForTrue,
+			false: labelForFalse,
+		},
 	});
 
 	return (
 		<>
 			<ContentEditable
-				html={label}
-				onChange={(event) => setLabel(event.target.value)}
+				html={labelForComponent}
+				onChange={(event) => setLabelForComponent(event.target.value)}
 				className={clsx([
 					"text-gray-800 w-full py-0.5 my-1",
 					"cursor-text outline-none",
@@ -77,16 +87,14 @@ const YesNoElement: React.FC<{
 				<RadioOption
 					id={id}
 					value={"false"}
-					setValue={setValue}
-					label={"No"}
-					checked={value === "false"}
+					label={labelForFalse}
+					setLabel={setLabelForFalse}
 				/>
 				<RadioOption
 					id={id}
 					value={"true"}
-					setValue={setValue}
-					label={"Yes"}
-					checked={value === "true"}
+					label={labelForTrue}
+					setLabel={setLabelForTrue}
 				/>
 			</div>
 		</>
