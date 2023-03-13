@@ -35,6 +35,9 @@ const RadioOption: React.FC<{
 				type="radio"
 				id={inputID}
 				value={value}
+				// prevent interactivity during editing
+				// TODO: enable during preview
+				disabled
 				className="hidden peer"
 				name={id}
 				onChange={(event) => setValue(event.currentTarget.value)}
