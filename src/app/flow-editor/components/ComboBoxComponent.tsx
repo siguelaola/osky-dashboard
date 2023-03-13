@@ -37,7 +37,7 @@ const ComboBoxElement: React.FC<{ onDataChange: (data: any) => void }> = ({
 			<ComboBox
 				entries={entries}
 				label="Label"
-				placeholder="Type to add options"
+				placeholder="Type to add options..."
 				onChange={() => null}
 				onAddOption={(label: string) => {
 					const value = normalize(label);
