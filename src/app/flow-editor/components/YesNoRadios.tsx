@@ -18,10 +18,9 @@ interface YesNoLabels {
 const RadioOption: React.FC<{
 	id: string;
 	value: string;
-	setValue: Function;
 	label: string;
-	checked?: boolean;
-}> = ({ id, value, setValue, label, checked = false }) => {
+	setLabel: Function;
+}> = ({ id, value, label, setLabel }) => {
 	const radioLabelClassName = clsx([
 		"p-2 rounded-2xl border border-gray-600 min-w-[4rem] text-center text-black leading-none cursor-pointer",
 		"peer-checked:bg-primary-600 peer-checked:text-white peer-checked:font-semibold",
@@ -40,13 +39,6 @@ const RadioOption: React.FC<{
 				disabled
 				className="hidden peer"
 				name={id}
-				onChange={(event) => setValue(event.currentTarget.value)}
-				onClick={(event) => {
-					if (event.currentTarget.value === value) {
-						setValue("");
-					}
-				}}
-				checked={checked}
 			/>
 			<label htmlFor={inputID} className={radioLabelClassName}>
 				<ContentEditable
@@ -129,13 +121,11 @@ export default class YesNoRadios implements BlockTool {
 		};
 
 		root.render(
-			<>
-				<YesNoElement
-					id={this._id}
-					onDataChange={onDataChange}
-					data={this.data}
-				/>
-			</>
+			<YesNoElement
+				id={this._id}
+				onDataChange={onDataChange}
+				data={this.data}
+			/>
 		);
 
 		return rootNode;
