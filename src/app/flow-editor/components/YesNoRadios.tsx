@@ -43,7 +43,7 @@ const RadioOption: React.FC<{
 			<label htmlFor={inputID} className={radioLabelClassName}>
 				<ContentEditable
 					html={label}
-					onChange={(event) => setLabel(event.currentTarget.innetText)}
+					onChange={(event) => setLabel(event.currentTarget.innerText)}
 				/>
 			</label>
 		</div>
