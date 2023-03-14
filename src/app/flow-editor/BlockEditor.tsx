@@ -15,6 +15,7 @@ import InputPhone from "./components/InputPhone";
 import InputText from "./components/InputText";
 import SeparatorComponent from "./components/SeparatorComponent";
 import YesNoRadios from "./components/YesNoRadios";
+import Undo from "editorjs-undo";
 
 const EDITORJS_ROOT_ID = "editorjs-root";
 
@@ -91,6 +92,10 @@ const BlockEditor: React.FC<{
 				},
 				onReady: () => {
 					new DragDrop(editorInstance);
+
+					// TODO: `editor` is possibly null during `new Undo()`
+					const undo = new Undo({ editor });
+					undo.initialize(blocks);
 				},
 			});
 			setEditor(editorInstance);

@@ -48,6 +48,7 @@
 		"@editorjs/checklist": "^1.4.0",
 		"@types/lodash.throttle": "^4.1.7",
 		"editorjs-drag-drop": "^1.1.13",
+		"editorjs-undo": "^2.0.20",
 		"eslint": "8.34.0",
 		"eslint-config-next": "^13.1.6",
 		"prettier": "^2.8.4"
