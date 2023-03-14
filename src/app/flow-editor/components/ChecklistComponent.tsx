@@ -175,7 +175,7 @@ export default class Checkbox implements BlockTool {
 
 				// Insert new checklist item as sibling to currently selected item
 				component.api.blocks.insert(
-					"checkbox",
+					"checklist",
 					newItem,
 					{},
 					currentBlockIndex + 1,
