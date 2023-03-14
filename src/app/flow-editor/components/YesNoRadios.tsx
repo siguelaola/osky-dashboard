@@ -10,7 +10,7 @@ import ContentEditable from "react-contenteditable";
 import { createRoot } from "react-dom/client";
 
 interface YesNoLabels {
-	component: string;
+	label: string;
 	true: string;
 	false: string;
 }
@@ -53,20 +53,16 @@ const RadioOption: React.FC<{
 const YesNoElement: React.FC<{
 	id: string;
 	onDataChange: Function;
-	data: { label?: YesNoLabels };
+	data: YesNoLabels;
 }> = ({ id, onDataChange, data }) => {
-	const [labelForComponent, setLabelForComponent] = useState(
-		data.label?.component || ""
-	);
-	const [labelForTrue, setLabelForTrue] = useState(data.label?.true || "Yes");
-	const [labelForFalse, setLabelForFalse] = useState(data.label?.false || "No");
+	const [labelForComponent, setLabelForComponent] = useState(data.label || "");
+	const [labelForTrue, setLabelForTrue] = useState(data.true || "Yes");
+	const [labelForFalse, setLabelForFalse] = useState(data.false || "No");
 
 	onDataChange({
-		label: {
-			component: labelForComponent,
-			true: labelForTrue,
-			false: labelForFalse,
-		},
+		label: labelForComponent,
+		true: labelForTrue,
+		false: labelForFalse,
 	});
 
 	return (
@@ -118,8 +114,8 @@ export default class YesNoRadios implements BlockTool {
 		const rootNode = document.createElement("fieldset");
 		const root = createRoot(rootNode);
 
-		const onDataChange = (newData: {}) => {
-			this.data = { ...newData };
+		const onDataChange = (data: YesNoLabels) => {
+			this.data = { ...data };
 		};
 
 		root.render(
