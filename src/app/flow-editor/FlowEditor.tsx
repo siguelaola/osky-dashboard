@@ -128,7 +128,8 @@ const FlowEditor: React.FC<{ id?: string; nodes?: Node[]; edges?: Edge[] }> = (
 				fitViewOptions={{ maxZoom: 1 }}
 				className="flex flex-row justify-end p-3 pb-6"
 			>
-				<Background />
+				{/* background color === Tailwind `bg-gray-50` */}
+				<Background style={{ backgroundColor: "#f9fafb" }} />
 				{editingEdge ? (
 					<EdgeEditor
 						edge={editingEdge}
