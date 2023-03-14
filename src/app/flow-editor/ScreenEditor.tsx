@@ -1,10 +1,5 @@
 import type { OutputBlockData } from "@editorjs/editorjs";
-import {
-	Cog6ToothIcon,
-	ComputerDesktopIcon,
-	DevicePhoneMobileIcon,
-	PencilSquareIcon,
-} from "@heroicons/react/24/outline";
+import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import { useState } from "react";
 import Button from "./Button";
@@ -15,8 +10,9 @@ const ScreenEditor: React.FC<{
 	name: string;
 	setName: (value: string) => void;
 	save: () => void;
-}> = ({ blocks, setBlocks, name, setName, save }) => {
-	const [isEditing, setEditing] = useState(false);
+	onDelete: () => void;
+}> = ({ blocks, setBlocks, name, setName, save, onDelete }) => {
+	const [isEditing, setEditing] = useState(true);
 
 	// BlockEditor depends on EditorJS which is not SSR compatible (refs window)
 	// lazy-load to prevent error noise
@@ -38,14 +34,6 @@ const ScreenEditor: React.FC<{
 						onChange={(event) => setName(event.currentTarget.value)}
 					/>
 					<div className="flex gap-2">
-						<DevicePhoneMobileIcon
-							className="text-gray-500 w-8 h-8 p-1 hover:text-gray-800 cursor-pointer"
-							onClick={() => setEditing(false)}
-						/>
-						<ComputerDesktopIcon
-							className="text-gray-500 w-8 h-8 p-1 hover:text-gray-800 cursor-pointer"
-							onClick={() => setEditing(false)}
-						/>
 						<PencilSquareIcon
 							className={clsx(
 								"text-gray-500 w-8 h-8 p-1 hover:text-gray-800 cursor-pointer",
@@ -53,11 +41,12 @@ const ScreenEditor: React.FC<{
 							)}
 							onClick={() => setEditing(true)}
 						/>
-						<Cog6ToothIcon
-							className={clsx(
-								"text-gray-500 w-8 h-8 p-1 hover:text-gray-800 cursor-pointer"
-							)}
-							onClick={() => setEditing(true)}
+						<TrashIcon
+							className="text-red-600 w-8 h-8 p-1 hover:text-gray-800 cursor-pointer"
+							onClick={() => {
+								if (confirm("Are you sure you want to delete this screen?"))
+									onDelete();
+							}}
 						/>
 					</div>
 				</div>

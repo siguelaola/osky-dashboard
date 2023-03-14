@@ -9,15 +9,20 @@ import { useState } from "react";
 import ContentEditable from "react-contenteditable";
 import { createRoot } from "react-dom/client";
 
+interface YesNoLabels {
+	component: string;
+	true: string;
+	false: string;
+}
+
 const RadioOption: React.FC<{
 	id: string;
 	value: string;
-	setValue: Function;
 	label: string;
-	checked?: boolean;
-}> = ({ id, value, setValue, label, checked = false }) => {
+	setLabel: Function;
+}> = ({ id, value, label, setLabel }) => {
 	const radioLabelClassName = clsx([
-		"p-2 rounded-2xl border border-gray-600 min-w-[4rem] text-center text-black leading-none cursor-pointer",
+		"p-2 rounded-2xl border border-gray-600 min-w-[4rem] text-center text-black leading-none cursor-text",
 		"peer-checked:bg-primary-600 peer-checked:text-white peer-checked:font-semibold",
 	]);
 
@@ -29,18 +34,17 @@ const RadioOption: React.FC<{
 				type="radio"
 				id={inputID}
 				value={value}
+				// prevent interactivity during editing
+				// TODO: enable during preview
+				disabled
 				className="hidden peer"
 				name={id}
-				onChange={(event) => setValue(event.currentTarget.value)}
-				onClick={(event) => {
-					if (event.currentTarget.value === value) {
-						setValue("");
-					}
-				}}
-				checked={checked}
 			/>
 			<label htmlFor={inputID} className={radioLabelClassName}>
-				{label}
+				<ContentEditable
+					html={label}
+					onChange={(event) => setLabel(event.currentTarget.innerText)}
+				/>
 			</label>
 		</div>
 	);
@@ -49,44 +53,48 @@ const RadioOption: React.FC<{
 const YesNoElement: React.FC<{
 	id: string;
 	onDataChange: Function;
-	data: { label: string; value: "true" | "false" };
+	data: { label?: YesNoLabels };
 }> = ({ id, onDataChange, data }) => {
-	const [label, setLabel] = useState(data.label || "");
-	const [value, setValue] = useState(data.value || "false");
+	const [labelForComponent, setLabelForComponent] = useState(
+		data.label?.component || ""
+	);
+	const [labelForTrue, setLabelForTrue] = useState(data.label?.true || "Yes");
+	const [labelForFalse, setLabelForFalse] = useState(data.label?.false || "No");
 
 	onDataChange({
-		label,
-		value,
+		label: {
+			component: labelForComponent,
+			true: labelForTrue,
+			false: labelForFalse,
+		},
 	});
 
 	return (
-		<>
+		<div className="mt-2">
 			<ContentEditable
-				html={label}
-				onChange={(event) => setLabel(event.target.value)}
+				html={labelForComponent}
+				onChange={(event) => setLabelForComponent(event.target.value)}
 				className={clsx([
-					"text-gray-800 w-full py-0.5 my-1",
+					"text-gray-800 w-full",
 					"cursor-text outline-none",
 					"empty:before:content-['Question_for_the_consumer...'] before:text-gray-400 focus:before:content-['']",
 				])}
 			/>
-			<div className="flex w-full gap-x-2">
+			<div className="flex w-full gap-x-2 mt-1">
 				<RadioOption
 					id={id}
 					value={"false"}
-					setValue={setValue}
-					label={"No"}
-					checked={value === "false"}
+					label={labelForFalse}
+					setLabel={setLabelForFalse}
 				/>
 				<RadioOption
 					id={id}
 					value={"true"}
-					setValue={setValue}
-					label={"Yes"}
-					checked={value === "true"}
+					label={labelForTrue}
+					setLabel={setLabelForTrue}
 				/>
 			</div>
-		</>
+		</div>
 	);
 };
 
@@ -115,13 +123,11 @@ export default class YesNoRadios implements BlockTool {
 		};
 
 		root.render(
-			<>
-				<YesNoElement
-					id={this._id}
-					onDataChange={onDataChange}
-					data={this.data}
-				/>
-			</>
+			<YesNoElement
+				id={this._id}
+				onDataChange={onDataChange}
+				data={this.data}
+			/>
 		);
 
 		return rootNode;

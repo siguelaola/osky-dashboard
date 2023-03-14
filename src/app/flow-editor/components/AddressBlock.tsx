@@ -6,19 +6,24 @@ import {
 import { useState } from "react";
 import { createRoot } from "react-dom/client";
 import clsx from "clsx";
+import ContentEditable from "react-contenteditable";
 
-const AddressBlockElement: React.FC<{ onDataChange: Function }> = ({
-	onDataChange,
-}) => {
+const AddressBlockElement: React.FC<{
+	onDataChange: Function;
+	componentLabel?: string;
+}> = ({ onDataChange, componentLabel = "Address" }) => {
 	const [addressLineOne, setAddressLineOne] = useState("");
 	const [addressLineTwo, setAddressLineTwo] = useState("");
 	const [postalCode, setPostalCode] = useState("");
 	const [city, setCity] = useState("");
 
+	const [label, setLabel] = useState(componentLabel);
+
 	onDataChange({
 		address: [addressLineOne, addressLineTwo],
 		postalCode,
 		city,
+		label,
 	});
 
 	const InputClassList =
@@ -27,11 +32,19 @@ const AddressBlockElement: React.FC<{ onDataChange: Function }> = ({
 	return (
 		<>
 			<div className="flex flex-col mt-2">
-				<label className="leading-none">Address</label>
+				<ContentEditable
+					html={label}
+					onChange={(event) => setLabel(event.currentTarget.innerText)}
+					className={clsx([
+						"text-gray-800 w-full",
+						"cursor-text outline-none",
+						"empty:before:content-['Label_for_country_select...'] before:text-gray-400 focus:before:content-['']",
+					])}
+				/>
 				<input
 					value={addressLineOne}
 					onChange={(event) => setAddressLineOne(event.target.value)}
-					className={clsx(["w-96", InputClassList])}
+					className={clsx(["w-96", InputClassList.replace("mt-1", "")])}
 					placeholder="Address line 1"
 				/>
 				<input
@@ -86,7 +99,13 @@ export default class AddressBlock {
 	data;
 	block;
 
-	constructor({ data, block }: { data: OutputBlockData; block: BlockAPI }) {
+	constructor({
+		data,
+		block,
+	}: {
+		data: OutputBlockData["data"];
+		block: BlockAPI;
+	}) {
 		this.data = data || {};
 		this.block = block;
 	}
@@ -95,12 +114,16 @@ export default class AddressBlock {
 		const rootNode = document.createElement("fieldset");
 		const root = createRoot(rootNode);
 
-		const onDataChange = (data: OutputBlockData) => {
+		const onDataChange = (data: OutputBlockData["data"]) => {
 			this.data = { ...data };
 			this.block.dispatchChange();
 		};
 
-		root.render(<AddressBlockElement onDataChange={onDataChange} />);
+		const label = this.data.label || "";
+
+		root.render(
+			<AddressBlockElement componentLabel={label} onDataChange={onDataChange} />
+		);
 
 		return rootNode;
 	}
