@@ -10,7 +10,8 @@ const ScreenEditor: React.FC<{
 	name: string;
 	setName: (value: string) => void;
 	save: () => void;
-}> = ({ blocks, setBlocks, name, setName, save }) => {
+	onDelete: () => void;
+}> = ({ blocks, setBlocks, name, setName, save, onDelete }) => {
 	const [isEditing, setEditing] = useState(true);
 
 	// BlockEditor depends on EditorJS which is not SSR compatible (refs window)
@@ -44,7 +45,7 @@ const ScreenEditor: React.FC<{
 							className="text-red-600 w-8 h-8 p-1 hover:text-gray-800 cursor-pointer"
 							onClick={() => {
 								if (confirm("Are you sure you want to delete this screen?"))
-									save();
+									onDelete();
 							}}
 						/>
 					</div>

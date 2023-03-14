@@ -110,6 +110,10 @@ const CustomNode: React.FC<NodeProps> = ({
 					);
 				}}
 				save={() => setEditorVisible(false)}
+				onDelete={() => {
+					setEditorVisible(false);
+					setNodes((nodes) => nodes.filter((node) => node.id !== id));
+				}}
 			/>,
 			modalRoot
 		);
