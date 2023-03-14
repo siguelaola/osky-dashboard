@@ -7,7 +7,7 @@ import Paragraph from "@editorjs/paragraph";
 import DragDrop from "editorjs-drag-drop";
 import { useEffect, useState } from "react";
 import AddressBlock from "./components/AddressBlock";
-import Checklist from "./components/ChecklistComponent";
+import Checkbox from "./components/ChecklistComponent";
 import ComboBoxComponent from "./components/ComboBoxComponent";
 import CountryComponent from "./components/CountryComponent";
 import InputDate from "./components/InputDate";
@@ -74,7 +74,7 @@ const BlockEditor: React.FC<{
 					yesno: YesNoRadios,
 					checklist: {
 						// @ts-ignore EditorJS's provided interface type cannot be satisfied
-						class: Checklist,
+						class: Checkbox,
 						inlineToolbar: true,
 					},
 					country: CountryComponent,

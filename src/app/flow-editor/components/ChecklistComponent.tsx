@@ -8,26 +8,22 @@ import {
 import { BlockAPI } from "@editorjs/editorjs/types/api";
 import clsx from "clsx";
 import { nanoid } from "nanoid";
-import React, { SyntheticEvent, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ContentEditable from "react-contenteditable";
 import { createRoot, Root } from "react-dom/client";
 
-type ChecklistData = {
-	items: ChecklistItem[];
-};
-
-type ChecklistItem = {
+type CheckboxItem = {
 	id: string;
 	text: string;
 	checked: boolean;
 };
 
-const ChecklistItem: React.FC<{
-	item: ChecklistItem;
+const CheckboxComponent: React.FC<{
+	item: CheckboxItem;
 	onDataChange: Function;
 	readOnly: boolean;
-	component: any;
-}> = ({ item, onDataChange, readOnly, component }) => {
+	events: any;
+}> = ({ item, onDataChange, readOnly, events }) => {
 	const [text, setText] = useState(item.text);
 	const [checked, setChecked] = useState(item.checked);
 
@@ -42,7 +38,10 @@ const ChecklistItem: React.FC<{
 
 	// Trigger focus on the newest input box created.
 	// useEffect will run on the very first render of the element; ie. when the element is created.
-	useEffect(() => document.getElementById(`${id}-ce`)?.focus(), []);
+	useEffect(
+		() => document.getElementById(id)?.querySelector("div")?.focus(),
+		[]
+	);
 
 	return (
 		<div id={id} className="flex items-center">
@@ -55,10 +54,9 @@ const ChecklistItem: React.FC<{
 				onChange={(event) => setChecked(event.target.checked)}
 			/>
 			<ContentEditable
-				id={`${id}-ce`}
 				html={text}
 				onChange={(event) => setText(event.currentTarget.innerHTML)}
-				onKeyDown={(event) => component._events.handler(event)}
+				onKeyDown={(event) => events.handler(event)}
 				disabled={readOnly}
 				className={clsx([
 					"w-full leading-tight cursor-text outline-none ml-1",
@@ -70,26 +68,7 @@ const ChecklistItem: React.FC<{
 	);
 };
 
-const ChecklistComponent: React.FC<{
-	items: ChecklistItem[];
-	onDataChange: Function;
-	readOnly: boolean;
-	component: any;
-}> = ({ items, onDataChange, readOnly, component }) => {
-	const checklist = items.map((item: ChecklistItem) => (
-		<ChecklistItem
-			item={item}
-			onDataChange={onDataChange}
-			readOnly={readOnly}
-			component={component}
-			key={item.id}
-		/>
-	));
-
-	return <>{checklist}</>;
-};
-
-export default class Checklist implements BlockTool {
+export default class Checkbox implements BlockTool {
 	static get isReadOnlySupported(): boolean {
 		return true;
 	}
@@ -102,10 +81,11 @@ export default class Checklist implements BlockTool {
 	static get toolbox(): BlockToolConstructable["toolbox"] {
 		return {
 			icon: IconChecklist,
-			title: "Checklist",
+			title: "Checkbox",
 		};
 	}
 
+	// TODO: fix conflicts below and allow conversion
 	// Allow Checkbox Tool to be converted to/from other block
 	/* static get conversionConfig(): { export: Function; import: Function } {
 		return {
@@ -137,15 +117,25 @@ export default class Checklist implements BlockTool {
 	_events;
 	root?: Root;
 
-	constructor({ data, block, api, readOnly }: BlockToolConstructorOptions) {
+	constructor({
+		data,
+		block,
+		api,
+		readOnly,
+	}: {
+		data: BlockToolData;
+		block: BlockAPI;
+		api: BlockToolConstructorOptions["api"];
+		readOnly: BlockToolConstructorOptions["readOnly"];
+	}) {
 		const component = this;
 
-		this.block = block!;
+		this.block = block;
 		this._id = this.block.id;
 
 		this._events = {
-			handler(event: SyntheticEvent<HTMLDivElement, KeyboardEvent>) {
-				const { key } = event.nativeEvent;
+			handler(event: Event) {
+				const { key } = event as KeyboardEvent;
 				const action: { [key: string]: Function } = {
 					Enter: this.enter,
 					Backspace: this.backspace,
@@ -153,43 +143,24 @@ export default class Checklist implements BlockTool {
 
 				if (!(key in action)) return;
 
-				event.preventDefault();
-
 				return action[key](event);
 			},
-			enter(event: SyntheticEvent<HTMLDivElement, KeyboardEvent>) {
+			enter(event: Event) {
 				event.preventDefault();
 
-				const items = component.data.items;
-				const currentItem = items.find(
-					(item: ChecklistItem) =>
-						item.id === document.activeElement?.parentElement?.id
-				);
+				const item = component.data as CheckboxItem;
+				const currentBlockIndex = component.api.blocks.getCurrentBlockIndex();
 
-				if (!currentItem) return;
-
-				const currentItemIndex = items.indexOf(currentItem);
-				const isLastItem = currentItemIndex === items.length - 1;
-
-				const currentInput = event.target as Element;
-
-				// Circumvent item generation if focus is on the last item
-				if (isLastItem && currentItem.text.length === 0) {
-					const isFirstItem = currentItemIndex === 0;
-					const currentBlockIndex = component.api.blocks.getCurrentBlockIndex();
-
-					// If the last item is the only item of the list, remove component
-					if (isFirstItem) {
-						component.api.blocks.delete(currentBlockIndex);
-					} else {
-						// remove `currentItem` from block data
-						items.splice(currentItemIndex, 1);
-						component.render();
-						// ! STRICT MODE: currently does twice
-						component.api.blocks.insert();
-					}
-
-					return;
+				// If component is empty, remove component
+				if (item.text.length === 0) {
+					return component.api.blocks.insert(
+						"paragraph",
+						{},
+						{},
+						currentBlockIndex,
+						true,
+						true
+					);
 				}
 
 				// Cut content after caret
@@ -203,43 +174,17 @@ export default class Checklist implements BlockTool {
 				};
 
 				// Insert new checklist item as sibling to currently selected item
-				items.splice(currentItemIndex + 1, 0, newItem);
-
-				// call `.render()` to re-render the component based on new data
-				component.render();
+				component.api.blocks.insert(
+					"checkbox",
+					newItem,
+					{},
+					currentBlockIndex + 1,
+					true
+				);
 			},
 
-			backspace(event: SyntheticEvent<HTMLDivElement, KeyboardEvent>) {
-				console.log("backspace", event);
-				const items = component.data.items as ChecklistItem[];
-
-				const currentInput = event.currentTarget;
-				const currentItem = items.find(
-					(item) => item.id === currentInput.parentElement!.id
-				);
-				if (!currentItem) return;
-				const currentIndex = items.indexOf(currentItem);
-				const previousItem = items[currentIndex - 1];
-				const currentBlockIndex = component.api.blocks.getCurrentBlockIndex();
-
-				if (!previousItem) {
-					if (currentIndex === items.length - 1) {
-						if (currentBlockIndex > 0) {
-							if (currentItem.text.trim().length === 0) {
-								return component.api.blocks.delete(currentBlockIndex);
-							} else {
-								// TODO: move text to the previous editor component's text property
-								// filter out components that don't have text
-
-								return;
-							}
-						}
-						// if nowhere to attach/move text to (i.e. if first block, no previous checklist items)
-						return;
-					}
-					return;
-				}
-
+			backspace(event: Event) {
+				const item = component.data as CheckboxItem;
 				const selection = window.getSelection();
 
 				if (!selection) return;
@@ -250,27 +195,9 @@ export default class Checklist implements BlockTool {
 
 				event.preventDefault();
 
-				// Append content after caret to the previous item
-				// and remove the current one
-				const currentItemText = extractContentAfterCaret();
+				if (item.text.length === 0) component.api.blocks.delete();
 
-				previousItem.text += currentItemText;
-
-				items.splice(currentIndex, 1);
-
-				if (items.length === 0) {
-					component.api.blocks.delete(currentBlockIndex);
-				} else {
-					const previousSibling =
-						currentInput.parentElement!.previousElementSibling;
-					// TODO: actually focus previous item's `<ContentEditable />`
-					// currently skips it if its parent is the first element of the component
-					// (does not skip [n+1]th child)
-					// ! STRICT MODE ?
-					// @ts-ignore
-					previousSibling?.children[1].focus();
-					component.render();
-				}
+				return;
 			},
 		};
 
@@ -280,8 +207,6 @@ export default class Checklist implements BlockTool {
 	}
 
 	render(): HTMLElement {
-		const component = this;
-
 		if (!this.data.items) {
 			this.data.items = [
 				{
@@ -292,13 +217,8 @@ export default class Checklist implements BlockTool {
 			];
 		}
 
-		const onDataChange = (updatedItem: ChecklistItem) => {
-			const target = this.data.items.find(
-				(item: ChecklistItem) => item.id === updatedItem.id
-			);
-			if (!target) return;
-			Object.assign(target, updatedItem);
-
+		const onDataChange = (data: CheckboxItem) => {
+			this.data = { ...data };
 			this.block.dispatchChange();
 		};
 
@@ -315,11 +235,11 @@ export default class Checklist implements BlockTool {
 		}
 
 		this.root.render(
-			<ChecklistComponent
-				items={this.data.items}
+			<CheckboxComponent
+				item={this.data}
 				onDataChange={onDataChange}
 				readOnly={this.readOnly}
-				component={component}
+				events={this._events}
 			/>
 		);
 
@@ -331,8 +251,13 @@ export default class Checklist implements BlockTool {
 		return this.data;
 	}
 
-	validate(savedData: BlockToolData<ChecklistData>): boolean {
-		return !!savedData.items.length;
+	validate(data: BlockToolData<CheckboxItem>): boolean {
+		const itemHasValidID = "id" in data && typeof data.id === "string";
+		const itemHasValidStatus =
+			"checked" in data && typeof data.checked === "boolean";
+		const itemHasValidLabel = "text" in data && typeof data.text === "string";
+
+		return itemHasValidID && itemHasValidStatus && itemHasValidLabel;
 	}
 }
 
