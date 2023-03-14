@@ -13,7 +13,7 @@ interface YesNoLabels {
 	component: string;
 	true: string;
 	false: string;
-};
+}
 
 const RadioOption: React.FC<{
 	id: string;
@@ -53,11 +53,13 @@ const RadioOption: React.FC<{
 const YesNoElement: React.FC<{
 	id: string;
 	onDataChange: Function;
-	data: { label: YesNoLabels; };
+	data: { label?: YesNoLabels };
 }> = ({ id, onDataChange, data }) => {
-	const [labelForComponent, setLabelForComponent] = useState(data.label.component || "");
-	const [labelForTrue, setLabelForTrue] = useState(data.label.true || "Yes");
-	const [labelForFalse, setLabelForFalse] = useState(data.label.false || "No");
+	const [labelForComponent, setLabelForComponent] = useState(
+		data.label?.component || ""
+	);
+	const [labelForTrue, setLabelForTrue] = useState(data.label?.true || "Yes");
+	const [labelForFalse, setLabelForFalse] = useState(data.label?.false || "No");
 
 	onDataChange({
 		label: {
