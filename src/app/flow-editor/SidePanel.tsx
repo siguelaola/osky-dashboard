@@ -153,10 +153,10 @@ const Settings = () => {
 	);
 };
 
-export const SidePanel = () => {
+export const SidePanel = ({ togglePreview }: { togglePreview: () => void }) => {
 	const [activeTab, setActiveTab] = useState("Integrations");
 	return (
-		<aside className="bg-white self-end h-full z-10 shadow-lg rounded-lg m-3 p-3 w-64 flex flex-col justify-between mb-6">
+		<aside className="bg-white h-full z-10 shadow-lg rounded-lg p-3 w-64 flex flex-col justify-between">
 			<div>
 				<nav className="flex space-x-4 mb-3" aria-label="Tabs">
 					{tabs.map((tab) => (
@@ -179,6 +179,9 @@ export const SidePanel = () => {
 			</div>
 			<div className="flex flex-col gap-2 border-t rounded-lg -mx-3 -mb-3 p-3 bg-gray-50">
 				<ExportJSONButton />
+				<Button variant="primary" onClick={togglePreview}>
+					Preview
+				</Button>
 				<Button
 					variant="primary"
 					onClick={() => alert("Error publishing to web")}

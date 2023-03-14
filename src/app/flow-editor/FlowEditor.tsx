@@ -19,6 +19,7 @@ import throttle from "lodash.throttle";
 import { useSupabase } from "../(components)/supabase/SupabaseProvider";
 import { Database, Json } from "../utils/supabase/types";
 import { SupabaseClient } from "@supabase/supabase-js";
+import FlowPreview from "./FlowPreview";
 
 const defaultNodes: Node[] = [
 	{
@@ -104,6 +105,7 @@ const FlowEditor: React.FC<{ id?: string; nodes?: Node[]; edges?: Edge[] }> = (
 		props.edges ?? defaultEdges
 	);
 	const [editingEdge, setEditingEdge] = useState<Edge | null>(null);
+	const [isPreviewing, setIsPreviewing] = useState(false);
 	const { supabase } = useSupabase();
 
 	if (props.id) {
@@ -124,7 +126,7 @@ const FlowEditor: React.FC<{ id?: string; nodes?: Node[]; edges?: Edge[] }> = (
 				nodeTypes={nodeTypes}
 				fitView={true}
 				fitViewOptions={{ maxZoom: 1 }}
-				className="flex flex-col"
+				className="flex flex-row justify-end p-3 pb-6"
 			>
 				<Background />
 				{editingEdge ? (
@@ -134,7 +136,8 @@ const FlowEditor: React.FC<{ id?: string; nodes?: Node[]; edges?: Edge[] }> = (
 						nodes={nodes}
 					/>
 				) : null}
-				<SidePanel />
+				{isPreviewing ? <FlowPreview /> : null}
+				<SidePanel togglePreview={() => setIsPreviewing(!isPreviewing)} />
 			</ReactFlow>
 		</div>
 	);
