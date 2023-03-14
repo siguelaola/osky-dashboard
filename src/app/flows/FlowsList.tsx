@@ -1,5 +1,74 @@
 import { CalendarIcon, UsersIcon } from "@heroicons/react/20/solid";
+import React from "react";
 import { createClient } from "../utils/supabase/server";
+import clsx from "clsx";
+import { ButtonLink } from "../flow-editor/Button";
+
+const toTitleCase = (string: string) => {
+	return (
+		string[0].toUpperCase() + string.substring(1, string.length).toLowerCase()
+	);
+};
+
+interface FlowDescriptor {
+	id: string;
+	title: string;
+	type: "live" | "disabled";
+	sharing: "Public" | "Private";
+	closeDateFull: Date;
+	href: string;
+}
+
+const FlowElement: React.FC<{ flow: FlowDescriptor }> = ({
+	flow: { id, href, title, type, sharing, closeDateFull },
+}) => {
+	return (
+		<li key={id}>
+			<a href={href} className="block hover:bg-gray-50">
+				<div className="px-4 py-4 sm:px-6">
+					<div className="flex items-center justify-between">
+						<span className="truncate text-sm font-medium text-indigo-600">
+							{title}
+						</span>
+						<div className="ml-2 flex flex-shrink-0">
+							<span
+								className={clsx([
+									"inline-flex rounded-full px-2 text-xs font-semibold leading-5 text-green-800",
+									type === "live" ? "bg-green-100" : "bg-red-100",
+								])}
+							>
+								{toTitleCase(type)}
+							</span>
+						</div>
+					</div>
+					<div className="mt-2 sm:flex sm:justify-between">
+						<div className="sm:flex">
+							<span className="flex items-center text-sm text-gray-500">
+								<UsersIcon
+									className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
+									aria-hidden={true}
+								/>
+								{sharing}
+							</span>
+						</div>
+						<div className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
+							<CalendarIcon
+								className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
+								aria-hidden={true}
+							/>
+							<span>
+								Created{" "}
+								<time dateTime={closeDateFull.toISOString()}>
+									{closeDateFull.toLocaleDateString()}
+								</time>
+							</span>
+						</div>
+					</div>
+				</div>
+			</a>
+		</li>
+	);
+};
 
 // @ts-expect-error Async Server Component
 const FlowsList: React.FC<{}> = async () => {
@@ -19,58 +88,27 @@ const FlowsList: React.FC<{}> = async () => {
 			sharing: flow.is_public ? "Public" : "Private",
 			closeDateFull: new Date(flow.created_at),
 			href: `/flows/${flow.id}`,
-		};
+		} as FlowDescriptor;
 	});
 
-	return (
+	return flows.length === 0 ? (
+		<div className="flex flex-col flex-grow items-center justify-center">
+			<span className="text-2xl text-gray-400">
+				There are no flows currently
+			</span>
+			<span className="text-2xl text-gray-400 mt-2">
+				Press
+				<ButtonLink href="/flows/new" variant="primary" className="self-end mx-2">
+					Create new flow
+				</ButtonLink>
+				to start one
+			</span>
+		</div>
+	) : (
 		<div className="overflow-hidden bg-white shadow sm:rounded-md">
 			<ul role="list" className="divide-y divide-gray-200">
 				{flows.map((flow) => (
-					<li key={flow.id}>
-						<a href={flow.href} className="block hover:bg-gray-50">
-							<div className="px-4 py-4 sm:px-6">
-								<div className="flex items-center justify-between">
-									<p className="truncate text-sm font-medium text-indigo-600">
-										{flow.title}
-									</p>
-									<div className="ml-2 flex flex-shrink-0">
-										{flow.type === "live" ? (
-											<p className="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">
-												Live
-											</p>
-										) : (
-											<p className="inline-flex rounded-full bg-red-100 px-2 text-xs font-semibold leading-5 text-green-800">
-												Disabled
-											</p>
-										)}
-									</div>
-								</div>
-								<div className="mt-2 sm:flex sm:justify-between">
-									<div className="sm:flex">
-										<p className="flex items-center text-sm text-gray-500">
-											<UsersIcon
-												className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
-												aria-hidden={true}
-											/>
-											{flow.sharing}
-										</p>
-									</div>
-									<div className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
-										<CalendarIcon
-											className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
-											aria-hidden={true}
-										/>
-										<p>
-											Created{" "}
-											<time dateTime={flow.closeDateFull.toISOString()}>
-												{flow.closeDateFull.toLocaleDateString()}
-											</time>
-										</p>
-									</div>
-								</div>
-							</div>
-						</a>
-					</li>
+					<FlowElement flow={flow} />
 				))}
 			</ul>
 		</div>
