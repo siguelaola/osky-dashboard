@@ -3,10 +3,10 @@ import {
 	BlockToolConstructable,
 	OutputBlockData,
 } from "@editorjs/editorjs";
-import { useState } from "react";
-import { createRoot } from "react-dom/client";
 import clsx from "clsx";
+import { useState } from "react";
 import ContentEditable from "react-contenteditable";
+import { createRoot } from "react-dom/client";
 
 const AddressBlockElement: React.FC<{
 	onDataChange: Function;
@@ -38,7 +38,7 @@ const AddressBlockElement: React.FC<{
 					className={clsx([
 						"text-gray-800 w-full",
 						"cursor-text outline-none",
-						"empty:before:content-['Label_for_country_select...'] before:text-gray-400 focus:before:content-['']",
+						"empty:before:content-['Label...'] before:text-gray-400 focus:before:content-['']",
 					])}
 				/>
 				<input
