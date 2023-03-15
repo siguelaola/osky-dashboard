@@ -38,7 +38,7 @@ const AddressBlockElement: React.FC<{
 					className={clsx([
 						"text-gray-800 w-full",
 						"cursor-text outline-none",
-						"empty:before:content-['Label...'] before:text-gray-400 focus:before:content-['']",
+						"empty:before:content-['Label_for_address_block...'] before:text-gray-400 focus:before:content-['']",
 					])}
 				/>
 				<input
@@ -119,7 +119,7 @@ export default class AddressBlock {
 			this.block.dispatchChange();
 		};
 
-		const label = this.data.label || "";
+		const label = this.data.label;
 
 		root.render(
 			<AddressBlockElement componentLabel={label} onDataChange={onDataChange} />
