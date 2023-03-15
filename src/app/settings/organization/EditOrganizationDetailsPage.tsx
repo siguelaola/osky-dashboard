@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import LabelledArea from "../../(components)/forms/LabelledArea";
 import Notification from "../../(components)/Notification";
-import PlaceholderAvatar from "../../(components)/PlaceholderAvatar";
 import { useSupabase } from "../../(components)/supabase/SupabaseProvider";
 import Button from "../../flow-editor/Button";
 import { Database } from "../../utils/supabase/types";
@@ -50,7 +49,7 @@ const EditOrganizationDetailsPage: React.FC<{ organization: Organization }> = ({
 					) : null}
 
 					<div className="space-y-6 sm:space-y-5 max-w-lg">
-						<LabelledArea id="photo" label="Company logo">
+						{/* <LabelledArea id="photo" label="Company logo">
 							<div className="flex justify-between">
 								<input
 									type="file"
@@ -68,7 +67,7 @@ const EditOrganizationDetailsPage: React.FC<{ organization: Organization }> = ({
 								</Button>
 								<PlaceholderAvatar />
 							</div>
-						</LabelledArea>
+						</LabelledArea> */}
 						<LabelledArea id="name" label="Company name">
 							<input
 								type="text"
