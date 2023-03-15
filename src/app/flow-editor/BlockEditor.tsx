@@ -5,6 +5,7 @@ import ImageTool from "@editorjs/image";
 import List from "@editorjs/list";
 import Paragraph from "@editorjs/paragraph";
 import DragDrop from "editorjs-drag-drop";
+import Undo from "editorjs-undo";
 import { useEffect, useState } from "react";
 import AddressBlock from "./components/AddressBlock";
 import Checkbox from "./components/ChecklistComponent";
@@ -15,7 +16,6 @@ import InputPhone from "./components/InputPhone";
 import InputText from "./components/InputText";
 import SeparatorComponent from "./components/SeparatorComponent";
 import YesNoRadios from "./components/YesNoRadios";
-import Undo from "editorjs-undo";
 
 const EDITORJS_ROOT_ID = "editorjs-root";
 
@@ -93,8 +93,7 @@ const BlockEditor: React.FC<{
 				onReady: () => {
 					new DragDrop(editorInstance);
 
-					// TODO: `editor` is possibly null during `new Undo()`
-					const undo = new Undo({ editor });
+					const undo = new Undo({ editor: editorInstance });
 					undo.initialize(blocks);
 				},
 			});
