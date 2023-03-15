@@ -9,7 +9,7 @@ import ContentEditable from "react-contenteditable";
 import { createRoot } from "react-dom/client";
 import ComboBox from "../../(components)/forms/ComboBox";
 
-const normalize = (value: string) =>
+const toSnakeCase = (value: string) =>
 	value.trim().toLowerCase().replaceAll(" ", "_");
 
 const ComboBoxElement: React.FC<{
@@ -41,7 +41,7 @@ const ComboBoxElement: React.FC<{
 				placeholder="Type to add options..."
 				onChange={() => null}
 				onAddOption={(optionLabel: string) => {
-					const value = normalize(optionLabel);
+					const value = toSnakeCase(optionLabel);
 					if (!value) return;
 					setEntries((entries) => [...entries, { value, label: optionLabel }]);
 					setDefaultValue(value);
