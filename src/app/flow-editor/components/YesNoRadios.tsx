@@ -27,6 +27,7 @@ const RadioOption: React.FC<{
 	]);
 
 	const inputID = id + "-" + label.toLowerCase();
+	const placeholder = value === "true" ? "Yes" : "No";
 
 	return (
 		<div className="flex">
@@ -44,6 +45,13 @@ const RadioOption: React.FC<{
 				<ContentEditable
 					html={label}
 					onChange={(event) => setLabel(event.currentTarget.innerText)}
+					className={clsx([
+						"text-gray-800 w-full",
+						"cursor-text outline-none",
+						value === "true"
+							? "empty:before:content-['Yes'] before:text-gray-400 focus:before:content-['']"
+							: "empty:before:content-['No'] before:text-gray-400 focus:before:content-['']",
+					])}
 				/>
 			</label>
 		</div>
