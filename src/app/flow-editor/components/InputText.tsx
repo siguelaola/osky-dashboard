@@ -4,15 +4,17 @@ import {
 	BlockToolConstructable,
 	BlockToolData,
 } from "@editorjs/editorjs";
+import clsx from "clsx";
 import React, { useState } from "react";
+import ContentEditable from "react-contenteditable";
 import { createRoot } from "react-dom/client";
 
-const InputParameters: React.FC<{
-	onDataChange: (data: any) => void;
-	onChange: (event: any) => void;
-}> = ({ onDataChange, onChange }) => {
+const InputComponent: React.FC<{
+	onDataChange: (data: BlockToolData) => void;
+	componentLabel: string;
+}> = ({ onDataChange, componentLabel }) => {
 	const [required, setRequired] = useState(false);
-	const [label, setLabel] = useState("");
+	const [label, setLabel] = useState(componentLabel);
 	const [placeholder, setPlaceholder] = useState("");
 
 	// Triggers on every render
@@ -23,21 +25,24 @@ const InputParameters: React.FC<{
 	});
 
 	return (
-		<fieldset onChange={onChange} className="my-2 pr-2">
-			<label>
-				<input
-					className="w-full border-none p-0 text-sm leading-none mb-0.5 outline-none"
-					placeholder="Label"
-					value={label}
-					onChange={(event) => setLabel(event.currentTarget.value)}
+		<>
+			<div>
+				<ContentEditable
+					html={label}
+					onChange={(event) => setLabel(event.currentTarget.innerText)}
+					className={clsx([
+						"text-gray-800 w-full",
+						"cursor-text outline-none",
+						"empty:before:content-['Label_for_text_input...'] before:text-gray-400 focus:before:content-['']",
+					])}
 				/>
 				<input
-					className="w-full border border-current px-1 py-0.5 m-0 leading-none"
-					placeholder="Placeholder text"
+					className="w-96 border border-gray-400 rounded px-1 py-0.5 m-0 leading-none"
+					placeholder="Placeholder for rendered input"
 					value={placeholder}
 					onChange={(event) => setPlaceholder(event.currentTarget.value)}
 				/>
-			</label>
+			</div>
 			<details>
 				<summary>Input settings</summary>
 				<fieldset className="grid grid-cols-2 gap-y-0.5">
@@ -45,7 +50,7 @@ const InputParameters: React.FC<{
 						<label>
 							<input
 								type="checkbox"
-								className="align-middle"
+								className="align-middle mr-1"
 								checked={required}
 								onChange={(event) => setRequired(event.currentTarget.checked)}
 							/>
@@ -54,7 +59,7 @@ const InputParameters: React.FC<{
 					</div>
 				</fieldset>
 			</details>
-		</fieldset>
+		</>
 	);
 };
 
@@ -69,28 +74,29 @@ export default class InputText implements BlockTool {
 	data;
 	block;
 
-	constructor({ data, block }: { data: BlockToolData<any>; block: BlockAPI }) {
+	constructor({ data, block }: { data: BlockToolData; block: BlockAPI }) {
 		this.data = data || {};
 		this.block = block;
 	}
 
 	render() {
-		const rootNode = document.createElement("div");
-		const onDataChange = (newData: any) => {
-			this.data = { ...newData };
+		const rootNode = document.createElement("fieldset");
+
+		const onDataChange = (data: BlockToolData) => {
+			this.data = { ...data };
 		};
+
+		const label = this.data.label;
+
 		const root = createRoot(rootNode);
 		root.render(
-			<InputParameters
-				onDataChange={onDataChange}
-				onChange={this.block.dispatchChange}
-			/>
+			<InputComponent onDataChange={onDataChange} componentLabel={label} />
 		);
 
 		return rootNode;
 	}
 
-	save(contents: HTMLFieldSetElement) {
+	save() {
 		return this.data;
 	}
 }
