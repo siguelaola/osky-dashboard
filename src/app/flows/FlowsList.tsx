@@ -1,8 +1,8 @@
 import { CalendarIcon, UsersIcon } from "@heroicons/react/20/solid";
-import React from "react";
-import { createClient } from "../utils/supabase/server";
 import clsx from "clsx";
+import React from "react";
 import { ButtonLink } from "../flow-editor/Button";
+import { createClient } from "../utils/supabase/server";
 
 const toTitleCase = (string: string) => {
 	return (
@@ -98,7 +98,11 @@ const FlowsList: React.FC<{}> = async () => {
 			</span>
 			<span className="text-2xl text-gray-400 mt-2">
 				Press
-				<ButtonLink href="/flows/new" variant="primary" className="self-end mx-2">
+				<ButtonLink
+					href="/flows/new"
+					variant="primary"
+					className="self-end mx-2"
+				>
 					Create new flow
 				</ButtonLink>
 				to start one
@@ -108,7 +112,7 @@ const FlowsList: React.FC<{}> = async () => {
 		<div className="overflow-hidden bg-white shadow sm:rounded-md">
 			<ul role="list" className="divide-y divide-gray-200">
 				{flows.map((flow) => (
-					<FlowElement flow={flow} />
+					<FlowElement key={flow.id} flow={flow} />
 				))}
 			</ul>
 		</div>
