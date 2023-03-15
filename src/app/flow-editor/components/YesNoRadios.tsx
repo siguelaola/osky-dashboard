@@ -21,10 +21,10 @@ const RadioOption: React.FC<{
 	label: string;
 	setLabel: Dispatch<SetStateAction<string>>;
 }> = ({ id, value, label, setLabel }) => {
-	const radioLabelClassName = clsx([
+	const radioLabelClassName = [
 		"p-2 rounded-2xl border border-gray-600 min-w-[4rem] text-center text-black leading-none cursor-text",
 		"peer-checked:bg-primary-600 peer-checked:text-white peer-checked:font-semibold",
-	]);
+	].join(" ");
 
 	const inputID = id + "-" + label.toLowerCase();
 	const placeholder = value === "true" ? "Yes" : "No";
