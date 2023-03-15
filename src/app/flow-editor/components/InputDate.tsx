@@ -1,4 +1,45 @@
-import { BlockToolConstructable, OutputBlockData } from "@editorjs/editorjs";
+import {
+	BlockAPI,
+	BlockToolConstructable,
+	OutputBlockData,
+} from "@editorjs/editorjs";
+import clsx from "clsx";
+import { useState } from "react";
+import ContentEditable from "react-contenteditable";
+import { createRoot } from "react-dom/client";
+
+const DateComponent: React.FC<{
+	onDataChange: (data: OutputBlockData["data"]) => void;
+	componentLabel: string;
+}> = ({ onDataChange, componentLabel = "" }) => {
+	const [date, setDate] = useState("");
+	const [label, setLabel] = useState(componentLabel);
+
+	onDataChange({
+		date,
+		label,
+	});
+
+	return (
+		<>
+			<ContentEditable
+				html={label}
+				onChange={(event) => setLabel(event.currentTarget.innerText)}
+				className={clsx([
+					"text-gray-800 w-full",
+					"cursor-text outline-none",
+					"empty:before:content-['Label_for_select...'] before:text-gray-400 focus:before:content-['']",
+				])}
+			/>
+			<input
+				type="date"
+				value={date}
+				onChange={(event) => setDate(event.currentTarget.value)}
+				className="border px-1 py-0.5 m-0 mt-1 leading-none"
+			/>
+		</>
+	);
+};
 
 export default class InputDate {
 	static get toolbox(): BlockToolConstructable["toolbox"] {
@@ -8,30 +49,39 @@ export default class InputDate {
 		};
 	}
 
-	data = undefined;
+	data;
+	block;
 
-	constructor({ data }: OutputBlockData) {
-		this.data = data;
+	constructor({
+		data,
+		block,
+	}: {
+		data: OutputBlockData["data"];
+		block: BlockAPI;
+	}) {
+		this.data = data || {};
+		this.block = block;
 	}
 
 	render() {
-		// TODO: add support for providing input with initial date
-		const renderHTML = (html: string) =>
-			document.createRange().createContextualFragment(html);
-		const element = renderHTML(
-			`<fieldset class="my-2 pr-2">
-				<input type="date" class="border border-current px-1 py-0.5 m-0 leading-none">
-			</fieldset>`
+		const rootNode = document.createElement("fieldset");
+		const root = createRoot(rootNode);
+
+		const onDataChange = (data: OutputBlockData["data"]) => {
+			this.data = { ...data };
+			this.block.dispatchChange();
+		};
+
+		const label = this.data.label || "";
+
+		root.render(
+			<DateComponent onDataChange={onDataChange} componentLabel={label} />
 		);
 
-		return element;
+		return rootNode;
 	}
 
-	save(contents: HTMLFieldSetElement) {
-		const input = contents.querySelector("input");
-
-		return {
-			date: input!.value,
-		};
+	save() {
+		return this.data;
 	}
 }
