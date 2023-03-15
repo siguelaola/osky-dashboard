@@ -4,20 +4,42 @@ import {
 	OutputBlockData,
 } from "@editorjs/editorjs";
 import clsx from "clsx";
-import { useState } from "react";
+import { AsYouType } from "libphonenumber-js";
+import { ChangeEvent, useState } from "react";
 import ContentEditable from "react-contenteditable";
 import { createRoot } from "react-dom/client";
+
+const formatNumber = (number: string) => {
+	const asYouType = new AsYouType();
+	const formatted = asYouType.input(number);
+
+	return {
+		formatted,
+		number: asYouType.getNumberValue(),
+		country: asYouType.getCountry(),
+	};
+};
 
 const PhoneInputElement: React.FC<{
 	onDataChange: (data: any) => void;
 	componentLabel?: string;
 }> = ({ onDataChange, componentLabel = "Phone number" }) => {
-	const defaultCountry = "us";
-	const [country, setCountry] = useState(defaultCountry);
+	const [country, setCountry] = useState("");
 	const [number, setNumber] = useState("");
+	const [formatted, setFormatted] = useState("");
 	const [label, setLabel] = useState(componentLabel);
 
 	onDataChange({ label, country, number });
+
+	const onChange = (event: ChangeEvent) => {
+		const input = event.currentTarget as HTMLInputElement;
+		const value = input.value;
+		const { country, formatted, number } = formatNumber(value);
+
+		setCountry(country || "");
+		setNumber(number || "");
+		setFormatted(formatted || "");
+	};
 
 	return (
 		<fieldset className="w-96 flex flex-col mt-2">
@@ -27,26 +49,17 @@ const PhoneInputElement: React.FC<{
 				className={clsx([
 					"text-gray-800 w-full",
 					"cursor-text outline-none",
-					"empty:before:content-['Label_for_country_select...'] before:text-gray-400 focus:before:content-['']",
+					"empty:before:content-['Label_for_phone_input...'] before:text-gray-400 focus:before:content-['']",
 				])}
 			/>
-			<div className="flex items-stretch gap-x-1">
-				<select
-					className="w-20 border border-gray-400 rounded px-1.5 py-1 pt-0.5 leading-none"
-					name="code"
-					defaultValue={defaultCountry}
-					onChange={(event) => setCountry(event.target.value)}
-				>
-					<option value="us">+1</option>
-					<option value="nl">+31</option>
-					<option value="be">+32</option>
-					<option value="fr">+33</option>
-					<option value="uk">+44</option>
-					<option value="mx">+52</option>
-				</select>
+			<div className="flex items-center">
+				{/* TODO: add country flag based on country provided by AsYouType */}
+				{/* NOTE: AsYouType may withhold country if more than one country uses the same country code */}
+				{/*       e.g. +1 for Canada and US */}
+				{/*       until it knows for a fact (from the full number) which country it is */}
 				<input
-					value={number}
-					onChange={(event) => setNumber(event.target.value)}
+					value={formatted}
+					onChange={onChange}
 					className="w-full border border-gray-400 rounded px-1.5 py-1 pt-0.5 leading-none"
 				/>
 			</div>
