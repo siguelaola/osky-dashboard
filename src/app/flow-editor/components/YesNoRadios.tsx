@@ -5,7 +5,7 @@ import {
 	BlockToolData,
 } from "@editorjs/editorjs";
 import clsx from "clsx";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import ContentEditable from "react-contenteditable";
 import { createRoot } from "react-dom/client";
 
@@ -19,7 +19,7 @@ const RadioOption: React.FC<{
 	id: string;
 	value: string;
 	label: string;
-	setLabel: Function;
+	setLabel: Dispatch<SetStateAction<string>>;
 }> = ({ id, value, label, setLabel }) => {
 	const radioLabelClassName = clsx([
 		"p-2 rounded-2xl border border-gray-600 min-w-[4rem] text-center text-black leading-none cursor-text",
@@ -52,7 +52,7 @@ const RadioOption: React.FC<{
 
 const YesNoElement: React.FC<{
 	id: string;
-	onDataChange: Function;
+	onDataChange: (data: any) => void;
 	data: YesNoLabels;
 }> = ({ id, onDataChange, data }) => {
 	const [labelForComponent, setLabelForComponent] = useState(data.label || "");
@@ -69,11 +69,13 @@ const YesNoElement: React.FC<{
 		<div className="mt-2">
 			<ContentEditable
 				html={labelForComponent}
-				onChange={(event) => setLabelForComponent(event.target.value)}
+				onChange={(event) =>
+					setLabelForComponent(event.currentTarget.innerText)
+				}
 				className={clsx([
 					"text-gray-800 w-full",
 					"cursor-text outline-none",
-					"empty:before:content-['Question_for_the_consumer...'] before:text-gray-400 focus:before:content-['']",
+					"empty:before:content-['Label_for_binary_component...'] before:text-gray-400 focus:before:content-['']",
 				])}
 			/>
 			<div className="flex w-full gap-x-2 mt-1">
