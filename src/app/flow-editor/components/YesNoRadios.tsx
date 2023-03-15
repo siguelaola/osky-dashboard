@@ -69,8 +69,8 @@ const YesNoElement: React.FC<{
 
 	onDataChange({
 		label: labelForComponent,
-		true: labelForTrue,
-		false: labelForFalse,
+		true: labelForTrue.length === 0 ? "Yes" : labelForTrue,
+		false: labelForFalse.length === 0 ? "No" : labelForFalse,
 	});
 
 	return (
