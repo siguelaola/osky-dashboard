@@ -1,4 +1,4 @@
-import { createClient } from "../../utils/supabase/server";
+import { createClient } from "../../../supabase/server";
 import NewFlow from "./NewFlow";
 
 const Page = async () => {

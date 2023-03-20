@@ -9,7 +9,8 @@ const LoginPage: React.FC<{}> = () => {
 		<Auth
 			supabaseClient={supabase}
 			appearance={{ theme: ThemeSupa }}
-			redirectTo="/flows"
+			redirectTo="flows"
+			providers={[]}
 		/>
 	);
 };

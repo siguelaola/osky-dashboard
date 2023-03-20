@@ -1,12 +1,12 @@
 import "server-only";
 
 import "../styles/tailwind.css";
+import { createClient } from "../supabase/server";
 import SupabaseListener from "./(components)/supabase/SupabaseListener";
 import SupabaseProvider from "./(components)/supabase/SupabaseProvider";
 import Footer from "./Footer";
 import Head from "./head";
 import Sidebar from "./Sidebar";
-import { createClient } from "./utils/supabase/server";
 
 const RootLayout = async ({ children }: { children: React.ReactNode }) => {
 	const supabase = createClient();

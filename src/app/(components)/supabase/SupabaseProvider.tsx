@@ -1,10 +1,10 @@
 "use client";
 
 import { createContext, useContext, useState } from "react";
-import { createClient } from "../../utils/supabase/client";
+import { createClient } from "../../../supabase/client";
 
 import type { SupabaseClient } from "@supabase/auth-helpers-nextjs";
-import type { Database } from "../../utils/supabase/types";
+import type { Database } from "../../../supabase/types";
 
 type SupabaseContext = {
 	supabase: SupabaseClient<Database>;

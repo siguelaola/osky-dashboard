@@ -1,7 +1,7 @@
 "use client";
 import { useSupabase } from "../../(components)/supabase/SupabaseProvider";
+import { Json } from "../../../supabase/types";
 import Button from "../../flow-editor/Button";
-import { Json } from "../../utils/supabase/types";
 
 const NewFlow = ({
 	starters,

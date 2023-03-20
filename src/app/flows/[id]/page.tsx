@@ -1,5 +1,5 @@
+import { createClient } from "../../../supabase/server";
 import FlowEditor from "../../flow-editor/FlowEditor";
-import { createClient } from "../../utils/supabase/server";
 
 // @ts-expect-error Async Server Component
 const Page: React.FC<{ params: { id: string } }> = async ({

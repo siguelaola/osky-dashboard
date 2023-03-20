@@ -1,5 +1,5 @@
 import React from "react";
-import { createClient } from "../utils/supabase/server";
+import { createClient } from "../../supabase/server";
 import PlaceholderAvatar from "./PlaceholderAvatar";
 
 interface UserProfile {

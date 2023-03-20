@@ -1,4 +1,4 @@
-import { createClient } from "../../utils/supabase/server";
+import { createClient } from "../../../supabase/server";
 import EditOrganizationDetailsPage from "./EditOrganizationDetailsPage";
 
 const Page = async () => {

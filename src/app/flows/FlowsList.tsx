@@ -1,8 +1,8 @@
 import { CalendarIcon, UsersIcon } from "@heroicons/react/20/solid";
 import clsx from "clsx";
 import React from "react";
+import { createClient } from "../../supabase/server";
 import { ButtonLink } from "../flow-editor/Button";
-import { createClient } from "../utils/supabase/server";
 
 const toTitleCase = (string: string) => {
 	return (

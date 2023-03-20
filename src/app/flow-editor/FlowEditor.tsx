@@ -1,4 +1,6 @@
 "use client";
+import { SupabaseClient } from "@supabase/supabase-js";
+import throttle from "lodash.throttle";
 import { useEffect, useState } from "react";
 import {
 	addEdge,
@@ -10,16 +12,14 @@ import {
 	useNodesState,
 } from "reactflow";
 import "reactflow/dist/style.css";
+import { useSupabase } from "../(components)/supabase/SupabaseProvider";
+import { Database, Json } from "../../supabase/types";
 import EdgeEditor from "./EdgeEditor";
+import FlowPreview from "./FlowPreview";
 import IntegrationNode from "./IntegrationNode";
 import ScreenNode from "./ScreenNode";
 import SidePanel from "./SidePanel";
 import { FormComponentType } from "./types";
-import throttle from "lodash.throttle";
-import { useSupabase } from "../(components)/supabase/SupabaseProvider";
-import { Database, Json } from "../utils/supabase/types";
-import { SupabaseClient } from "@supabase/supabase-js";
-import FlowPreview from "./FlowPreview";
 
 const defaultNodes: Node[] = [
 	{

@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import LabelledArea from "../../(components)/forms/LabelledArea";
 import Notification from "../../(components)/Notification";
 import { useSupabase } from "../../(components)/supabase/SupabaseProvider";
+import { Database } from "../../../supabase/types";
 import Button from "../../flow-editor/Button";
-import { Database } from "../../utils/supabase/types";
 
 type Organization = Database["public"]["Tables"]["organizations"]["Row"];
 
