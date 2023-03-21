@@ -10,6 +10,7 @@
 		"format": "prettier --write ."
 	},
 	"dependencies": {
+		"@codexteam/icons": "^0.3.0",
 		"@editorjs/editorjs": "^2.26.5",
 		"@editorjs/header": "^2.7.0",
 		"@editorjs/image": "^2.8.1",
@@ -33,7 +34,7 @@
 		"libphonenumber-js": "^1.10.20",
 		"lodash.throttle": "^4.1.1",
 		"next": "13.2.1",
-		"osky-ui": "git://github.com/siguelaola/osky-ui.git#master",
+		"osky-ui": "git://github.com/siguelaola/osky-ui.git#8c2ff74",
 		"postcss": "^8.4.21",
 		"react": "18.2.0",
 		"react-contenteditable": "^3.3.7",
